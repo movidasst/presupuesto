@@ -898,6 +898,7 @@
                     <li>Evaluación automatizada</li>
                     <li>Certificados para aprobados</li>
                     <li>Informe básico de participación y resultados</li>
+                    <li>Grupo de WhatsApp de soporte por curso</li>
                   </ul>
                 </div>
                 <div class="price-card__right"><span class="price-card__list">Lista $15</span><span class="price-card__price">$7</span><span class="price-card__unit">USD / persona</span></div>
@@ -1111,6 +1112,7 @@
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Aprobación:</b> evaluación automatizada con nota mínima del 80% para emisión del certificado.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Personalización:</b> certificados con identificación corporativa según alcance acordado.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Servicios complementarios por escala:</b> el diseño del plan de capacitación y el cronograma de ejecución aplican según el volumen contratado.</span></li>
+              <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Soporte por curso:</b> cada curso incluye un grupo de WhatsApp para acompañamiento y soporte a los participantes durante su ejecución.</span></li>
             </ul>
             <div class="legal-note"><b>Nota técnica:</b> la formación asincrónica complementa la gestión de capacitación y no sustituye entrenamientos prácticos, inducciones específicas, demostraciones de competencia ni otras exigencias presenciales que correspondan al riesgo, tarea o normativa aplicable.</div>
           </article>
@@ -1232,6 +1234,7 @@
           <div class="print-include"><b>Evaluación automatizada</b><span>Criterio de aprobación mínimo del 80% para la emisión del certificado.</span></div>
           <div class="print-include"><b>Certificados</b><span>Emisión para participantes aprobados, con identificación corporativa según el alcance acordado.</span></div>
           <div class="print-include"><b>Seguimiento e informe</b><span>Participación, avance, resultados y resumen final para RRHH o SSST.</span></div>
+          <div class="print-include"><b>Grupo de WhatsApp de soporte por curso</b><span>Canal de acompañamiento para orientaciones, dudas de acceso y soporte durante el desarrollo del curso.</span></div>
           <div class="print-include"><b>DNF</b><span id="printDnfScope">Detección de Necesidades de Formación según la escala contratada.</span></div>
           <div class="print-include"><b>Planificación complementaria</b><span id="printPlanningScope">Beneficios adicionales según la escala de participantes seleccionada.</span></div>
         </div>
@@ -1257,7 +1260,7 @@
         <table class="print-table">
           <thead><tr><th>Grupo</th><th>Participantes</th><th>Tarifa convenio</th><th>Beneficio</th></tr></thead>
           <tbody>
-            <tr id="printTierSmall"><td>Grupo menor</td><td>3 a 11</td><td>$7 USD / persona / curso</td><td>Acceso + evaluación + certificados + informe básico</td></tr>
+            <tr id="printTierSmall"><td>Grupo menor</td><td>3 a 11</td><td>$7 USD / persona / curso</td><td>Acceso + evaluación + certificados + informe básico + WhatsApp de soporte por curso</td></tr>
             <tr id="printTierStandard"><td>Grupo estándar</td><td>12 a 49</td><td>$5 USD / persona / curso</td><td>Todo lo anterior + DNF + diseño del plan de capacitación</td></tr>
             <tr id="printTierScale"><td>Grupo escala</td><td>50 a 99</td><td>$4 USD / persona / curso</td><td>Todo lo anterior + cronograma + reporte analítico</td></tr>
             <tr id="printTierMass"><td>Grupo masivo</td><td>100+</td><td>$3 USD / persona / curso</td><td>Todo lo anterior + seguimiento ampliado + consolidado ejecutivo</td></tr>
@@ -1297,6 +1300,7 @@
           <li><b>Aprobación:</b> evaluación automatizada final con nota mínima del 80% para la emisión del certificado.</li>
           <li><b>Personalización:</b> certificados con identificación corporativa según alcance acordado.</li>
           <li><b>Servicios complementarios por escala:</b> el diseño del plan de capacitación y el cronograma de ejecución aplican según el volumen contratado.</li>
+          <li><b>Soporte por curso:</b> cada curso incluye un grupo de WhatsApp para acompañamiento y soporte a los participantes durante su ejecución.</li>
           <li><b>Reportabilidad:</b> informe con participación, avance, calificaciones y estado de cumplimiento de la cohorte.</li>
         </ul>
       </section>
@@ -1440,7 +1444,8 @@
           'Acceso multiplataforma',
           'Evaluación automatizada',
           'Certificados para aprobados',
-          'Informe básico de participación y resultados'
+          'Informe básico de participación y resultados',
+          'Grupo de WhatsApp de soporte por curso'
         ];
         if (count >= 100) {
           return {
@@ -1474,7 +1479,7 @@
           price: 7,
           dnf: false,
           benefits: baseBenefits,
-          planningScope: 'Incluye acceso, evaluación, certificados e informe básico de participación y resultados.'
+          planningScope: 'Incluye acceso, evaluación, certificados, informe básico de participación y resultados y grupo de WhatsApp de soporte por curso.'
         };
       }
 
