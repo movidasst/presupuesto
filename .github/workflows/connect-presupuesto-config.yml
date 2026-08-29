@@ -1,4 +1,4 @@
-name: Connect presupuesto admin config
+name: Apply total presupuesto upgrade
 
 on:
   push:
@@ -15,34 +15,39 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Apply configuration integration
+      - name: Apply total B2B upgrade
         run: python .github/scripts/connect_presupuesto_config.py
-      - name: Validate JavaScript
+      - name: Extract and validate JavaScript
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
-          for source, target in [('index.html','/tmp/index-app.js'),('admin.html','/tmp/admin-app.js'),('presupuesto-config.js','/tmp/config-app.js')]:
+          for source, target in [('index.html','/tmp/index-app.js'),('admin.html','/tmp/admin-app.js')]:
               text=Path(source).read_text(encoding='utf-8')
-              if source.endswith('.html'):
-                  scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,flags=re.S)
-                  inline=[s for s in scripts if s.strip()]
-                  if not inline: raise SystemExit(f'No inline script found in {source}')
-                  Path(target).write_text(inline[-1],encoding='utf-8')
-              else:
-                  Path(target).write_text(text,encoding='utf-8')
+              scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,flags=re.S)
+              inline=[s for s in scripts if s.strip() and not s.lstrip().startswith('{')]
+              if not inline: raise SystemExit(f'No inline application script found in {source}')
+              Path(target).write_text(inline[-1],encoding='utf-8')
           PY
           node --check /tmp/index-app.js
           node --check /tmp/admin-app.js
-          node --check /tmp/config-app.js
-      - name: Verify integration markers
+          node --check presupuesto-config.js
+          node --check presupuesto-leads.js
+      - name: Verify upgrade markers
         run: |
-          grep -q 'presupuesto-config.js' index.html
-          grep -q 'PresupuestoConfig.getTier' index.html
-          grep -q 'PresupuestoConfig.calculate' index.html
-          grep -q 'admin.html' index.html
-          grep -q 'admin_presupuesto_config_guardar' admin.html
-      - name: Commit integration
+          grep -q 'id="leadCapture"' index.html
+          grep -q 'id="structuredData"' index.html
+          grep -q 'id="printCompany"' index.html
+          grep -q 'id="printValidity"' index.html
+          grep -q 'presupuesto-leads.js' index.html
+          grep -q 'Cohorte Corporativa' index.html
+          grep -q 'Ejemplo de cohorte corporativa' index.html
+          grep -q 'Valor claro para quienes deciden' index.html
+          grep -q 'budgetLiveStatus' index.html
+          ! grep -q 'budgetSavings' index.html
+          ! grep -q 'printListTotal' index.html
+          ! grep -q 'Ahorro vs. tarifa lista' index.html
+      - name: Commit production page
         run: |
           git config user.name "movidasst"
           git config user.email "gdochile@gmail.com"
@@ -50,6 +55,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes"
           else
-            git commit -m "Connect presupuesto to protected admin configuration"
+            git commit -m "Upgrade corporate proposal UX and lead capture"
             git push origin main
           fi
