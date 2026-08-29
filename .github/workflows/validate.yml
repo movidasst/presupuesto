@@ -1,0 +1,45 @@
+name: Validate corporate quote app
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: JavaScript syntax
+        run: |
+          node --check presupuesto-config.js
+          node --check presupuesto-leads.js
+      - name: Extract and validate inline scripts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          for name in ('index.html','admin.html'):
+              text=Path(name).read_text(encoding='utf-8')
+              scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',text,re.I)
+              for i,code in enumerate(scripts):
+                  if not code.strip() or code.lstrip().startswith('{'): continue
+                  p=Path(f'/tmp/{name}-{i}.js')
+                  p.write_text(code,encoding='utf-8')
+                  print(p)
+          PY
+          for f in /tmp/index.html-*.js /tmp/admin.html-*.js; do
+            [ -e "$f" ] && node --check "$f"
+          done
+      - name: Project regression tests
+        run: python tests/validate_project.py
