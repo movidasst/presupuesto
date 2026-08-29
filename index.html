@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Capacitación Corporativa en SST | Academia Movida SST</title>
-  <meta name="description" content="Capacitación corporativa en Seguridad y Salud en el Trabajo con microlearning asincrónico, seguimiento de avance, certificados e informes para empresas. Demo corporativo gratuito por 30 días.">
+  <meta name="description" content="Capacitación corporativa en Seguridad y Salud en el Trabajo con microlearning asincrónico, seguimiento, certificados, informes y Demo Corporativo para empresas.">
   <meta name="keywords" content="capacitación SST empresas, cursos SST corporativos, microlearning SST, formación seguridad y salud en el trabajo, DNF SST, capacitación asincrónica SST">
   <meta name="author" content="Academia Movida de Seguridad y Salud en el Trabajo">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
@@ -13,7 +13,7 @@
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://presupuesto.movidasst.com/">
-  <meta property="og:title" content="Capacitación Corporativa en SST | Demo 30 días">
+  <meta property="og:title" content="Capacitación Corporativa en SST | Academia Movida SST">
   <meta property="og:description" content="Forma a tu equipo en SST desde móvil, tablet o PC. Seguimiento, evaluación, certificados e informes de gestión.">
   <meta property="og:image" content="https://lh3.googleusercontent.com/d/1F1EETURi32f_QWBJSnrU7DOYJ_NeNLK7=s1200">
   <meta property="og:locale" content="es_ES">
@@ -1042,7 +1042,7 @@
           <p class="hero__lead">Microlearning asincrónico para móvil, tablet y PC, con registro de asistencia, evaluación automatizada, certificados, seguimiento de avance e informe de gestión para RRHH y Seguridad y Salud en el Trabajo.</p>
 
           <div class="hero__actions no-print">
-            <a class="btn btn--primary" href="#demo"><i class="fa-solid fa-rocket" aria-hidden="true"></i> Activar Demo 30 días</a>
+            <a class="btn btn--primary" href="#demo"><i class="fa-solid fa-rocket" aria-hidden="true"></i> Solicitar Demo Corporativo</a>
             <a class="btn btn--ghost" href="#presupuesto"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Armar presupuesto</a>
           </div>
 
@@ -1424,7 +1424,7 @@
             </div>
           </div>
 
-          <div class="budget-summary" aria-live="polite" aria-atomic="true">
+          <div class="budget-summary">
             <div class="budget-summary__top">
               <div>
                 <span class="budget-summary__kicker">Tu estimación</span>
@@ -1672,7 +1672,7 @@
   <footer>
     <div class="container footer__inner">
       <div>© 2026 Academia Movida de Seguridad y Salud en el Trabajo · De la Reacción a la Prevención.</div>
-      <div class="footer__links no-print"><a href="https://movidasst.org/" target="_blank" rel="noopener">Academia</a><a href="https://www.movidasst.com/" target="_blank" rel="noopener">La Movida SST</a><a href="#top">Volver arriba ↑</a><a href="admin.html" rel="nofollow"><i class="fa-solid fa-lock" aria-hidden="true"></i> Administración</a></div>
+      <div class="footer__links no-print"><a href="https://movidasst.org/" target="_blank" rel="noopener">Academia</a><a href="https://www.movidasst.com/" target="_blank" rel="noopener">La Movida SST</a><a href="#top">Volver arriba ↑</a></div>
     </div>
   </footer>
 
@@ -1878,6 +1878,7 @@
       const mobileManagedSections = [
         document.querySelector('.hero'),
         document.querySelector('.trust'),
+        document.getElementById('para-quien'),
         document.getElementById('demo'),
         document.getElementById('experiencia'),
         document.getElementById('como-funciona'),
@@ -1939,7 +1940,7 @@
       }
 
       function visibleSectionsFor(view, detail) {
-        if (view === 'home') return [document.querySelector('.hero'), document.querySelector('.trust')].filter(Boolean);
+        if (view === 'home') return [document.querySelector('.hero'), document.querySelector('.trust'), document.getElementById('para-quien')].filter(Boolean);
         if (view === 'demo') return [document.getElementById('demo'), document.getElementById('experiencia'), document.getElementById('como-funciona')].filter(Boolean);
         if (view === 'plans') return [document.getElementById('planes')].filter(Boolean);
         if (view === 'quote') return [document.getElementById('presupuesto')].filter(Boolean);
@@ -2001,7 +2002,7 @@
 
       function routeAnchorOnPhone(hash) {
         const routeMap = {
-          '#top': ['home', null], '#contenido': ['home', null], '#demo': ['demo', null], '#experiencia': ['demo', null], '#como-funciona': ['demo', null],
+          '#top': ['home', null], '#contenido': ['home', null], '#para-quien': ['home', null], '#demo': ['demo', null], '#experiencia': ['demo', null], '#como-funciona': ['demo', null],
           '#planes': ['plans', null], '#presupuesto': ['quote', null], '#dnf': ['more', 'dnf'], '#reportes': ['more', 'reportes'],
           '#condiciones': ['more', 'condiciones'], '#faq': ['more', 'faq'], '#contacto': ['more', 'contacto']
         };

@@ -73,9 +73,10 @@
     },
     commercial: {
       payment_methods: [
-        'Transferencia bancaria / Pago Móvil',
-        'PayPal',
-        'Binance Pay / USDT'
+        'Transferencia Venezuela: Banco de Venezuela · Corriente · 0102-0236-1500-0033-6732 · Ezequiel Linares · C.I. 30.407.087 · https://www.bcv.org.ve/',
+        'Venezuela · Pago Móvil: Banco de Venezuela · Ezequiel Linares · C.I. V-30.407.087 · 0412-6372223',
+        'Binance USDT: BEP20 (BSC) · ID 176067584 · david.linaresb@gmail.com',
+        'PayPal: https://www.paypal.com/paypalme/movidasst · movidasst@gmail.com'
       ],
       chile_billing: 'Boleta Electrónica Fiscal conforme al esquema indicado.',
       venezuela_billing: 'Si se requiere factura fiscal local, el monto final podrá estar sujeto a los cargos fiscales, tributarios y administrativos que correspondan según el tipo de operación y la normativa vigente.',
@@ -311,6 +312,13 @@
     const p = cfg.pricing, c = cfg.course, d = cfg.demo, b = cfg.benefits, commercial = cfg.commercial;
     const ranges = rangeData();
     const priceCards = [...document.querySelectorAll('#planes .price-card')];
+
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) metaDescription.content = `Capacitación corporativa en SST con microlearning asincrónico, seguimiento, certificados e informes. Demo Corporativo de ${d.days} días para hasta ${d.max_participants} participantes.`;
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.content = `Capacitación Corporativa en SST | Demo ${d.days} días`;
+    const heroDemoCta = document.querySelector('.hero__actions a[href="#demo"]');
+    if (heroDemoCta) heroDemoCta.innerHTML = '<i class="fa-solid fa-rocket" aria-hidden="true"></i> Solicitar Demo Corporativo';
 
     ranges.forEach((range, index) => {
       const card = priceCards[index];

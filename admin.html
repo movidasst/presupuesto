@@ -92,7 +92,7 @@
         <section class="panel wide"><div class="panel-head"><i class="fa-solid fa-file-signature"></i><h3>Condiciones comerciales</h3></div><div class="panel-body form-grid">
           <div class="field"><label for="quoteValidity">Vigencia de la propuesta (días)</label><input class="control" id="quoteValidity" type="number" min="1" max="90" step="1"></div>
           <div class="field"><label for="moodleCategory">Categoría Moodle corporativa</label><input class="control readonly" id="moodleCategory" value="27 · Cursos corporativos" readonly></div>
-          <div class="field span-2"><div class="textarea-label"><label for="paymentMethods">Medios de pago</label><small>Uno por línea · máx. 8</small></div><textarea class="control" id="paymentMethods" maxlength="800"></textarea></div>
+          <div class="field span-2"><div class="textarea-label"><label for="paymentMethods">Medios de pago</label><small>Uno por línea · máx. 8 · 150 caracteres c/u</small></div><textarea class="control" id="paymentMethods" maxlength="1200"></textarea></div>
           <div class="field"><div class="textarea-label"><label for="chileBilling">Facturación · Chile</label><small id="chileCount"></small></div><textarea class="control" id="chileBilling" maxlength="600"></textarea></div>
           <div class="field"><div class="textarea-label"><label for="venezuelaBilling">Facturación · Venezuela</label><small id="venezuelaCount"></small></div><textarea class="control" id="venezuelaBilling" maxlength="900"></textarea></div>
           <div class="field span-2"><div class="textarea-label"><label for="preliminaryNote">Carácter preliminar</label><small id="preliminaryCount"></small></div><textarea class="control" id="preliminaryNote" maxlength="1200"></textarea></div>
@@ -151,6 +151,7 @@
         if(!p.tier1_name||!p.tier2_name||!p.tier3_name||!p.tier4_name)return'Los cuatro grupos deben tener nombre.';
         if(!b.base.length||b.base.length>14||b.standard.length>8||b.scale.length>8||b.mass.length>8)return'Revisa la cantidad de beneficios por escala.';
         if(!x.payment_methods.length||x.payment_methods.length>8)return'Debe existir entre 1 y 8 medios de pago.';
+        if(x.payment_methods.some(item=>item.length>150))return'Cada medio de pago debe tener como máximo 150 caracteres para proteger el PDF.';
         return'';
       }
 
@@ -172,8 +173,9 @@
       function updatePdfSafety(cfg){
         const counts=[cfg.benefits.base.length,cfg.benefits.standard.length,cfg.benefits.scale.length,cfg.benefits.mass.length,cfg.demo.topics.length,cfg.commercial.payment_methods.length];
         const chars=cfg.commercial.chile_billing.length+cfg.commercial.venezuela_billing.length+cfg.commercial.preliminary_note.length+cfg.commercial.technical_note.length;
+        const paymentLineMax=Math.max(0,...cfg.commercial.payment_methods.map(item=>item.length));
         const el=$('pdfSafety');
-        if(counts.some((n,i)=>n>[14,8,8,8,20,8][i])||chars>3900){el.className='pdf-safe bad';el.innerHTML='<i class="fa-solid fa-triangle-exclamation"></i> El contenido supera los límites seguros para la propuesta.';}
+        if(counts.some((n,i)=>n>[14,8,8,8,20,8][i])||chars>3900||paymentLineMax>150){el.className='pdf-safe bad';el.innerHTML='<i class="fa-solid fa-triangle-exclamation"></i> El contenido supera los límites seguros para la propuesta.';}
         else if(chars>3200||cfg.benefits.base.length>12){el.className='pdf-safe warn';el.innerHTML='<i class="fa-solid fa-circle-exclamation"></i> Contenido válido, pero cercano al límite recomendado del PDF.';}
         else{el.className='pdf-safe';el.innerHTML='<i class="fa-solid fa-circle-check"></i> Contenido dentro de los límites recomendados.';}
         $('chileCount').textContent=`${cfg.commercial.chile_billing.length}/600`; $('venezuelaCount').textContent=`${cfg.commercial.venezuela_billing.length}/900`; $('preliminaryCount').textContent=`${cfg.commercial.preliminary_note.length}/1200`; $('technicalCount').textContent=`${cfg.commercial.technical_note.length}/1200`;
