@@ -1,0 +1,40 @@
+name: Apply budget input fix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-budget-input-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply budget input patch
+        run: python .github/scripts/fix_budget_inputs.py
+      - name: Validate JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text = Path('index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S)
+          Path('/tmp/app.js').write_text(scripts[-1], encoding='utf-8')
+          PY
+          node --check /tmp/app.js
+      - name: Commit fix
+        run: |
+          git config user.name "movidasst"
+          git config user.email "gdochile@gmail.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Fix mobile budget participant and course inputs"
+            git push origin main
+          fi
