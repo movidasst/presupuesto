@@ -28,3 +28,5 @@ jobs:
             git commit -m "Add practical gamified course experience section"
             git push origin main
           fi
+
+# second pass: keep plan cards aligned with shared course methodology
