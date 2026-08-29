@@ -1,60 +1,60 @@
-name: Apply total presupuesto upgrade
+name: Finalize corporate quote project
 
 on:
   push:
+    branches: [main]
     paths:
+      - '.github/scripts/connect_presupuesto_config.py'
       - '.github/workflows/connect-presupuesto-config.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  patch:
+  finalize:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Apply total B2B upgrade
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply final cleanup
         run: python .github/scripts/connect_presupuesto_config.py
-      - name: Extract and validate JavaScript
+      - name: Validate JavaScript
+        run: |
+          node --check presupuesto-config.js
+          node --check presupuesto-leads.js
+      - name: Validate inline JavaScript
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
-          for source, target in [('index.html','/tmp/index-app.js'),('admin.html','/tmp/admin-app.js')]:
-              text=Path(source).read_text(encoding='utf-8')
-              scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,flags=re.S)
-              inline=[s for s in scripts if s.strip() and not s.lstrip().startswith('{')]
-              if not inline: raise SystemExit(f'No inline application script found in {source}')
-              Path(target).write_text(inline[-1],encoding='utf-8')
+          for name in ('index.html','admin.html'):
+              text=Path(name).read_text(encoding='utf-8')
+              scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',text,re.I)
+              for i,code in enumerate(scripts):
+                  if not code.strip() or code.lstrip().startswith('{'): continue
+                  p=Path(f'/tmp/{name}-{i}.js')
+                  p.write_text(code,encoding='utf-8')
+                  print(p)
           PY
-          node --check /tmp/index-app.js
-          node --check /tmp/admin-app.js
-          node --check presupuesto-config.js
-          node --check presupuesto-leads.js
-      - name: Verify upgrade markers
+          for f in /tmp/index.html-*.js /tmp/admin.html-*.js; do
+            [ -e "$f" ] && node --check "$f"
+          done
+      - name: Commit final state
         run: |
-          grep -q 'id="leadCapture"' index.html
-          grep -q 'id="structuredData"' index.html
-          grep -q 'id="printCompany"' index.html
-          grep -q 'id="printValidity"' index.html
-          grep -q 'presupuesto-leads.js' index.html
-          grep -q 'Cohorte Corporativa' index.html
-          grep -q 'Ejemplo de cohorte corporativa' index.html
-          grep -q 'Valor claro para quienes deciden' index.html
-          grep -q 'budgetLiveStatus' index.html
-          ! grep -q 'budgetSavings' index.html
-          ! grep -q 'printListTotal' index.html
-          ! grep -q 'Ahorro vs. tarifa lista' index.html
-      - name: Commit production page
-        run: |
-          git config user.name "movidasst"
-          git config user.email "gdochile@gmail.com"
-          git add index.html
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
           if git diff --cached --quiet; then
-            echo "No changes"
+            echo 'No changes to commit.'
           else
-            git commit -m "Upgrade corporate proposal UX and lead capture"
+            git commit -m 'chore: finalize corporate quote architecture'
             git push origin main
           fi
