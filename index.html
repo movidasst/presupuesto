@@ -810,6 +810,72 @@
       .print-contact span { display: block; margin-top: 1mm; color: #dce7f0; font-size: 7.8pt; }
       .print-footer { position: absolute; left: 14mm; right: 14mm; bottom: 7mm; display: flex; justify-content: space-between; gap: 8mm; padding-top: 2.5mm; border-top: 1px solid #dce4ea; color: #7a8999; font-size: 6.7pt; }
       .print-muted { color: #697a8c; }
+
+      /* PDF pagination and layout hardening: keep the commercial proposal to two A4 pages. */
+      .print-proposal { font-size: 8.5pt; line-height: 1.32; }
+      .print-page {
+        min-height: 297mm;
+        padding: 10mm 11mm 11mm;
+        page-break-inside: avoid;
+        break-inside: avoid-page;
+      }
+      .print-brandbar { height: 3mm; margin: -10mm -11mm 6mm; }
+      .print-header { gap: 7mm; padding-bottom: 4mm; }
+      .print-logo { width: 16mm; height: 16mm; }
+      .print-brand { gap: 3mm; }
+      .print-brand h1 { font-size: 14.5pt; }
+      .print-brand p { margin-top: .8mm; font-size: 6.8pt; }
+      .print-docmeta { font-size: 6.8pt; }
+      .print-docmeta strong { font-size: 7.7pt; }
+      .print-title { margin: 5mm 0 1.8mm; font-size: 20pt; }
+      .print-intro { margin-bottom: 4mm; font-size: 8.1pt; line-height: 1.35; }
+      .print-budget-hero { gap: 3mm; margin-bottom: 4mm; }
+      .print-budget-main { padding: 4.5mm; border-radius: 3.5mm; }
+      .print-budget-main small { margin-bottom: 1.4mm; font-size: 6.5pt; }
+      .print-budget-main strong { font-size: 24pt; }
+      .print-budget-main span { margin-top: 1.8mm; font-size: 7.3pt; }
+      .print-budget-side { gap: 1.8mm; }
+      .print-stat { padding: 2.4mm 3mm; }
+      .print-stat span { font-size: 6.2pt; }
+      .print-stat strong { margin-top: .6mm; font-size: 9.5pt; }
+      .print-section { margin-top: 3.3mm; }
+      .print-section-title { margin-bottom: 2mm; padding-bottom: 1.2mm; font-size: 10.5pt; }
+      .print-calc-grid { gap: 1.2mm 4mm; }
+      .print-calc-row { gap: 3mm; padding: 1.55mm 0; }
+      .print-calc-total { margin-top: .6mm; padding: 2.4mm 3mm; }
+      .print-calc-total strong { font-size: 13.5pt; }
+
+      /* Nine scope items fit naturally as a compact 3 x 3 executive grid. */
+      .print-includes { grid-template-columns: repeat(3, 1fr); gap: 1.8mm; }
+      .print-include { padding: 2.1mm; border-radius: 2.4mm; }
+      .print-include b { font-size: 7.4pt; line-height: 1.2; }
+      .print-include span { margin-top: .55mm; font-size: 6.65pt; line-height: 1.27; }
+      .print-note { margin-top: 2.5mm; padding: 2.4mm 3mm; font-size: 6.8pt; line-height: 1.32; }
+
+      /* Page 2: compact the tariff table and use horizontal space for conditions. */
+      .print-table { table-layout: fixed; margin-top: 1.4mm; font-size: 7pt; line-height: 1.25; }
+      .print-table th { padding: 1.8mm; font-size: 6.4pt; }
+      .print-table td { padding: 1.8mm; }
+      .print-table th:nth-child(1), .print-table td:nth-child(1) { width: 14%; }
+      .print-table th:nth-child(2), .print-table td:nth-child(2) { width: 12%; }
+      .print-table th:nth-child(3), .print-table td:nth-child(3) { width: 20%; }
+      .print-table th:nth-child(4), .print-table td:nth-child(4) { width: 54%; }
+      .print-two-col { gap: 3.5mm; }
+      .print-box { padding: 2.8mm; border-radius: 2.5mm; }
+      .print-box h3 { margin-bottom: 1.5mm; font-size: 9pt; line-height: 1.2; }
+      .print-list { padding-left: 4mm; font-size: 7pt; line-height: 1.3; }
+      .print-list li { margin-bottom: 1mm; }
+      .print-page:nth-of-type(2) > .print-section.print-box { break-inside: auto; page-break-inside: auto; }
+      .print-page:nth-of-type(2) > .print-section.print-box .print-list {
+        columns: 2;
+        column-gap: 5mm;
+        column-fill: balance;
+      }
+      .print-page:nth-of-type(2) > .print-section.print-box .print-list li { break-inside: avoid; page-break-inside: avoid; }
+      .print-contact { margin-top: 3.2mm; padding: 3mm 4mm; }
+      .print-contact strong { font-size: 9.5pt; }
+      .print-contact span { margin-top: .7mm; font-size: 7pt; }
+      .print-footer { left: 11mm; right: 11mm; bottom: 4.5mm; padding-top: 1.8mm; font-size: 6.1pt; }
     }
 
     /* Tablet */
