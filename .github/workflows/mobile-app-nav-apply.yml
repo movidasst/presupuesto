@@ -1,0 +1,22 @@
+name: Apply mobile app nav patch
+on:
+  push:
+    paths:
+      - '.github/workflows/mobile-app-nav-apply.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - run: python .github/scripts/apply_mobile_nav.py
+      - run: |
+          git config user.name "movidasst"
+          git config user.email "gdochile@gmail.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Improve mobile navigation experience"
+          git push origin main
