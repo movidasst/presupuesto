@@ -51,7 +51,7 @@
         'Registro de asistencia y trazabilidad de participación',
         'Grupo de WhatsApp de soporte por curso',
         'Ayuda con IA para resumir y explicar contenidos',
-        'Metodología práctica con estudios de caso, quizzes y retos',
+        'Metodología propia MOVIDA 4A: aprendizaje activo inspirado en neuroeducación, ciencias del aprendizaje, microlearning, gamificación y escenarios prácticos',
         'Guías PDF y recursos de apoyo',
         'Encuesta de satisfacción al cierre',
         'Gamificación con progreso, puntos, retos y ranking de cohorte configurable'
@@ -224,7 +224,7 @@
     if (!ul) return;
     if (index === 0) {
       const pillars = [
-        '<b>Aprendizaje activo:</b> casos, guías PDF, quizzes y retos.',
+        '<b>Metodología propia MOVIDA 4A:</b> aprendizaje activo inspirado en neuroeducación, ciencias del aprendizaje, microlearning, gamificación y escenarios prácticos.',
         '<b>Evaluación y certificación:</b> evaluación final, certificados y encuesta.',
         '<b>Trazabilidad:</b> asistencia, avance, resultados e informe básico.',
         '<b>Acompañamiento:</b> WhatsApp de soporte + ayuda con IA.',
@@ -336,6 +336,14 @@
       renderPriceCardFeatures(card, range, index, b);
     });
 
+    const methodFlow = document.querySelector('.course-experience-flow');
+    if (methodFlow) {
+      const methodTitle = methodFlow.querySelector('.course-experience-flow__title');
+      const methodText = methodFlow.querySelector(':scope > p');
+      if (methodTitle) methodTitle.innerHTML = '<i class="fa-solid fa-route" aria-hidden="true"></i> Metodología propia MOVIDA 4A';
+      if (methodText) methodText.textContent = 'Modelo propio de aprendizaje activo inspirado en principios de neuroeducación y ciencias del aprendizaje, combinado con microlearning, gamificación y escenarios prácticos para favorecer la participación y la aplicación de lo aprendido al trabajo.';
+    }
+
     const minHelp = document.getElementById('participantsHelp');
     if (minHelp) minHelp.textContent = `Mínimo de contratación: ${p.min_participants} participantes por cohorte. Sin monto mínimo por orden.`;
     const partInput = document.getElementById('budgetParticipants');
@@ -367,7 +375,11 @@
 
     const demoWhatsapp = document.getElementById('demoWhatsappBtn');
     if (demoWhatsapp) {
-      const msg = `Hola David, quiero solicitar el Demo Corporativo Gratuito de ${d.days} días para una empresa.\n\nEmpresa: \nTema de interés: \nCantidad de participantes (máx. ${d.max_participants}): `;
+      const msg = `Hola David, quiero solicitar el Demo Corporativo Gratuito de ${d.days} días para una empresa.\
+\
+Empresa: \
+Tema de interés: \
+Cantidad de participantes (máx. ${d.max_participants}): `;
       demoWhatsapp.href = `https://wa.me/56968615650?text=${encodeURIComponent(msg)}`;
     }
 
@@ -414,8 +426,8 @@
     if (printIncludes[1]) {
       const title = printIncludes[1].querySelector('b');
       const text = printIncludes[1].querySelector('span');
-      if (title) title.textContent = `${c.hours} horas académicas por curso`;
-      if (text) text.textContent = `Casos prácticos, guías PDF, quizzes y retos; evaluación final, gamificación y encuesta. ${c.enrollment_days} días de matrícula.`;
+      if (title) title.textContent = `${c.hours} horas · Metodología MOVIDA 4A`;
+      if (text) text.textContent = `Modelo propio de aprendizaje activo inspirado en neuroeducación y ciencias del aprendizaje, con microlearning, gamificación y escenarios prácticos. ${c.enrollment_days} días de matrícula.`;
     }
     if (printIncludes[2]?.querySelector('span')) printIncludes[2].querySelector('span').textContent =
       `Criterio de aprobación mínimo del ${c.approval_percent}% para la emisión del certificado.`;
@@ -437,7 +449,7 @@
       if (cells[3]) {
         const additions = b[range.benefitKey] || [];
         cells[3].textContent = index === 0
-          ? 'Aprendizaje activo + evaluación + certificados + trazabilidad + acompañamiento + gamificación'
+          ? 'MOVIDA 4A + evaluación + certificados + trazabilidad + acompañamiento + gamificación'
           : `Todo lo anterior + ${additions.join(' + ')}`;
       }
     });
