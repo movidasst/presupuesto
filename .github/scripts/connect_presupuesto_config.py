@@ -1,79 +1,365 @@
 from pathlib import Path
 import re
 
-path = Path('index.html')
-text = path.read_text(encoding='utf-8')
+ROOT = Path('.')
 
 
-def once(old, new, label):
-    global text
-    count = text.count(old)
-    if count != 1:
-        raise SystemExit(f'{label}: expected 1 occurrence, found {count}')
-    text = text.replace(old, new, 1)
+def read(path):
+    return (ROOT / path).read_text(encoding='utf-8')
 
 
-def rx(pattern, replacement, label, flags=re.S):
-    global text
-    text, count = re.subn(pattern, replacement, text, count=1, flags=flags)
-    if count != 1:
-        raise SystemExit(f'{label}: expected 1 regex match, found {count}')
+def write(path, content):
+    p = ROOT / path
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(content, encoding='utf-8')
 
-once('<script type="application/ld+json">', '<script id="structuredData" type="application/ld+json">', 'structured data id')
-text = text.replace('De la reacción a la prevención.', 'De la Reacción a la Prevención.')
-once('Capacita a tu equipo en SST <span>sin detener la operación.</span>', 'Capacita a tu equipo en SST <span>sin depender de detener la operación.</span>', 'hero promise')
-once('        <div class="platform" aria-label="Vista ilustrativa de la experiencia corporativa">\n          <div class="platform__bar">','        <div class="platform" aria-label="Vista ilustrativa de la experiencia corporativa">\n          <div class="platform__example-badge"><i class="fa-solid fa-eye" aria-hidden="true"></i> Ejemplo de cohorte corporativa</div>\n          <div class="platform__bar">','hero example badge')
-once('    </section>\n\n    <section class="section section--white" id="demo" aria-labelledby="demo-title">','''    </section>\n\n    <section class="section audience-section" id="para-quien" aria-labelledby="audience-title">\n      <div class="container">\n        <div class="section-head">\n          <span class="eyebrow"><i class="fa-solid fa-people-group" aria-hidden="true"></i> Una propuesta, cuatro miradas</span>\n          <h2 id="audience-title">Valor claro para quienes deciden y gestionan la formación</h2>\n          <p>La misma experiencia responde a necesidades distintas dentro de la empresa: aprender, demostrar, coordinar y decidir con información.</p>\n        </div>\n        <div class="audience-grid">\n          <article class="audience-card"><i class="fa-solid fa-users-gear" aria-hidden="true"></i><h3>RRHH / Formación</h3><p>Avance, resultados, certificados y trazabilidad para administrar la cohorte.</p></article>\n          <article class="audience-card"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><h3>SST / Prevención</h3><p>Contenidos vinculados con necesidades, riesgos y prioridades de formación.</p></article>\n          <article class="audience-card"><i class="fa-solid fa-gears" aria-hidden="true"></i><h3>Operaciones</h3><p>Flexibilidad asincrónica sin depender de detener simultáneamente la operación.</p></article>\n          <article class="audience-card"><i class="fa-solid fa-chart-line" aria-hidden="true"></i><h3>Gerencia / Compras</h3><p>Precio progresivo transparente, alcance definido e información para decidir.</p></article>\n        </div>\n      </div>\n    </section>\n\n    <section class="section section--white" id="demo" aria-labelledby="demo-title">''','audience section')
-text = text.replace('<h3>Tema de SST a libre elección</h3>', '<h3>Tema corporativo disponible</h3>', 1)
-text = text.replace('Selecciona un tema prioritario para tu organización y úsalo como experiencia piloto con el personal definido.', 'Selecciona uno de los temas corporativos disponibles y úsalo como experiencia piloto con hasta 20 participantes.', 1)
-once('        <div class="ai-learning">','''        <div class="demo-scope">\n          <div class="demo-scope__summary">\n            <div class="demo-scope__metric"><span>Duración</span><strong><span data-demo-days>30</span> días</strong></div>\n            <div class="demo-scope__metric"><span>Cupo máximo</span><strong id="demoMaxParticipants">20 participantes</strong></div>\n            <div class="demo-scope__metric"><span>Bonus</span><strong id="demoBonusCourse">Plan Familiar de Emergencias</strong></div>\n          </div>\n          <div class="demo-scope__body">\n            <div>\n              <h3>Temas disponibles para el piloto</h3>\n              <ul class="demo-topic-list" id="demoTopics">\n                <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>Seguridad contra incendios</span></li>\n                <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>Manejo seguro de productos químicos</span></li>\n                <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>Manipulación manual de cargas</span></li>\n                <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>Primeros auxilios en el trabajo</span></li>\n                <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>SST para supervisores</span></li>\n                <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>Salud mental en el trabajo</span></li>\n              </ul>\n            </div>\n            <aside class="demo-bonus"><i class="fa-solid fa-gift" aria-hidden="true"></i><div><b>Bonus del Demo</b><p id="demoBonusNote">El Plan Familiar de Emergencias se incorpora como curso bonus del Demo y no modifica la cantidad de cursos cotizados.</p></div></aside>\n          </div>\n        </div>\n\n        <div class="ai-learning">''','demo scope')
-rx(r'(<div class="demo-banner">.*?<a class="btn btn--primary")', r'\1 id="demoWhatsappBtn"', 'demo whatsapp id')
-once('''            <span><i class="fa-solid fa-book-open" aria-hidden="true"></i> Estudia</span>\n            <span><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Analiza casos</span>\n            <span><i class="fa-solid fa-puzzle-piece" aria-hidden="true"></i> Resuelve retos</span>\n            <span><i class="fa-solid fa-ranking-star" aria-hidden="true"></i> Suma puntos</span>\n            <span><i class="fa-solid fa-check-double" aria-hidden="true"></i> Evalúa</span>\n            <span><i class="fa-solid fa-comment-dots" aria-hidden="true"></i> Da feedback</span>''','''            <span><i class="fa-solid fa-book-open" aria-hidden="true"></i><b>Aprende</b><small>Microlearning, PDF e IA</small></span>\n            <span><i class="fa-solid fa-puzzle-piece" aria-hidden="true"></i><b>Aplica</b><small>Casos y retos</small></span>\n            <span><i class="fa-solid fa-check-double" aria-hidden="true"></i><b>Demuestra</b><small>Quiz y evaluación</small></span>\n            <span><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i><b>Mejora</b><small>Feedback y resultados</small></span>''','learning flow')
-text = text.replace('Un recorrido, no una colección de archivos', 'Una secuencia de aprendizaje, no una colección de archivos', 1)
-for old, new in [('Grupo menor','Cohorte Base'),('Grupo estándar','Cohorte Corporativa'),('Grupo escala','Cohorte Escala'),('Grupo masivo','Gran Cohorte')]: text = text.replace(old, new)
-rx(r'''            <div class="budget-metrics">.*?<p class="budget-progressive-note" id="budgetProgressiveNote">.*?</p>''','''            <div class="budget-primary-total">\n              <span>Inversión total estimada</span>\n              <strong id="budgetTotal">$97 USD</strong>\n              <small>Presupuesto preliminar · sin monto mínimo por orden</small>\n            </div>\n            <div class="budget-core-metrics">\n              <div><span>Participantes</span><strong id="budgetParticipantDisplay">15</strong></div>\n              <div><span>Cursos</span><strong id="budgetCourseDisplay">1</strong></div>\n              <div><span>Promedio efectivo / persona / curso</span><strong id="budgetAveragePrice">$6.47 USD</strong></div>\n            </div>\n            <details class="budget-detail">\n              <summary>Ver desglose del cálculo</summary>\n              <div class="budget-metrics">\n                <div class="budget-metric"><span>Escala alcanzada</span><strong id="budgetTier">Cohorte Corporativa</strong></div>\n                <div class="budget-metric"><span>Tarifa marginal del tramo</span><strong id="budgetUnitPrice">$5 USD</strong></div>\n                <div class="budget-metric"><span>Plazas-curso <span class="metric-help" title="Cantidad total de matrículas: participantes × cursos." aria-label="Cantidad total de matrículas: participantes por cursos">ⓘ</span></span><strong id="budgetSeats">15</strong></div>\n                <div class="budget-metric"><span>DNF</span><strong id="budgetDnf">Incluida</strong></div>\n                <div class="budget-metric"><span>Costo progresivo por curso</span><strong id="budgetPerCourse">$97 USD</strong></div>\n              </div>\n              <p class="budget-progressive-note" id="budgetProgressiveNote">Cálculo por curso: 11×$7 + 4×$5 = $97.</p>\n            </details>\n            <span class="sr-only" id="budgetLiveStatus" aria-live="polite"></span>''','budget summary hierarchy')
-once('<button class="btn btn--outline btn--block budget-print" id="budgetPrintBtn" type="button"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Generar propuesta en PDF</button>','<button class="btn btn--primary btn--block budget-print" id="budgetPrintBtn" type="button"><i class="fa-solid fa-user-pen" aria-hidden="true"></i> Personalizar y recibir propuesta</button>','budget personalize button')
-lead_html='''\n        <section class="lead-capture" id="leadCapture" aria-labelledby="lead-title">\n          <div class="lead-capture__intro"><span class="eyebrow"><i class="fa-solid fa-file-signature" aria-hidden="true"></i> Tu propuesta personalizada</span><h3 id="lead-title">Recibe el presupuesto con los datos de tu empresa</h3><p>Ya hiciste el cálculo. Completa tus datos para generar una referencia única, guardar la propuesta y recibir el PDF por correo.</p></div>\n          <div class="commercial-warning" id="commercialConfigWarning" hidden></div>\n          <form class="lead-form" id="leadForm" novalidate>\n            <div class="lead-grid">\n              <div class="lead-field"><label for="leadCompany">Empresa <span>*</span></label><input id="leadCompany" name="empresa" autocomplete="organization" maxlength="180" required></div>\n              <div class="lead-field"><label for="leadContact">Nombre y apellido <span>*</span></label><input id="leadContact" name="contacto" autocomplete="name" maxlength="160" required></div>\n              <div class="lead-field"><label for="leadPosition">Cargo / función <small>Opcional</small></label><input id="leadPosition" name="cargo" autocomplete="organization-title" maxlength="120"></div>\n              <div class="lead-field"><label for="leadCountry">País <span>*</span></label><select id="leadCountry" name="pais" autocomplete="country-name" required><option value="">Selecciona…</option><option>Argentina</option><option>Bolivia</option><option>Brasil</option><option>Chile</option><option>Colombia</option><option>Costa Rica</option><option>Ecuador</option><option>El Salvador</option><option>España</option><option>Estados Unidos</option><option>Guatemala</option><option>Honduras</option><option>México</option><option>Nicaragua</option><option>Panamá</option><option>Paraguay</option><option>Perú</option><option>República Dominicana</option><option>Uruguay</option><option>Venezuela</option><option>Otro</option></select></div>\n              <div class="lead-field"><label for="leadWhatsapp">WhatsApp <span>*</span></label><input id="leadWhatsapp" name="whatsapp" type="tel" autocomplete="tel" placeholder="+56 9 1234 5678" maxlength="40" required></div>\n              <div class="lead-field"><label for="leadEmail">Correo electrónico <span>*</span></label><input id="leadEmail" name="correo" type="email" autocomplete="email" maxlength="254" required></div>\n            </div>\n            <fieldset class="course-interest"><legend>Cursos o temas de interés <small>Opcional</small></legend><p>Selecciona hasta la cantidad de cursos que cotizaste. El catálogo se sincroniza con Moodle; también puedes escribir otro tema o dejar parte del plan por definir mediante DNF.</p><div class="catalog-source" id="catalogSourceNote">Consultando Cursos corporativos…</div><div class="course-catalog" id="courseCatalog" aria-live="polite"><div class="catalog-loading"><i class="fa-solid fa-spinner fa-spin"></i> Cargando catálogo…</div></div><div class="course-selection-counter" id="courseSelectionCounter"></div><div class="lead-field"><label for="leadCustomTopic">Otro tema <small>Opcional</small></label><input id="leadCustomTopic" maxlength="180" placeholder="Ej.: investigación de incidentes"></div><label class="lead-check"><input id="leadDnfPending" type="checkbox"><span><b>Dejar temas por definir mediante DNF</b><small>Útil cuando la empresa quiere priorizar primero sus necesidades de formación.</small></span></label></fieldset>\n            <div class="lead-honeypot" aria-hidden="true"><label for="leadWebsite">Sitio web</label><input id="leadWebsite" tabindex="-1" autocomplete="off"></div>\n            <label class="lead-check lead-consent"><input id="leadConsent" type="checkbox" required><span>Acepto que La Movida SST utilice estos datos para preparar y dar seguimiento a esta propuesta comercial. <b>*</b></span></label>\n            <div class="lead-status" id="leadStatus" hidden aria-live="polite"></div>\n            <div class="lead-actions"><button class="btn btn--primary btn--block" id="leadSubmitBtn" type="submit" disabled><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Generar y enviarme mi propuesta</button><a class="btn btn--whatsapp btn--block" href="https://wa.me/56968615650?text=Hola%20David,%20quiero%20una%20propuesta%20corporativa%20de%20capacitaci%C3%B3n%20en%20SST." target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Prefiero hablar por WhatsApp</a></div>\n            <p class="lead-privacy"><i class="fa-solid fa-lock" aria-hidden="true"></i> El PDF se conserva de forma privada para gestión comercial. El cliente recibe su copia por correo.</p>\n          </form>\n          <div class="lead-success" id="leadSuccess" hidden><div class="lead-success__icon"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></div><div><span>Propuesta enviada</span><h4 id="leadSuccessReference">—</h4><p id="leadSuccessMessage">Revisa tu correo.</p></div><button class="btn btn--outline" id="leadPrintCopyBtn" type="button"><i class="fa-solid fa-print" aria-hidden="true"></i> Imprimir copia</button></div>\n        </section>\n'''
-anchor='        </div>\n      </div>\n    </section>\n\n\n    <section class="mobile-more-hub no-print"'
-if anchor not in text: raise SystemExit('lead capture anchor not found')
-text=text.replace(anchor,'        </div>'+lead_html+'      </div>\n    </section>\n\n\n    <section class="mobile-more-hub no-print"',1)
-text=text.replace('Incluida desde 12 participantes','DNF básica desde 12 · ampliada desde 50',1)
-text=text.replace('Sin costo adicional en 12+','Básica 12+ · ampliada 50+',1)
-text=text.replace('La capacitación gana valor cuando responde a necesidades reales. La DNF permite priorizar contenidos a partir de la información disponible sobre actividades, puestos de trabajo, procesos y riesgos de la organización.','La capacitación gana valor cuando responde a necesidades reales. Desde 12 participantes incorporamos una DNF básica; desde 50 ampliamos el diagnóstico y la planificación para convertir cursos aislados en un ciclo de formación más completo.',1)
-once('            <div class="dnf-points">','''            <div class="learning-cycle" aria-label="Ciclo de formación corporativa"><span><i class="fa-solid fa-magnifying-glass-chart"></i><b>Diagnosticar</b></span><i class="fa-solid fa-arrow-right"></i><span><i class="fa-solid fa-pen-ruler"></i><b>Diseñar</b></span><i class="fa-solid fa-arrow-right"></i><span><i class="fa-solid fa-book-open-reader"></i><b>Aprender</b></span><i class="fa-solid fa-arrow-right"></i><span><i class="fa-solid fa-puzzle-piece"></i><b>Aplicar</b></span><i class="fa-solid fa-arrow-right"></i><span><i class="fa-solid fa-chart-column"></i><b>Medir</b></span><i class="fa-solid fa-arrow-right"></i><span><i class="fa-solid fa-arrow-trend-up"></i><b>Mejorar</b></span></div>\n\n            <div class="dnf-points">''','learning cycle')
-text=text.replace('¿Puedo pedir una cotización para más de 200 participantes?','¿Puedo cotizar cohortes de gran escala?',1)
-text=text.replace('Sí. El estimador visual llega a 200 para mantener una interacción cómoda, pero las cohortes mayores pueden cotizarse directamente.','Sí. El cotizador admite cohortes de gran volumen y aplica automáticamente el esquema progresivo. Para implementaciones especiales podemos revisar condiciones operativas adicionales.',1)
-once('          <span>Referencia: <b id="printReference">—</b></span>','          <span>Referencia: <b id="printReference">—</b></span><br>\n          <span>Vigencia: <b id="printValidity">15 días</b></span>','print validity')
-once('      <p class="print-intro">Estimación generada a partir del número de participantes y cursos seleccionados en el cotizador corporativo. El cálculo utiliza tarifas progresivas por tramos: cada tarifa se aplica únicamente a las plazas correspondientes a ese tramo.</p>','''      <p class="print-intro">Propuesta personalizada generada con tarifas progresivas por tramos: cada tarifa se aplica únicamente a las plazas correspondientes a ese tramo.</p>\n      <div class="print-client"><div><small>Preparado para</small><strong id="printCompany">Empresa</strong><span id="printContact">Contacto</span></div><div><small>Contacto</small><strong id="printEmail">—</strong><span><span id="printCountry">—</span> · <span id="printWhatsapp">—</span></span></div></div>\n      <div class="print-course-interest"><b>Cursos / temas de interés:</b> <span id="printCourseInterests">Por definir con la empresa</span></div>''','print prospect details')
-text=re.sub(r'\s*<div class="print-calc-row"><span>Valor a tarifa lista \(\$15\)</span><strong id="printListTotal">—</strong></div>','',text,count=1)
-text=re.sub(r'\s*<div class="print-calc-row"><span>Ahorro vs\. tarifa lista</span><strong id="printSavings">—</strong></div>','',text,count=1)
-text=text.replace("      const savingsDisplay = document.getElementById('budgetSavings');\n",'')
-text=text.replace("        listTotal: document.getElementById('printListTotal'),\n        savings: document.getElementById('printSavings'),\n",'')
-text=text.replace("      function syncPrintProposal({ participants, courses, tier, seats, perCourse, total, listTotal, difference, averageRate, marginalRate }) {","      function syncPrintProposal({ participants, courses, tier, seats, perCourse, total, averageRate, marginalRate }) {")
-text=text.replace("        if (printEls.listTotal) printEls.listTotal.textContent = `${money.format(listTotal)} USD`;\n        if (printEls.savings) printEls.savings.textContent = `${money.format(difference)} USD`;\n",'')
-text=text.replace("        const listTotal = participants * courses * Number(window.PresupuestoConfig.get().pricing.list_price || 15);\n        const difference = listTotal - total;\n",'')
-text=text.replace("        savingsDisplay.textContent = `${money.format(difference)} USD`;\n",'')
-text=text.replace("        syncPrintProposal({ participants, courses, tier, seats, perCourse, total, listTotal, difference, averageRate: pricing.averageRate, marginalRate: pricing.marginalRate });","        syncPrintProposal({ participants, courses, tier, seats, perCourse, total, averageRate: pricing.averageRate, marginalRate: pricing.marginalRate });")
-rx(r'''      function makeReference\(participants, courses\) \{.*?      \}\n\n      function syncPrintProposal''','''      const provisionalReference = (() => {\n        const now = new Date(); const y=now.getFullYear(); const m=String(now.getMonth()+1).padStart(2,'0'); const d=String(now.getDate()).padStart(2,'0');\n        const token=(crypto.randomUUID?.()||Math.random().toString(36)).replace(/[^a-z0-9]/gi,'').slice(0,6).toUpperCase();\n        return `AMSST-${y}${m}${d}-${token}`;\n      })();\n      function makeReference() { return window.PresupuestoLead?.getReference?.() || provisionalReference; }\n\n      function syncPrintProposal''','unique reference')
-text=text.replace('        const reference = makeReference(participants, courses);','        const reference = makeReference();',1)
-once("      const progressiveNote = document.getElementById('budgetProgressiveNote');","      const progressiveNote = document.getElementById('budgetProgressiveNote');\n      const budgetLiveStatus = document.getElementById('budgetLiveStatus');",'budget live status const')
-once("        totalDisplay.textContent = `${money.format(total)} USD`;","        totalDisplay.textContent = `${money.format(total)} USD`;\n        if (budgetLiveStatus) budgetLiveStatus.textContent = `Presupuesto actualizado: ${money.format(total)} USD para ${participants} participantes y ${courses} cursos.`;",'budget live status update')
-old_handlers="""      headerPrintBtn?.addEventListener('click', printBudgetProposal);\n      budgetPrintBtn?.addEventListener('click', printBudgetProposal);\n      mobilePrintBtn?.addEventListener('click', () => { setMenu(false); printBudgetProposal(); });\n      mobileHubPrintBtn?.addEventListener('click', printBudgetProposal);"""
-new_handlers="""      const openPersonalization = () => { if (window.PresupuestoLead?.openLeadForm) return window.PresupuestoLead.openLeadForm(); document.getElementById('leadCapture')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); };\n      headerPrintBtn?.addEventListener('click', openPersonalization);\n      budgetPrintBtn?.addEventListener('click', openPersonalization);\n      mobilePrintBtn?.addEventListener('click', () => { setMenu(false); openPersonalization(); });\n      mobileHubPrintBtn?.addEventListener('click', openPersonalization);"""
-once(old_handlers,new_handlers,'personalization handlers')
-once('      function printBudgetProposal() {\n        updateBudget({ normalize: true });','      function printBudgetProposal() {\n        updateBudget({ normalize: true });\n        window.PresupuestoLead?.syncPersonalizedPrint?.();','print personalization sync')
-text=text.replace('Generar propuesta PDF</button>','Personalizar propuesta</button>',1)
-once("""        if (back) {\n          event.preventDefault();\n          navigateMobile('more', null, { restoreScroll: true });\n          return;\n        }""","""        if (back) {\n          event.preventDefault();\n          if (location.hash.startsWith('#/mas/')) history.back(); else navigateMobile('more', null, { restoreScroll: true });\n          return;\n        }""",'mobile back history')
-once("""      function disableMobileApp() {\n        document.body.classList.remove('mobile-spa-active');\n        mobileManagedSections.forEach((section) => section.classList.remove('mobile-view-hidden', 'mobile-view-visible', 'mobile-view-enter-right', 'mobile-view-enter-left'));\n        if (location.hash.startsWith('#/')) history.replaceState(null, '', location.pathname + location.search);\n        mobileAppReady = false;\n      }""","""      function disableMobileApp() {\n        document.body.classList.remove('mobile-spa-active');\n        mobileManagedSections.forEach((section) => section.classList.remove('mobile-view-hidden', 'mobile-view-visible', 'mobile-view-enter-right', 'mobile-view-enter-left'));\n        if (location.hash.startsWith('#/')) { const route=parseMobileRoute(); const anchor=route.detail?`#${route.detail}`:({home:'#top',demo:'#demo',plans:'#planes',quote:'#presupuesto',more:'#contacto'}[route.view]||'#top'); history.replaceState(null,'',location.pathname+location.search+anchor); requestAnimationFrame(()=>document.querySelector(anchor)?.scrollIntoView({behavior:'auto',block:'start'})); }\n        mobileAppReady = false;\n      }""",'desktop deep links')
-once("      phoneMq.addEventListener?.('change', (event) => event.matches ? enableMobileApp() : disableMobileApp());\n      if (phoneMq.matches) enableMobileApp();","      phoneMq.addEventListener?.('change', (event) => event.matches ? enableMobileApp() : disableMobileApp());\n      if (phoneMq.matches) enableMobileApp(); else if (location.hash.startsWith('#/')) disableMobileApp();",'initial desktop deep link')
-once("""      updateBudget({ normalize: true });\n      window.PresupuestoConfig.load().then(() => {\n        window.PresupuestoConfig.applyToDom();\n        updateBudget({ normalize: true });\n      }).catch((error) => console.warn('Configuración remota no disponible', error));\n    })();""","""      updateBudget({ normalize: true });\n      window.PresupuestoApp = { printBudgetProposal, updateBudget };\n      window.PresupuestoConfig.load().then(() => { window.PresupuestoConfig.applyToDom(); updateBudget({ normalize: true }); window.dispatchEvent(new CustomEvent('presupuesto:config-ready')); }).catch((error) => console.warn('Configuración remota no disponible', error));\n    })();""",'app public surface')
-once('  </script>\n</body>\n</html>','  </script>\n  <script src="presupuesto-leads.js"></script>\n</body>\n</html>','lead script load')
-css=r'''
-    /* B2B conversion, pedagogy and lead capture */
-    .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}.platform__example-badge{display:inline-flex;align-items:center;gap:6px;margin:0 0 9px;padding:5px 8px;border-radius:999px;background:#edf7f6;color:var(--brand-700);font-size:.61rem;font-weight:850;text-transform:uppercase;letter-spacing:.05em}.audience-section{background:linear-gradient(180deg,#f3f8f8,#f8fafc)}.audience-grid{display:grid;gap:12px}.audience-card{padding:20px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:var(--shadow-sm)}.audience-card>i{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--soft-brand);color:var(--brand);font-size:1rem}.audience-card h3{margin:13px 0 7px;color:var(--navy);font-size:.95rem}.audience-card p{margin:0;color:var(--muted);font-size:.8rem;line-height:1.5}.demo-scope{margin-top:18px;padding:18px;border:1px solid #cfe4e4;border-radius:20px;background:linear-gradient(145deg,#f5fbfa,#fff);box-shadow:var(--shadow-sm)}.demo-scope__summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.demo-scope__metric{padding:11px;border-radius:13px;background:#fff;border:1px solid var(--line)}.demo-scope__metric span{display:block;color:var(--muted);font-size:.62rem;text-transform:uppercase;font-weight:800}.demo-scope__metric strong{display:block;margin-top:4px;color:var(--navy);font-size:.78rem;line-height:1.25}.demo-scope__body{display:grid;gap:14px;margin-top:15px}.demo-scope__body h3{margin:0 0 9px;color:var(--navy);font-size:.9rem}.demo-topic-list{list-style:none;padding:0;margin:0;display:grid;gap:7px}.demo-topic-list li{display:flex;gap:8px;color:#4f6475;font-size:.76rem}.demo-topic-list i{color:var(--brand);margin-top:3px}.demo-bonus{display:flex;gap:11px;padding:14px;border-radius:15px;background:var(--soft-yellow);border:1px solid #f3ddb0}.demo-bonus>i{color:#bd7c12;margin-top:3px}.demo-bonus b{color:#75510e;font-size:.8rem}.demo-bonus p{margin:4px 0 0;color:#806b3f;font-size:.72rem;line-height:1.45}.course-experience-flow__steps span{min-height:66px}.course-experience-flow__steps span b,.course-experience-flow__steps span small{display:block}.course-experience-flow__steps span small{margin-top:2px;color:var(--muted);font-size:.61rem;font-weight:600}.learning-cycle{margin:18px 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px}.learning-cycle span{display:inline-flex;align-items:center;gap:6px;padding:8px 9px;border-radius:11px;background:#fff;border:1px solid var(--line);color:var(--navy);font-size:.69rem}.learning-cycle span i{color:var(--brand)}.learning-cycle>i{color:#a5b3c0;font-size:.65rem}.budget-primary-total{padding:22px;border-radius:18px;background:linear-gradient(135deg,#08182f,#0f4660 68%,#0f766e);color:#fff}.budget-primary-total span{display:block;color:#a9d9dd;font-size:.67rem;font-weight:850;text-transform:uppercase;letter-spacing:.07em}.budget-primary-total strong{display:block;margin-top:5px;color:#ffd45e;font-family:Sora,Inter,sans-serif;font-size:clamp(2rem,10vw,3rem);line-height:1}.budget-primary-total small{display:block;margin-top:8px;color:#cadbe6;font-size:.67rem}.budget-core-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.budget-core-metrics>div{padding:10px;border:1px solid rgba(255,255,255,.12);border-radius:13px;background:rgba(255,255,255,.06)}.budget-core-metrics span{display:block;color:#afc0cf;font-size:.59rem;line-height:1.2}.budget-core-metrics strong{display:block;margin-top:4px;color:#fff;font-size:.82rem;line-height:1.2}.budget-detail{margin-top:11px;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:rgba(0,0,0,.06);overflow:hidden}.budget-detail summary{min-height:44px;padding:0 12px;color:#d8e5ed;font-size:.71rem}.budget-detail summary::after{color:#8de0d9}.budget-detail .budget-metrics{padding:0 11px 10px}.budget-detail .budget-progressive-note{margin:0 11px 11px}.metric-help{cursor:help;color:#8ddbd7}.price-card__all-benefits{margin-top:9px;border-top:1px dashed var(--line)}.price-card__all-benefits summary{min-height:38px;padding:0;color:var(--brand-700);font-size:.7rem}.price-card__all-benefits ul{margin:0 0 8px;padding-left:18px;color:var(--muted);font-size:.7rem}.lead-capture{margin-top:24px;padding:20px;border-radius:24px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}.lead-capture__intro h3{margin:12px 0 8px;color:var(--navy);font-size:clamp(1.35rem,6vw,2rem)}.lead-capture__intro p{margin:0;color:var(--muted);max-width:760px;font-size:.85rem}.commercial-warning{margin:16px 0 0;padding:11px 13px;border-radius:12px;border:1px solid #f0c987;background:#fff6e5;color:#805416;font-size:.75rem;font-weight:750;line-height:1.45}.lead-form{margin-top:18px}.lead-grid{display:grid;gap:12px}.lead-field{display:grid;gap:6px}.lead-field label,.course-interest legend{font-weight:800;color:#445b70;font-size:.72rem}.lead-field label span,.lead-consent b{color:#b42318}.lead-field label small,.course-interest legend small{color:var(--muted);font-weight:600}.lead-field input,.lead-field select{width:100%;min-height:47px;border:1px solid var(--line);border-radius:13px;background:#fbfcfd;padding:10px 12px;color:var(--ink);outline:0}.lead-field input:focus,.lead-field select:focus{border-color:var(--brand);box-shadow:0 0 0 4px rgba(15,118,110,.1);background:#fff}.course-interest{margin:18px 0 0;padding:15px;border:1px solid #dfe8ec;border-radius:18px;background:#f9fbfc}.course-interest>p{margin:5px 0 12px;color:var(--muted);font-size:.72rem;line-height:1.45}.catalog-source{margin-bottom:9px;color:var(--brand-700);font-size:.65rem;font-weight:800}.course-catalog{display:grid;gap:8px;max-height:300px;overflow:auto;padding-right:2px}.catalog-loading,.catalog-empty{padding:12px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:.72rem;text-align:center}.catalog-option{position:relative;display:grid;grid-template-columns:30px minmax(0,1fr);align-items:center;gap:9px;padding:10px;border:1px solid var(--line);border-radius:13px;background:#fff;cursor:pointer}.catalog-option input{position:absolute;opacity:0;pointer-events:none}.catalog-option__check{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:#eef3f6;color:#b1bdc8}.catalog-option input:checked+.catalog-option__check{background:var(--brand);color:#fff}.catalog-option:has(input:checked){border-color:#9bcfc9;background:#f2fbfa}.catalog-option strong{display:block;color:var(--navy);font-size:.73rem}.catalog-option small{display:block;margin-top:2px;color:var(--muted);font-size:.61rem}.course-selection-counter{margin:8px 0;color:var(--muted);font-size:.67rem}.course-selection-counter.is-error{color:var(--danger);font-weight:800}.lead-check{display:flex;align-items:flex-start;gap:9px;margin-top:12px;color:#4f6475;font-size:.72rem;line-height:1.4;cursor:pointer}.lead-check input{width:18px;height:18px;accent-color:var(--brand);flex:0 0 auto}.lead-check b{color:var(--navy)}.lead-check small{display:block;margin-top:2px;color:var(--muted)}.lead-consent{padding:12px;border-radius:13px;background:#f6f9fa;border:1px solid var(--line)}.lead-honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}.lead-status{margin-top:12px;padding:11px 13px;border-radius:12px;font-size:.73rem;font-weight:750}.lead-status--info{background:#edf6fb;color:#285777;border:1px solid #c9e3f0}.lead-status--success{background:#edf8ef;color:#2a7143;border:1px solid #cde8d4}.lead-status--error{background:#fff0f1;color:#9d2939;border:1px solid #ffd2d8}.lead-actions{display:grid;gap:9px;margin-top:14px}.lead-privacy{display:flex;align-items:flex-start;gap:7px;margin:10px 0 0;color:var(--muted);font-size:.64rem;line-height:1.4}.lead-privacy i{color:var(--brand);margin-top:2px}.lead-success{margin-top:16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;padding:16px;border:1px solid #bfe1c8;border-radius:17px;background:#f1faf3}.lead-success[hidden]{display:none}.lead-success__icon{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#2f8b4e;color:#fff;font-size:1.2rem}.lead-success span{color:#2f7b49;font-size:.66rem;text-transform:uppercase;font-weight:850}.lead-success h4{margin:3px 0;color:var(--navy);font-size:.95rem}.lead-success p{margin:0;color:var(--muted);font-size:.7rem}.lead-success .btn{grid-column:1/-1}.print-client,.print-course-interest{display:none}@media(min-width:700px){.audience-grid{grid-template-columns:repeat(2,1fr)}.demo-scope__body{grid-template-columns:1.35fr .65fr;align-items:start}.lead-grid{grid-template-columns:repeat(2,1fr)}.course-catalog{grid-template-columns:repeat(2,1fr)}.lead-actions{grid-template-columns:1fr 1fr}.lead-success{grid-template-columns:auto minmax(0,1fr) auto}.lead-success .btn{grid-column:auto}}@media(min-width:960px){.audience-grid{grid-template-columns:repeat(4,1fr)}.lead-capture{padding:28px}.lead-form{max-width:940px}.course-catalog{grid-template-columns:repeat(3,1fr)}}@media(max-width:639px){body.mobile-spa-active .lead-capture{margin:18px 0 0;padding:16px;border-radius:20px}.budget-core-metrics{grid-template-columns:1fr 1fr}.budget-core-metrics>div:last-child{grid-column:1/-1}.demo-scope__summary{grid-template-columns:1fr}.learning-cycle>i{transform:rotate(90deg)}}@media print{.print-client{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:0 0 3.5mm}.print-client>div{padding:2.5mm 3mm;border:1px solid #dce5eb;border-radius:2.5mm;background:#f8fafc}.print-client small{display:block;color:#6c7d90;font-size:6.2pt;text-transform:uppercase}.print-client strong{display:block;margin-top:.7mm;color:#00205b;font-size:10pt}.print-client span{display:block;margin-top:.7mm;color:#5c6f82;font-size:6.8pt}.print-course-interest{display:block;margin:0 0 3.5mm;padding:2.5mm 3mm;border-left:2.5px solid #0f766e;background:#f1f8f7;color:#506578;font-size:7pt}.print-course-interest b{color:#00205b}}
+
+def replace_once(text, old, new, label):
+    if old not in text:
+        raise RuntimeError(f'No se encontró el bloque esperado: {label}')
+    return text.replace(old, new, 1)
+
+
+# ---------------------------------------------------------------------------
+# index.html — mobile SPA, accesibilidad y copy B2B
+# ---------------------------------------------------------------------------
+index = read('index.html')
+
+if "document.getElementById('para-quien')" not in index[index.find('const mobileManagedSections'):index.find('const mobileManagedSections') + 1800]:
+    index = re.sub(
+        r"(const mobileManagedSections\s*=\s*\[\s*document\.querySelector\('\.hero'\),\s*document\.querySelector\('\.trust'\),)",
+        r"\1\n        document.getElementById('para-quien'),",
+        index,
+        count=1,
+    )
+
+index = index.replace(
+    "if (view === 'home') return [document.querySelector('.hero'), document.querySelector('.trust')].filter(Boolean);",
+    "if (view === 'home') return [document.querySelector('.hero'), document.querySelector('.trust'), document.getElementById('para-quien')].filter(Boolean);",
+    1,
+)
+
+index = index.replace(
+    "'#top': ['home', null], '#contenido': ['home', null], '#demo': ['demo', null]",
+    "'#top': ['home', null], '#contenido': ['home', null], '#para-quien': ['home', null], '#demo': ['demo', null]",
+    1,
+)
+
+# Dedicated live region already exists; remove the obsolete large live region if present.
+index = index.replace('class="budget-summary" aria-live="polite" aria-atomic="true"', 'class="budget-summary"')
+index = index.replace('class="budget-summary" aria-live="polite"', 'class="budget-summary"')
+
+# Avoid promises that sound instant/manual and remove hard-coded Demo duration from primary CTA/SEO.
+index = index.replace('> Activar Demo 30 días</a>', '> Solicitar Demo Corporativo</a>')
+index = index.replace(
+    'content="Capacitación corporativa en Seguridad y Salud en el Trabajo con microlearning asincrónico, seguimiento de avance, certificados e informes para empresas. Demo corporativo gratuito por 30 días."',
+    'content="Capacitación corporativa en Seguridad y Salud en el Trabajo con microlearning asincrónico, seguimiento, certificados, informes y Demo Corporativo para empresas."'
+)
+index = index.replace(
+    'content="Capacitación Corporativa en SST | Demo 30 días"',
+    'content="Capacitación Corporativa en SST | Academia Movida SST"'
+)
+index = index.replace('De la reacción a la prevención.', 'De la Reacción a la Prevención.')
+index = index.replace('De la reacción a la prevención', 'De la Reacción a la Prevención')
+
+# Remove public Admin discovery link if present; direct URL remains available to administrators.
+index = re.sub(r'\s*<a[^>]+href=["\']admin\.html["\'][^>]*>.*?</a>', '', index, flags=re.I | re.S)
+
+write('index.html', index)
+
+
+# ---------------------------------------------------------------------------
+# presupuesto-config.js — synchronized fallback + dynamic metadata
+# ---------------------------------------------------------------------------
+config = read('presupuesto-config.js')
+old_payments = """      payment_methods: [
+        'Transferencia bancaria / Pago Móvil',
+        'PayPal',
+        'Binance Pay / USDT'
+      ],"""
+new_payments = """      payment_methods: [
+        'Transferencia Venezuela: Banco de Venezuela · Corriente · 0102-0236-1500-0033-6732 · Ezequiel Linares · C.I. 30.407.087 · https://www.bcv.org.ve/',
+        'Venezuela · Pago Móvil: Banco de Venezuela · Ezequiel Linares · C.I. V-30.407.087 · 0412-6372223',
+        'Binance USDT: BEP20 (BSC) · ID 176067584 · david.linaresb@gmail.com',
+        'PayPal: https://www.paypal.com/paypalme/movidasst · movidasst@gmail.com'
+      ],"""
+if old_payments in config:
+    config = config.replace(old_payments, new_payments, 1)
+
+# Keep public metadata consistent with current admin configuration after load.
+needle = """    const ranges = rangeData();
+    const priceCards = [...document.querySelectorAll('#planes .price-card')];"""
+replacement = """    const ranges = rangeData();
+    const priceCards = [...document.querySelectorAll('#planes .price-card')];
+
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) metaDescription.content = `Capacitación corporativa en SST con microlearning asincrónico, seguimiento, certificados e informes. Demo Corporativo de ${d.days} días para hasta ${d.max_participants} participantes.`;
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.content = `Capacitación Corporativa en SST | Demo ${d.days} días`;
+    const heroDemoCta = document.querySelector('.hero__actions a[href="#demo"]');
+    if (heroDemoCta) heroDemoCta.innerHTML = '<i class="fa-solid fa-rocket" aria-hidden="true"></i> Solicitar Demo Corporativo';"""
+if needle in config and 'const metaDescription = document.querySelector' not in config:
+    config = config.replace(needle, replacement, 1)
+
+write('presupuesto-config.js', config)
+
+
+# ---------------------------------------------------------------------------
+# admin.html — payment-line guard mirrors PDF/server limits
+# ---------------------------------------------------------------------------
+admin = read('admin.html')
+admin = admin.replace(
+    '<label for="paymentMethods">Medios de pago</label><small>Uno por línea · máx. 8</small>',
+    '<label for="paymentMethods">Medios de pago</label><small>Uno por línea · máx. 8 · 150 caracteres c/u</small>',
+    1,
+)
+admin = admin.replace('id="paymentMethods" maxlength="800"', 'id="paymentMethods" maxlength="1200"', 1)
+
+validate_needle = "if(!x.payment_methods.length||x.payment_methods.length>8)return'Debe existir entre 1 y 8 medios de pago.';"
+validate_replacement = validate_needle + "\n        if(x.payment_methods.some(item=>item.length>150))return'Cada medio de pago debe tener como máximo 150 caracteres para proteger el PDF.';"
+if validate_needle in admin and 'Cada medio de pago debe tener como máximo 150 caracteres' not in admin:
+    admin = admin.replace(validate_needle, validate_replacement, 1)
+
+safety_needle = """        const counts=[cfg.benefits.base.length,cfg.benefits.standard.length,cfg.benefits.scale.length,cfg.benefits.mass.length,cfg.demo.topics.length,cfg.commercial.payment_methods.length];
+        const chars=cfg.commercial.chile_billing.length+cfg.commercial.venezuela_billing.length+cfg.commercial.preliminary_note.length+cfg.commercial.technical_note.length;
+        const el=$('pdfSafety');
+        if(counts.some((n,i)=>n>[14,8,8,8,20,8][i])||chars>3900){"""
+safety_replacement = """        const counts=[cfg.benefits.base.length,cfg.benefits.standard.length,cfg.benefits.scale.length,cfg.benefits.mass.length,cfg.demo.topics.length,cfg.commercial.payment_methods.length];
+        const chars=cfg.commercial.chile_billing.length+cfg.commercial.venezuela_billing.length+cfg.commercial.preliminary_note.length+cfg.commercial.technical_note.length;
+        const paymentLineMax=Math.max(0,...cfg.commercial.payment_methods.map(item=>item.length));
+        const el=$('pdfSafety');
+        if(counts.some((n,i)=>n>[14,8,8,8,20,8][i])||chars>3900||paymentLineMax>150){"""
+if safety_needle in admin:
+    admin = admin.replace(safety_needle, safety_replacement, 1)
+
+write('admin.html', admin)
+
+
+# ---------------------------------------------------------------------------
+# README — operational documentation
+# ---------------------------------------------------------------------------
+readme = r'''# Presupuesto Corporativo · Academia Movida SST
+
+Aplicación B2B para cotizar, personalizar, generar y enviar propuestas de capacitación corporativa en Seguridad y Salud en el Trabajo.
+
+**Producción:** https://presupuesto.movidasst.com/
+
+## Arquitectura
+
+- **GitHub Pages:** landing B2B, cotizador, navegación mobile-first y panel administrativo.
+- **Supabase:** fuente única de configuración comercial, validación de precios, catálogo corporativo, historial/rollback y endpoint de propuestas.
+- **Moodle:** categoría `27 · Cursos corporativos`, consultada mediante endpoint de solo lectura.
+- **Google Apps Script:** generación transaccional del PDF, registro CRM y correos.
+- **Google Drive:** plantilla maestra, PDFs privados y CRM de prospectos.
+
+## Flujo de una propuesta
+
+1. El prospecto calcula participantes y cursos sin entregar datos personales.
+2. Después del resultado completa empresa, contacto, país, WhatsApp y correo.
+3. Puede escoger cursos desde Moodle, indicar otro tema o dejarlo por definir mediante DNF.
+4. Supabase vuelve a calcular el importe usando la configuración vigente; el navegador nunca decide el precio oficial.
+5. Apps Script copia la plantilla de Google Docs, reemplaza variables y genera el PDF.
+6. El PDF se guarda de forma privada en Drive.
+7. El CRM registra el prospecto y la referencia idempotente.
+8. El cliente recibe el PDF adjunto y `info@movidasst.com` recibe el aviso interno.
+
+## Pricing progresivo
+
+Tarifa acumulativa por tramos, no tarifa plana para toda la cohorte:
+
+- Cohorte Base: participantes 1–11 a USD 7 por plaza/curso.
+- Cohorte Corporativa: plazas 12–49 adicionales a USD 5.
+- Cohorte Escala: plazas 50–99 adicionales a USD 4.
+- Gran Cohorte: plazas 100+ adicionales a USD 3.
+
+Ejemplos de control: 11 = USD 77; 12 = USD 82; 49 = USD 267; 50 = USD 271; 99 = USD 467; 100 = USD 470 por curso.
+
+No existe monto mínimo de contratación.
+
+## DNF
+
+- Desde 12 participantes: **DNF básica**.
+- Desde 50 participantes: **DNF ampliada**, con planificación según escala.
+
+## Demo Corporativo
+
+- Duración administrable; valor actual: 30 días.
+- Máximo actual: 20 participantes.
+- Temas corporativos respaldados en configuración y sincronizados con Moodle cuando está disponible.
+- Bonus: Plan Familiar de Emergencias, fuera del número de cursos facturados.
+
+## Archivos principales
+
+- `index.html`: experiencia pública, cotizador y PDF local de impresión.
+- `presupuesto-config.js`: configuración pública, pricing y sincronización DOM.
+- `presupuesto-leads.js`: catálogo, formulario, atribución, envío y estado del backend.
+- `admin.html`: panel protegido para configuración, historial y rollback.
+- `integrations/apps-script-corporate-quote.gs`: módulo Apps Script instalado en el proyecto de correo existente.
+- `tests/validate_project.py`: pruebas de pricing, integridad y regresiones.
+
+## Seguridad e integridad
+
+- El Admin usa Supabase Auth y valida rol administrativo mediante RPC.
+- La configuración pública es de solo lectura.
+- La configuración formal debe estar disponible en Supabase antes de habilitar el envío.
+- El servidor recalcula precios y no acepta totales calculados por el cliente.
+- El endpoint de propuestas incluye honeypot, tiempo mínimo de formulario e idempotencia.
+- El PDF de Drive no se publica; el cliente lo recibe adjunto.
+- El Apps Script reserva cuota de correo para mensajes esenciales de registro.
+- Cada medio de pago está limitado a 150 caracteres para proteger la maquetación del PDF.
+
+## PDF
+
+La propuesta canónica enviada por correo se genera desde Google Docs y se conserva en Drive. La impresión del navegador es una copia local complementaria.
+
+La plantilla mantiene dos páginas lógicas. El panel Admin y el servidor aplican límites de longitud para evitar desbordamientos accidentales.
+
+## Validación automática
+
+Cada `push` o `pull_request` ejecuta `.github/workflows/validate.yml`, que comprueba:
+
+- sintaxis de JavaScript;
+- estructura básica de HTML;
+- pricing en fronteras 11→12, 49→50 y 99→100;
+- monotonía del precio acumulado;
+- configuración de pagos segura para PDF;
+- integración de `#para-quien` en la SPA móvil;
+- ausencia de infraestructura temporal de parcheo.
+
+## Operación
+
+Para cambiar tarifas, Demo, beneficios, condiciones o medios de pago se utiliza `admin.html`; no se editan manualmente los precios en `index.html`.
+
+La URL desplegada de Apps Script debe mantenerse estable. Cuando se modifica el módulo, se actualiza la **implementación web existente**, no se crea otra URL.
+
+## Licencia
+
+GNU Affero General Public License v3.0. Consulta `LICENSE`.
 '''
-marker='    /* Print / PDF commercial proposal */'
-if marker not in text: raise SystemExit('print CSS marker missing')
-text=text.replace(marker,css+'\n\n'+marker,1)
-path.write_text(text,encoding='utf-8')
-print('Total B2B upgrade applied to index.html')
+write('README.md', readme)
+
+
+# ---------------------------------------------------------------------------
+# Permanent tests
+# ---------------------------------------------------------------------------
+test = r'''from pathlib import Path
+import re
+
+ROOT = Path(__file__).resolve().parents[1]
+config = (ROOT / 'presupuesto-config.js').read_text(encoding='utf-8')
+index = (ROOT / 'index.html').read_text(encoding='utf-8')
+admin = (ROOT / 'admin.html').read_text(encoding='utf-8')
+leads = (ROOT / 'presupuesto-leads.js').read_text(encoding='utf-8')
+
+
+def grab(name):
+    m = re.search(rf'\b{name}:\s*([0-9]+(?:\.[0-9]+)?)', config)
+    assert m, f'No se encontró {name} en DEFAULT_CONFIG'
+    return float(m.group(1))
+
+
+t1, t2, t3 = int(grab('tier1_max')), int(grab('tier2_max')), int(grab('tier3_max'))
+r1, r2, r3, r4 = grab('rate1'), grab('rate2'), grab('rate3'), grab('rate4')
+
+
+def price(n):
+    q1 = min(n, t1)
+    q2 = max(0, min(n, t2) - t1)
+    q3 = max(0, min(n, t3) - t2)
+    q4 = max(0, n - t3)
+    return q1*r1 + q2*r2 + q3*r3 + q4*r4
+
+
+expected = {3:21, 11:77, 12:82, 49:267, 50:271, 99:467, 100:470, 200:770, 1000:3170}
+for n, total in expected.items():
+    assert abs(price(n) - total) < 1e-9, f'Precio incorrecto para {n}: {price(n)} != {total}'
+
+for n in range(1, 2000):
+    assert price(n + 1) >= price(n), f'El precio acumulado disminuye en {n}->{n+1}'
+
+assert abs((price(12)-price(11))-r2) < 1e-9
+assert abs((price(50)-price(49))-r3) < 1e-9
+assert abs((price(100)-price(99))-r4) < 1e-9
+
+assert "document.getElementById('para-quien')" in index, 'La sección para-quien no está gestionada por mobile SPA'
+assert "document.getElementById('para-quien')].filter(Boolean)" in index, 'para-quien no está incluida en Inicio móvil'
+assert '#para-quien' in index, 'Falta ruta móvil para para-quien'
+assert 'Activar Demo 30 días' not in index, 'CTA Demo conserva duración rígida'
+assert 'aria-live="polite" aria-atomic="true"' not in re.sub(r'id="budgetLiveStatus"[^>]*', '', index), 'Existe aria-live redundante'
+
+assert 'Cada medio de pago debe tener como máximo 150 caracteres' in admin, 'Admin no protege longitud de pagos'
+assert 'paymentLineMax>150' in admin, 'Indicador PDF no controla líneas de pago'
+
+for marker in [
+    '0102-0236-1500-0033-6732',
+    '0412-6372223',
+    '176067584',
+    'paypal.com/paypalme/movidasst'
+]:
+    assert marker in config, f'Falta medio de pago en fallback: {marker}'
+
+assert 'request_id' in leads and 'form_started_ms' in leads and 'leadWebsite' in leads, 'Faltan controles básicos anti-duplicado/anti-bot'
+assert (ROOT / 'integrations/apps-script-corporate-quote.gs').exists(), 'Falta módulo Apps Script versionado'
+assert not (ROOT / '.github/scripts/connect_presupuesto_config.py').exists(), 'Quedó script temporal de parcheo'
+assert not (ROOT / '.github/workflows/connect-presupuesto-config.yml').exists(), 'Quedó workflow temporal de parcheo'
+
+print('OK: pricing, mobile, pagos, leads e integridad del proyecto validados.')
+'''
+write('tests/validate_project.py', test)
+
+validate_workflow = r'''name: Validate corporate quote app
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: JavaScript syntax
+        run: |
+          node --check presupuesto-config.js
+          node --check presupuesto-leads.js
+      - name: Extract and validate inline scripts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          for name in ('index.html','admin.html'):
+              text=Path(name).read_text(encoding='utf-8')
+              scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',text,re.I)
+              for i,code in enumerate(scripts):
+                  if not code.strip() or code.lstrip().startswith('{'): continue
+                  p=Path(f'/tmp/{name}-{i}.js'); p.write_text(code,encoding='utf-8')
+                  print(p)
+          PY
+          for f in /tmp/index.html-*.js /tmp/admin.html-*.js; do
+            [ -e "$f" ] && node --check "$f"
+          done
+      - name: Project regression tests
+        run: python tests/validate_project.py
+'''
+write('.github/workflows/validate.yml', validate_workflow)
+
+# Remove one-off patch infrastructure from final state.
+for path in [
+    ROOT / '.github/scripts/connect_presupuesto_config.py',
+    ROOT / '.github/workflows/connect-presupuesto-config.yml',
+]:
+    if path.exists():
+        path.unlink()
+
+print('Final cleanup applied successfully.')
