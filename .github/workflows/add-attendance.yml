@@ -1,0 +1,101 @@
+name: Apply attendance benefit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/add-attendance.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add attendance tracking to corporate proposal
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          replacements = [
+            (
+              'Microlearning asincrónico para móvil, tablet y PC, con evaluación automatizada, certificados, seguimiento de avance e informe de gestión para RRHH y Seguridad y Salud en el Trabajo.',
+              'Microlearning asincrónico para móvil, tablet y PC, con registro de asistencia, evaluación automatizada, certificados, seguimiento de avance e informe de gestión para RRHH y Seguridad y Salud en el Trabajo.'
+            ),
+            (
+              'RRHH o SSST recibe una visión consolidada de participación, avance, calificaciones y cumplimiento de la cohorte.',
+              'RRHH o SSST recibe una visión consolidada de asistencia, participación, avance, calificaciones y cumplimiento de la cohorte.'
+            ),
+            (
+              '                    <li>Informe básico de participación y resultados</li>\n                    <li>Grupo de WhatsApp de soporte por curso</li>',
+              '                    <li>Informe básico de participación y resultados</li>\n                    <li>Registro de asistencia y trazabilidad de participación</li>\n                    <li>Grupo de WhatsApp de soporte por curso</li>'
+            ),
+            (
+              '          <p>La propuesta está orientada a que el responsable corporativo pueda saber qué ocurrió con la cohorte y dónde debe intervenir.</p>',
+              '          <p>La propuesta está orientada a que el responsable corporativo pueda saber quién asistió, cómo avanzó la cohorte, qué resultados obtuvo y dónde debe intervenir.</p>'
+            ),
+            (
+              '          <article class="reporting-card"><i class="fa-solid fa-user-check" aria-hidden="true"></i><h3>Participación</h3><p>Quiénes ingresaron, quiénes avanzaron y quiénes completaron.</p></article>',
+              '          <article class="reporting-card"><i class="fa-solid fa-user-check" aria-hidden="true"></i><h3>Asistencia y participación</h3><p>El participante marca su asistencia dentro del curso y la empresa puede disponer del listado o reporte de asistencia junto con su actividad.</p></article>'
+            ),
+            (
+              '              <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Apoyo con IA:</b> todos los cursos incorporan herramientas para resumir contenidos y solicitar explicaciones complementarias.</span></li>',
+              '              <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Registro de asistencia:</b> cada participante debe marcar su asistencia dentro del curso; esta información forma parte de la trazabilidad y puede incorporarse al listado o reporte entregado a la empresa.</span></li>\n              <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Apoyo con IA:</b> todos los cursos incorporan herramientas para resumir contenidos y solicitar explicaciones complementarias.</span></li>'
+            ),
+            (
+              '          <div class="print-include"><b>Seguimiento e informe</b><span>Participación, avance, resultados y resumen final para RRHH o SSST.</span></div>',
+              '          <div class="print-include"><b>Asistencia, seguimiento e informe</b><span>El participante marca su asistencia en el curso y la empresa puede recibir el listado o reporte de asistencia, junto con avance y resultados.</span></div>'
+            ),
+            (
+              '          <div class="print-include"><b>Asistencia con IA</b><span>Herramientas integradas para resumir contenidos y solicitar explicaciones adicionales durante el aprendizaje.</span></div>',
+              '          <div class="print-include"><b>Apoyo con IA</b><span>Herramientas integradas para resumir contenidos y solicitar explicaciones adicionales durante el aprendizaje.</span></div>'
+            ),
+            (
+              '<td>Acceso + evaluación + certificados + informe básico + WhatsApp de soporte por curso</td>',
+              '<td>Acceso + evaluación + certificados + asistencia + informe básico + WhatsApp de soporte por curso</td>'
+            ),
+            (
+              '          <li><b>Apoyo con IA:</b> todos los cursos incorporan herramientas para resumir contenidos y solicitar explicaciones complementarias.</li>',
+              '          <li><b>Registro de asistencia:</b> cada participante debe marcar su asistencia dentro del curso; la información puede incorporarse al listado o reporte de asistencia de la cohorte.</li>\n          <li><b>Apoyo con IA:</b> todos los cursos incorporan herramientas para resumir contenidos y solicitar explicaciones complementarias.</li>'
+            ),
+            (
+              "          'Informe básico de participación y resultados',\n          'Grupo de WhatsApp de soporte por curso',",
+              "          'Informe básico de participación y resultados',\n          'Registro de asistencia y trazabilidad de participación',\n          'Grupo de WhatsApp de soporte por curso',"
+            ),
+            (
+              "          planningScope: 'Incluye acceso, evaluación, certificados, informe básico de participación y resultados, grupo de WhatsApp de soporte por curso y ayuda con IA para resumir y explicar contenidos.'",
+              "          planningScope: 'Incluye acceso, evaluación, certificados, registro de asistencia, informe básico de participación y resultados, grupo de WhatsApp de soporte por curso y ayuda con IA para resumir y explicar contenidos.'"
+            )
+          ]
+
+          missing = []
+          for old, new in replacements:
+              if old not in s:
+                  missing.append(old[:100])
+              else:
+                  s = s.replace(old, new, 1)
+
+          if missing:
+              raise SystemExit('No se encontraron patrones esperados: ' + ' | '.join(missing))
+
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit published change
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Add attendance tracking to all corporate plans"
+            git push
+          fi
