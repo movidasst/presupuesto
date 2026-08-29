@@ -364,6 +364,41 @@
     .feature-card p { margin: 0; color: var(--muted); font-size: .88rem; }
     .feature-card__micro { margin-top: 14px; color: #3f5268; font-size: .76rem; font-weight: 700; }
 
+    /* Course learning experience */
+    .course-experience-section {
+      background:
+        radial-gradient(circle at 8% 12%, rgba(15,118,110,.08), transparent 24%),
+        radial-gradient(circle at 92% 88%, rgba(232,171,63,.08), transparent 22%),
+        #f7f9fc;
+    }
+    .course-experience-grid { display: grid; gap: 12px; }
+    .course-experience-card {
+      position: relative; overflow: hidden; min-height: 150px; padding: 18px;
+      border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.96);
+      box-shadow: var(--shadow-sm);
+    }
+    .course-experience-card::after {
+      content: ''; position: absolute; width: 70px; height: 70px; right: -28px; bottom: -32px;
+      border-radius: 50%; background: var(--soft-brand); pointer-events: none;
+    }
+    .course-experience-card__icon {
+      width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px;
+      background: var(--soft-brand); color: var(--brand); font-size: 1rem;
+    }
+    .course-experience-card:nth-child(2n) .course-experience-card__icon { background: var(--soft-yellow); color: #9a6a12; }
+    .course-experience-card:nth-child(3n) .course-experience-card__icon { background: var(--soft-green); color: #4d7d31; }
+    .course-experience-card h3 { margin: 12px 0 6px; color: var(--navy); font-size: .96rem; line-height: 1.15; }
+    .course-experience-card p { position: relative; z-index: 1; margin: 0; color: var(--muted); font-size: .79rem; line-height: 1.5; }
+    .course-experience-flow {
+      margin-top: 16px; padding: 17px; border-radius: 18px;
+      background: linear-gradient(135deg, #0f2747 0%, #123a5f 60%, #0f766e 100%);
+      color: #fff; box-shadow: var(--shadow-sm);
+    }
+    .course-experience-flow__title { display: flex; align-items: center; gap: 8px; color: #f3c968; font-size: .73rem; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; }
+    .course-experience-flow p { margin: 8px 0 0; color: #d2deea; font-size: .8rem; line-height: 1.55; }
+    .course-experience-flow__steps { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
+    .course-experience-flow__steps span { display: inline-flex; align-items: center; gap: 6px; padding: 7px 9px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); color: #e7eef5; font-size: .65rem; font-weight: 800; }
+
     /* AI learning support */
     .ai-learning {
       margin-top: 22px; display: grid; gap: 18px; align-items: center;
@@ -789,6 +824,7 @@
       .trust__item { border-bottom: 0; border-right: 1px solid #edf1f4; padding: 20px 10px; justify-content: center; }
       .trust__item:last-child { border-right: 0; }
       .feature-grid { grid-template-columns: repeat(2,1fr); }
+      .course-experience-grid { grid-template-columns: repeat(2,1fr); }
       .steps { grid-template-columns: repeat(2,1fr); }
       .demo-banner { grid-template-columns: 1fr auto; padding: 28px; }
       .ai-learning { grid-template-columns: 1.2fr .8fr; padding: 28px; }
@@ -822,6 +858,8 @@
       .hero__lead { font-size: 1.15rem; }
       .platform { transform: perspective(1100px) rotateY(-2.5deg) rotateX(1deg); }
       .feature-grid { grid-template-columns: repeat(3,1fr); gap: 18px; }
+      .course-experience-grid { grid-template-columns: repeat(4,1fr); gap: 14px; }
+      .course-experience-card:last-child { grid-column: span 2; }
       .steps { grid-template-columns: repeat(4,1fr); gap: 16px; }
       .step { padding: 72px 20px 20px; }
       .step::before { left: 20px; top: 20px; width: 40px; height: 40px; }
@@ -1058,6 +1096,67 @@
             <p>Con esos tres datos podemos iniciar la conversación para configurar el Demo Corporativo.</p>
           </div>
           <a class="btn btn--primary" href="https://wa.me/56968615650?text=Hola%20David,%20quiero%20solicitar%20el%20Demo%20Corporativo%20Gratuito%20de%2030%20d%C3%ADas.%0A%0AEmpresa:%20%0ATema%20de%20inter%C3%A9s:%20%0ACantidad%20de%20participantes:%20" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Solicitar Demo</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section course-experience-section" id="experiencia" aria-labelledby="experience-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow"><i class="fa-solid fa-bolt" aria-hidden="true"></i> Aprendizaje activo</span>
+          <h2 id="experience-title">Cursos pensados para hacer, analizar y decidir</h2>
+          <p>No se trata solo de consumir contenido. Cada curso combina recursos de estudio, actividades prácticas y dinámicas que mantienen al participante activo durante todo el recorrido.</p>
+        </div>
+
+        <div class="course-experience-grid">
+          <article class="course-experience-card">
+            <div class="course-experience-card__icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></div>
+            <h3>Estudio de casos</h3>
+            <p>Situaciones y escenarios de SST para analizar problemas, tomar decisiones y trasladar los conceptos a contextos de trabajo.</p>
+          </article>
+          <article class="course-experience-card">
+            <div class="course-experience-card__icon"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i></div>
+            <h3>Guías y recursos en PDF</h3>
+            <p>Materiales descargables para estudiar, repasar contenidos clave y conservar recursos de consulta después del curso.</p>
+          </article>
+          <article class="course-experience-card">
+            <div class="course-experience-card__icon"><i class="fa-solid fa-circle-question" aria-hidden="true"></i></div>
+            <h3>Quizzes interactivos</h3>
+            <p>Preguntas breves y actividades de comprobación que ayudan a reforzar la comprensión durante el proceso de aprendizaje.</p>
+          </article>
+          <article class="course-experience-card">
+            <div class="course-experience-card__icon"><i class="fa-solid fa-flag-checkered" aria-hidden="true"></i></div>
+            <h3>Retos y actividades</h3>
+            <p>Pequeños desafíos orientados a aplicar lo aprendido, resolver situaciones y mantener una participación activa.</p>
+          </article>
+          <article class="course-experience-card">
+            <div class="course-experience-card__icon"><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i></div>
+            <h3>Evaluación final</h3>
+            <p>Una evaluación automatizada permite verificar el aprendizaje alcanzado y determinar el cumplimiento del criterio de aprobación.</p>
+          </article>
+          <article class="course-experience-card">
+            <div class="course-experience-card__icon"><i class="fa-solid fa-star" aria-hidden="true"></i></div>
+            <h3>Encuesta de satisfacción</h3>
+            <p>Al cierre recogemos la percepción del participante sobre la experiencia para apoyar la mejora continua de la formación.</p>
+          </article>
+          <article class="course-experience-card">
+            <div class="course-experience-card__icon"><i class="fa-solid fa-trophy" aria-hidden="true"></i></div>
+            <h3>Experiencia gamificada</h3>
+            <p>Puntos, participación y ranking incorporan una capa de motivación y permiten hacer más visible el avance dentro de la comunidad de aprendizaje.</p>
+          </article>
+        </div>
+
+        <div class="course-experience-flow">
+          <div class="course-experience-flow__title"><i class="fa-solid fa-route" aria-hidden="true"></i> Un recorrido, no una colección de archivos</div>
+          <p>La experiencia combina contenido, práctica, interacción y comprobación del aprendizaje para que el participante avance con propósito y la empresa pueda observar participación y resultados.</p>
+          <div class="course-experience-flow__steps" aria-label="Recorrido típico del curso">
+            <span><i class="fa-solid fa-book-open" aria-hidden="true"></i> Estudia</span>
+            <span><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Analiza casos</span>
+            <span><i class="fa-solid fa-puzzle-piece" aria-hidden="true"></i> Resuelve retos</span>
+            <span><i class="fa-solid fa-ranking-star" aria-hidden="true"></i> Suma puntos</span>
+            <span><i class="fa-solid fa-check-double" aria-hidden="true"></i> Evalúa</span>
+            <span><i class="fa-solid fa-comment-dots" aria-hidden="true"></i> Da feedback</span>
+          </div>
         </div>
       </div>
     </section>
@@ -1473,7 +1572,7 @@
         <h3 class="print-section-title">Alcance incluido</h3>
         <div class="print-includes">
           <div class="print-include"><b>Acceso multiplataforma</b><span>Teléfono celular, tablet y PC, disponible 24/7 durante el período de matrícula.</span></div>
-          <div class="print-include"><b>4 horas académicas por curso</b><span>Contenido asincrónico en formato microlearning con 45 días de matrícula por curso.</span></div>
+          <div class="print-include"><b>4 horas académicas por curso</b><span>Casos prácticos, guías PDF, quizzes, retos y gamificación; evaluación final y encuesta de satisfacción. 45 días de matrícula.</span></div>
           <div class="print-include"><b>Evaluación automatizada</b><span>Criterio de aprobación mínimo del 80% para la emisión del certificado.</span></div>
           <div class="print-include"><b>Certificados</b><span>Emisión para participantes aprobados, con identificación corporativa según el alcance acordado.</span></div>
           <div class="print-include"><b>Asistencia, seguimiento e informe</b><span>El participante marca su asistencia en el curso y la empresa puede recibir el listado o reporte de asistencia, junto con avance y resultados.</span></div>
@@ -1622,6 +1721,7 @@
         document.querySelector('.hero'),
         document.querySelector('.trust'),
         document.getElementById('demo'),
+        document.getElementById('experiencia'),
         document.getElementById('como-funciona'),
         document.getElementById('planes'),
         document.getElementById('presupuesto'),
@@ -1682,7 +1782,7 @@
 
       function visibleSectionsFor(view, detail) {
         if (view === 'home') return [document.querySelector('.hero'), document.querySelector('.trust')].filter(Boolean);
-        if (view === 'demo') return [document.getElementById('demo'), document.getElementById('como-funciona')].filter(Boolean);
+        if (view === 'demo') return [document.getElementById('demo'), document.getElementById('experiencia'), document.getElementById('como-funciona')].filter(Boolean);
         if (view === 'plans') return [document.getElementById('planes')].filter(Boolean);
         if (view === 'quote') return [document.getElementById('presupuesto')].filter(Boolean);
         if (view === 'more') return [detail ? document.getElementById(detail) : mobileMoreHub].filter(Boolean);
@@ -1743,7 +1843,7 @@
 
       function routeAnchorOnPhone(hash) {
         const routeMap = {
-          '#top': ['home', null], '#contenido': ['home', null], '#demo': ['demo', null], '#como-funciona': ['demo', null],
+          '#top': ['home', null], '#contenido': ['home', null], '#demo': ['demo', null], '#experiencia': ['demo', null], '#como-funciona': ['demo', null],
           '#planes': ['plans', null], '#presupuesto': ['quote', null], '#dnf': ['more', 'dnf'], '#reportes': ['more', 'reportes'],
           '#condiciones': ['more', 'condiciones'], '#faq': ['more', 'faq'], '#contacto': ['more', 'contacto']
         };
@@ -1908,7 +2008,11 @@
           'Informe básico de participación y resultados',
           'Registro de asistencia y trazabilidad de participación',
           'Grupo de WhatsApp de soporte por curso',
-          'Ayuda con IA para resumir y explicar contenidos'
+          'Ayuda con IA para resumir y explicar contenidos',
+          'Metodología práctica con estudios de caso, quizzes y retos',
+          'Guías PDF y recursos de apoyo',
+          'Encuesta de satisfacción al cierre',
+          'Gamificación con puntos y ranking'
         ];
         if (count >= 100) {
           return {
