@@ -47,8 +47,13 @@ jobs:
           for f in /tmp/index.html-*.js /tmp/admin.html-*.js; do
             [ -e "$f" ] && node --check "$f"
           done
-      - name: Commit final state
+      - name: Commit application changes
         run: |
+          # A workflow token cannot create another workflow. Restore this
+          # temporary workflow and discard validate.yml here; ChatGPT will
+          # install validate.yml directly after this migration succeeds.
+          git checkout HEAD -- .github/workflows/connect-presupuesto-config.yml
+          rm -f .github/workflows/validate.yml
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
