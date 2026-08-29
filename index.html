@@ -336,6 +336,27 @@
     .feature-card p { margin: 0; color: var(--muted); font-size: .88rem; }
     .feature-card__micro { margin-top: 14px; color: #3f5268; font-size: .76rem; font-weight: 700; }
 
+    /* AI learning support */
+    .ai-learning {
+      margin-top: 22px; display: grid; gap: 18px; align-items: center;
+      padding: 22px; border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, #0f2747 0%, #123a5f 58%, #0f766e 100%);
+      color: #fff; box-shadow: var(--shadow); overflow: hidden; position: relative;
+    }
+    .ai-learning::after {
+      content: ""; position: absolute; width: 180px; height: 180px; right: -70px; top: -80px;
+      border-radius: 50%; background: rgba(232,171,63,.18); filter: blur(10px); pointer-events: none;
+    }
+    .ai-learning__content { position: relative; z-index: 1; }
+    .ai-learning__badge { display: inline-flex; align-items: center; gap: 7px; padding: 6px 9px; border-radius: 999px; background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.14); color: #d9f4f1; font-size: .67rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+    .ai-learning h3 { margin: 10px 0 7px; font-size: clamp(1.35rem, 5vw, 1.9rem); line-height: 1.08; }
+    .ai-learning p { margin: 0; max-width: 66ch; color: #cbd9e6; font-size: .86rem; }
+    .ai-learning__tools { display: grid; grid-template-columns: repeat(2,1fr); gap: 9px; position: relative; z-index: 1; }
+    .ai-tool { padding: 13px; border-radius: 15px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); }
+    .ai-tool i { color: #efc46c; }
+    .ai-tool strong { display: block; margin-top: 7px; font-size: .82rem; color: #fff; }
+    .ai-tool span { display: block; margin-top: 3px; color: #aebfd0; font-size: .68rem; line-height: 1.3; }
+
     /* Demo CTA */
     .demo-banner {
       margin-top: 20px; border-radius: var(--radius-lg); padding: 22px;
@@ -610,6 +631,7 @@
       .feature-grid { grid-template-columns: repeat(2,1fr); }
       .steps { grid-template-columns: repeat(2,1fr); }
       .demo-banner { grid-template-columns: 1fr auto; padding: 28px; }
+      .ai-learning { grid-template-columns: 1.2fr .8fr; padding: 28px; }
       .demo-banner .btn { min-width: 230px; }
       .price-list { grid-template-columns: repeat(2,1fr); }
       .budget-builder__inputs { grid-template-columns: repeat(2,1fr); }
@@ -849,6 +871,18 @@
           </article>
         </div>
 
+        <div class="ai-learning">
+          <div class="ai-learning__content">
+            <span class="ai-learning__badge"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> IA integrada en el aprendizaje</span>
+            <h3>Más comprensión, menos fricción.</h3>
+            <p>Todos los cursos incluyen herramientas de Inteligencia Artificial que ayudan al participante a trabajar mejor con los contenidos: puede generar resúmenes y solicitar explicaciones adicionales cuando necesite comprender un concepto con mayor claridad.</p>
+          </div>
+          <div class="ai-learning__tools">
+            <div class="ai-tool"><i class="fa-solid fa-compress" aria-hidden="true"></i><strong>Resumir</strong><span>Sintetiza el contenido para facilitar el repaso y la identificación de ideas clave.</span></div>
+            <div class="ai-tool"><i class="fa-solid fa-comments" aria-hidden="true"></i><strong>Explicar</strong><span>Ofrece una explicación complementaria para apoyar la comprensión del contenido estudiado.</span></div>
+          </div>
+        </div>
+
         <div class="demo-banner">
           <div>
             <span class="demo-banner__badge"><i class="fa-solid fa-gift" aria-hidden="true"></i> Activación del piloto</span>
@@ -899,6 +933,7 @@
                     <li>Certificados para aprobados</li>
                     <li>Informe básico de participación y resultados</li>
                     <li>Grupo de WhatsApp de soporte por curso</li>
+                    <li>Ayuda con IA para resumir y explicar contenidos</li>
                   </ul>
                 </div>
                 <div class="price-card__right"><span class="price-card__list">Lista $15</span><span class="price-card__price">$7</span><span class="price-card__unit">USD / persona</span></div>
@@ -1111,6 +1146,7 @@
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Sustitución:</b> cambios de participantes sin costo durante los primeros 7 días continuos de la cohorte.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Aprobación:</b> evaluación automatizada con nota mínima del 80% para emisión del certificado.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Personalización:</b> certificados con identificación corporativa según alcance acordado.</span></li>
+              <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Apoyo con IA:</b> todos los cursos incorporan herramientas para resumir contenidos y solicitar explicaciones complementarias.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Servicios complementarios por escala:</b> el diseño del plan de capacitación y el cronograma de ejecución aplican según el volumen contratado.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Soporte por curso:</b> cada curso incluye un grupo de WhatsApp para acompañamiento y soporte a los participantes durante su ejecución.</span></li>
             </ul>
@@ -1235,6 +1271,7 @@
           <div class="print-include"><b>Certificados</b><span>Emisión para participantes aprobados, con identificación corporativa según el alcance acordado.</span></div>
           <div class="print-include"><b>Seguimiento e informe</b><span>Participación, avance, resultados y resumen final para RRHH o SSST.</span></div>
           <div class="print-include"><b>Grupo de WhatsApp de soporte por curso</b><span>Canal de acompañamiento para orientaciones, dudas de acceso y soporte durante el desarrollo del curso.</span></div>
+          <div class="print-include"><b>Asistencia con IA</b><span>Herramientas integradas para resumir contenidos y solicitar explicaciones adicionales durante el aprendizaje.</span></div>
           <div class="print-include"><b>DNF</b><span id="printDnfScope">Detección de Necesidades de Formación según la escala contratada.</span></div>
           <div class="print-include"><b>Planificación complementaria</b><span id="printPlanningScope">Beneficios adicionales según la escala de participantes seleccionada.</span></div>
         </div>
@@ -1299,6 +1336,7 @@
           <li><b>Período de matrícula:</b> 45 días por curso, salvo un alcance distinto acordado expresamente.</li>
           <li><b>Aprobación:</b> evaluación automatizada final con nota mínima del 80% para la emisión del certificado.</li>
           <li><b>Personalización:</b> certificados con identificación corporativa según alcance acordado.</li>
+          <li><b>Apoyo con IA:</b> todos los cursos incorporan herramientas para resumir contenidos y solicitar explicaciones complementarias.</li>
           <li><b>Servicios complementarios por escala:</b> el diseño del plan de capacitación y el cronograma de ejecución aplican según el volumen contratado.</li>
           <li><b>Soporte por curso:</b> cada curso incluye un grupo de WhatsApp para acompañamiento y soporte a los participantes durante su ejecución.</li>
           <li><b>Reportabilidad:</b> informe con participación, avance, calificaciones y estado de cumplimiento de la cohorte.</li>
@@ -1445,7 +1483,8 @@
           'Evaluación automatizada',
           'Certificados para aprobados',
           'Informe básico de participación y resultados',
-          'Grupo de WhatsApp de soporte por curso'
+          'Grupo de WhatsApp de soporte por curso',
+          'Ayuda con IA para resumir y explicar contenidos'
         ];
         if (count >= 100) {
           return {
@@ -1479,7 +1518,7 @@
           price: 7,
           dnf: false,
           benefits: baseBenefits,
-          planningScope: 'Incluye acceso, evaluación, certificados, informe básico de participación y resultados y grupo de WhatsApp de soporte por curso.'
+          planningScope: 'Incluye acceso, evaluación, certificados, informe básico de participación y resultados, grupo de WhatsApp de soporte por curso y ayuda con IA para resumir y explicar contenidos.'
         };
       }
 
