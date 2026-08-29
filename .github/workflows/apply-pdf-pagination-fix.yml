@@ -24,8 +24,9 @@ jobs:
           import re
           text = Path('index.html').read_text(encoding='utf-8')
           scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S)
-          inline = '\n'.join(s for s in scripts if 'application/ld+json' not in s)
-          Path('/tmp/app.js').write_text(inline, encoding='utf-8')
+          if not scripts:
+              raise SystemExit('No scripts found')
+          Path('/tmp/app.js').write_text(scripts[-1], encoding='utf-8')
           PY
           node --check /tmp/app.js
       - name: Commit PDF layout fix
