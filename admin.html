@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#0f2747">
+  <title>Administración · Presupuesto Corporativo | Academia Movida SST</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="presupuesto-config.js"></script>
+  <style>
+    :root{--navy:#0f2747;--navy2:#08182f;--teal:#0f766e;--teal2:#0b5d57;--yellow:#e8ab3f;--bg:#f4f7fa;--card:#fff;--ink:#11233d;--muted:#64758a;--line:#d9e2ea;--danger:#b42318;--ok:#287a48;--shadow:0 18px 50px rgba(8,24,47,.11)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(145deg,#eef8f7,#f7fafc 46%,#eef3f8);color:var(--ink);font-family:Inter,system-ui,sans-serif;min-height:100vh}button,input,textarea{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}[hidden]{display:none!important}
+    h1,h2,h3{font-family:Sora,Inter,sans-serif;letter-spacing:-.03em}.shell{width:min(1180px,calc(100% - 28px));margin:auto}.topline{height:5px;background:linear-gradient(90deg,var(--navy),var(--teal),#70ad47)}
+    .login{min-height:calc(100vh - 5px);display:grid;place-items:center;padding:24px}.login-card{width:min(100%,460px);background:#fff;border:1px solid rgba(15,118,110,.15);border-radius:28px;box-shadow:var(--shadow);overflow:hidden}.login-body{padding:30px}.brand{display:flex;align-items:center;gap:14px}.brand img{width:68px;height:68px;border-radius:50%;border:2px solid #d4e8e6}.brand h1{margin:0;font-size:1.25rem;color:var(--navy)}.brand p{margin:5px 0 0;color:var(--teal);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em}.login-copy{color:var(--muted);line-height:1.55;margin:22px 0 18px}.field{display:grid;gap:7px}.field+.field{margin-top:13px}.field label{font-size:.73rem;font-weight:800;color:#52697d}.control{width:100%;min-height:46px;border:1px solid var(--line);border-radius:13px;padding:10px 12px;background:#fbfcfd;color:var(--ink);outline:0}.control:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(15,118,110,.10);background:#fff}textarea.control{min-height:110px;resize:vertical;line-height:1.5}.btn{min-height:44px;border:0;border-radius:13px;padding:10px 15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn-primary{background:linear-gradient(135deg,var(--teal),var(--navy));color:#fff}.btn-secondary{background:#eef3f7;color:var(--navy);border:1px solid var(--line)}.btn-danger{background:#fff0f0;color:var(--danger);border:1px solid #ffd2d2}.btn-full{width:100%;margin-top:17px}.error{margin-top:12px;padding:11px 13px;border-radius:12px;background:#fff0f1;border:1px solid #ffd2d8;color:#9d2939;font-size:.8rem;font-weight:700}
+    .topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(217,226,234,.9)}.topbar-inner{min-height:68px;display:flex;align-items:center;gap:12px}.topbar .brand img{width:45px;height:45px}.topbar .brand h1{font-size:.93rem}.topbar-actions{margin-left:auto;display:flex;gap:8px;align-items:center}.user{display:none;color:var(--muted);font-size:.76rem;font-weight:700}.main{padding:24px 0 110px}.hero{display:grid;gap:8px;margin-bottom:20px}.eyebrow{color:var(--teal);font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.09em}.hero h2{margin:0;color:var(--navy);font-size:clamp(1.65rem,6vw,2.45rem)}.hero p{margin:0;color:var(--muted);max-width:760px;line-height:1.55}.status{margin-top:8px;display:inline-flex;align-items:center;gap:8px;width:max-content;max-width:100%;padding:7px 10px;border-radius:999px;background:#eaf7ef;color:var(--ok);font-size:.72rem;font-weight:800}
+    .grid{display:grid;gap:16px}.panel{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 10px 34px rgba(8,24,47,.06);overflow:hidden}.panel-head{padding:17px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.panel-head i{color:var(--teal)}.panel-head h3{margin:0;color:var(--navy);font-size:1rem}.panel-body{padding:18px}.form-grid{display:grid;grid-template-columns:1fr;gap:12px}.mini-help{font-size:.7rem;color:var(--muted);line-height:1.4}.readonly{background:#f0f5f7;color:#617485}.tranche{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;border:1px solid #e3e9ee;border-radius:16px;background:#fbfcfd}.tranche-title{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px}.tranche-title strong{color:var(--navy);font-size:.84rem}.tranche-title span{font-size:.68rem;color:var(--teal);font-weight:800}.divider{height:1px;background:#edf1f4;margin:16px 0}.preview{background:linear-gradient(135deg,#08182f,#0f3158 58%,#0f766e);color:#fff;border-radius:18px;padding:17px}.preview h3{margin:0 0 4px;font-size:1rem}.preview p{margin:0;color:#cbdce8;font-size:.76rem}.preview-input{display:flex;gap:8px;margin-top:14px}.preview-input input{width:100%;min-height:43px;border-radius:11px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;padding:9px 11px}.preview-result{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.metric{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:10px}.metric span{display:block;color:#bcd0de;font-size:.62rem;text-transform:uppercase}.metric strong{display:block;margin-top:3px;color:#fff;font-size:.95rem}.boundary{margin-top:12px;padding:10px 12px;border-radius:12px;background:#ecf8ef;color:#2c7146;font-size:.74rem;font-weight:800;line-height:1.45}.boundary.bad{background:#fff0f0;color:#a83434}.textarea-label{display:flex;justify-content:space-between;gap:12px;align-items:end}.textarea-label small{font-size:.67rem;color:var(--muted)}
+    .savebar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:10px max(14px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));box-shadow:0 -12px 35px rgba(8,24,47,.08)}.savebar-inner{width:min(1180px,100%);margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:8px}.toast{position:fixed;left:50%;bottom:92px;z-index:100;transform:translate(-50%,20px);opacity:0;pointer-events:none;max-width:min(92vw,520px);padding:11px 14px;border-radius:12px;background:#12314f;color:#fff;font-size:.78rem;font-weight:700;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}.toast.error-toast{background:#a62c3c}.loading{position:fixed;inset:0;z-index:120;background:rgba(8,24,47,.35);display:grid;place-items:center;backdrop-filter:blur(3px)}.spinner{width:44px;height:44px;border:4px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    @media(min-width:700px){.form-grid{grid-template-columns:repeat(2,1fr)}.span-2{grid-column:1/-1}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panel.wide{grid-column:1/-1}.user{display:block}.savebar-inner{display:flex;justify-content:flex-end}.savebar .btn{min-width:190px}}
+    @media(min-width:1000px){.main{padding-top:32px}.pricing-layout-admin{display:grid;grid-template-columns:1fr 330px;gap:16px;align-items:start}.preview{position:sticky;top:92px}.panel-body{padding:20px}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+
+  <section class="login" id="loginView">
+    <div class="login-card">
+      <div class="login-body">
+        <div class="brand">
+          <img src="https://lh3.googleusercontent.com/d/1F1EETURi32f_QWBJSnrU7DOYJ_NeNLK7=s200" alt="Academia Movida SST">
+          <div><h1>Administración de Presupuesto</h1><p>Academia Movida SST</p></div>
+        </div>
+        <p class="login-copy">Ingresa con las mismas credenciales autorizadas del Centro de Gestión. Solo las cuentas con rol administrativo pueden modificar la propuesta corporativa.</p>
+        <form id="loginForm">
+          <div class="field"><label for="loginEmail">Correo</label><input class="control" id="loginEmail" type="email" autocomplete="username" required></div>
+          <div class="field"><label for="loginPassword">Contraseña</label><input class="control" id="loginPassword" type="password" autocomplete="current-password" required></div>
+          <button class="btn btn-primary btn-full" type="submit"><i class="fa-solid fa-lock"></i> Entrar al área administrativa</button>
+          <div class="error" id="loginError" hidden></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div id="appView" hidden>
+    <header class="topbar">
+      <div class="shell topbar-inner">
+        <a class="brand" href="./">
+          <img src="https://lh3.googleusercontent.com/d/1F1EETURi32f_QWBJSnrU7DOYJ_NeNLK7=s200" alt="Academia Movida SST">
+          <div><h1>Configuración del presupuesto</h1><p>Panel administrativo</p></div>
+        </a>
+        <div class="topbar-actions">
+          <span class="user" id="adminEmail"></span>
+          <a class="btn btn-secondary" href="./"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Ver propuesta</span></a>
+          <button class="btn btn-danger" id="logoutBtn" type="button" aria-label="Cerrar sesión"><i class="fa-solid fa-right-from-bracket"></i></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="shell main">
+      <div class="hero">
+        <span class="eyebrow">Configuración comercial segura</span>
+        <h2>Edita valores sin tocar el código</h2>
+        <p>Los cambios se aplican a la página pública, al cotizador y a la propuesta PDF. La lógica progresiva está protegida: los tramos deben crecer y las tarifas solo pueden mantenerse o disminuir con el volumen.</p>
+        <span class="status" id="lastSaved"><i class="fa-solid fa-shield-check"></i> Configuración protegida por Supabase</span>
+      </div>
+
+      <div class="grid">
+        <section class="panel wide">
+          <div class="panel-head"><i class="fa-solid fa-layer-group"></i><h3>Tarifas y tramos progresivos</h3></div>
+          <div class="panel-body pricing-layout-admin">
+            <div>
+              <div class="form-grid">
+                <div class="field"><label>Mínimo de participantes</label><input class="control" id="minParticipants" type="number" min="1" step="1"></div>
+                <div class="field"><label>Tarifa lista USD</label><input class="control" id="listPrice" type="number" min="0.01" step="0.01"></div>
+              </div>
+              <div class="divider"></div>
+
+              <div class="tranche">
+                <div class="tranche-title"><strong>Tramo 1 · <span id="tier1RangeLabel"></span></strong><span>Base</span></div>
+                <div class="field"><label>Nombre</label><input class="control" id="tier1Name"></div>
+                <div class="field"><label>Hasta participantes</label><input class="control" id="tier1Max" type="number" min="1" step="1"></div>
+                <div class="field span-2"><label>Tarifa por plaza / curso (USD)</label><input class="control" id="rate1" type="number" min="0.01" step="0.01"></div>
+              </div>
+              <div style="height:10px"></div>
+              <div class="tranche">
+                <div class="tranche-title"><strong>Tramo 2 · <span id="tier2RangeLabel"></span></strong><span>DNF incluida</span></div>
+                <div class="field"><label>Nombre</label><input class="control" id="tier2Name"></div>
+                <div class="field"><label>Hasta participantes</label><input class="control" id="tier2Max" type="number" min="2" step="1"></div>
+                <div class="field span-2"><label>Tarifa de plazas adicionales (USD)</label><input class="control" id="rate2" type="number" min="0.01" step="0.01"></div>
+              </div>
+              <div style="height:10px"></div>
+              <div class="tranche">
+                <div class="tranche-title"><strong>Tramo 3 · <span id="tier3RangeLabel"></span></strong><span>Escala</span></div>
+                <div class="field"><label>Nombre</label><input class="control" id="tier3Name"></div>
+                <div class="field"><label>Hasta participantes</label><input class="control" id="tier3Max" type="number" min="3" step="1"></div>
+                <div class="field span-2"><label>Tarifa de plazas adicionales (USD)</label><input class="control" id="rate3" type="number" min="0.01" step="0.01"></div>
+              </div>
+              <div style="height:10px"></div>
+              <div class="tranche">
+                <div class="tranche-title"><strong>Tramo 4 · <span id="tier4RangeLabel"></span></strong><span>Masivo</span></div>
+                <div class="field"><label>Nombre</label><input class="control" id="tier4Name"></div>
+                <div class="field"><label>Desde participantes</label><input class="control readonly" id="tier4From" readonly></div>
+                <div class="field span-2"><label>Tarifa de plazas adicionales (USD)</label><input class="control" id="rate4" type="number" min="0.01" step="0.01"></div>
+              </div>
+              <p class="mini-help">Los inicios de los tramos 2, 3 y 4 se calculan automáticamente. El servidor no permitirá guardar límites solapados ni tarifas que suban al aumentar el número de participantes.</p>
+            </div>
+
+            <aside class="preview">
+              <h3>Comprobador de precios</h3>
+              <p>Prueba cualquier cantidad antes de guardar.</p>
+              <div class="preview-input"><input id="previewParticipants" type="number" min="1" value="99" inputmode="numeric"></div>
+              <div class="preview-result">
+                <div class="metric"><span>Costo / curso</span><strong id="previewPerCourse">—</strong></div>
+                <div class="metric"><span>Promedio</span><strong id="previewAverage">—</strong></div>
+                <div class="metric"><span>Tarifa marginal</span><strong id="previewMarginal">—</strong></div>
+                <div class="metric"><span>Escala</span><strong id="previewTier">—</strong></div>
+              </div>
+              <div class="boundary" id="boundaryCheck">Validando fronteras…</div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><i class="fa-solid fa-graduation-cap"></i><h3>Parámetros del curso</h3></div>
+          <div class="panel-body form-grid">
+            <div class="field"><label>Horas académicas por curso</label><input class="control" id="courseHours" type="number" min="0.5" step="0.5"></div>
+            <div class="field"><label>Días de matrícula</label><input class="control" id="enrollmentDays" type="number" min="1" step="1"></div>
+            <div class="field"><label>Aprobación mínima %</label><input class="control" id="approvalPercent" type="number" min="1" max="100" step="1"></div>
+            <div class="field"><label>Días del Demo</label><input class="control" id="demoDays" type="number" min="1" step="1"></div>
+            <div class="field span-2"><label>Días para sustitución de participantes</label><input class="control" id="substitutionDays" type="number" min="0" step="1"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><i class="fa-solid fa-list-check"></i><h3>Beneficios por escala</h3></div>
+          <div class="panel-body">
+            <div class="field"><div class="textarea-label"><label>Beneficios base · todos</label><small>Uno por línea</small></div><textarea class="control" id="benefitsBase"></textarea></div>
+            <div class="field"><div class="textarea-label"><label>Adicionales · Grupo estándar</label><small>Uno por línea</small></div><textarea class="control" id="benefitsStandard"></textarea></div>
+            <div class="field"><div class="textarea-label"><label>Adicionales · Grupo escala</label><small>Uno por línea</small></div><textarea class="control" id="benefitsScale"></textarea></div>
+            <div class="field"><div class="textarea-label"><label>Adicionales · Grupo masivo</label><small>Uno por línea</small></div><textarea class="control" id="benefitsMass"></textarea></div>
+          </div>
+        </section>
+
+        <section class="panel wide">
+          <div class="panel-head"><i class="fa-solid fa-file-signature"></i><h3>Condiciones comerciales</h3></div>
+          <div class="panel-body form-grid">
+            <div class="field span-2"><div class="textarea-label"><label>Medios de pago</label><small>Uno por línea</small></div><textarea class="control" id="paymentMethods"></textarea></div>
+            <div class="field"><label>Facturación · Chile</label><textarea class="control" id="chileBilling"></textarea></div>
+            <div class="field"><label>Facturación · Venezuela</label><textarea class="control" id="venezuelaBilling"></textarea></div>
+            <div class="field span-2"><label>Carácter preliminar del presupuesto</label><textarea class="control" id="preliminaryNote"></textarea></div>
+            <div class="field span-2"><label>Nota técnica</label><textarea class="control" id="technicalNote"></textarea></div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="savebar">
+      <div class="savebar-inner">
+        <button class="btn btn-secondary" id="reloadBtn" type="button"><i class="fa-solid fa-rotate-left"></i> Descartar cambios</button>
+        <button class="btn btn-primary" id="saveBtn" type="button"><i class="fa-solid fa-floppy-disk"></i> Guardar y publicar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <div class="loading" id="loading" hidden><div class="spinner"></div></div>
+
+  <script>
+    (() => {
+      const sb = window.PresupuestoConfig.getClient();
+      const $ = id => document.getElementById(id);
+      let savedConfig = null;
+
+      const showLoading = on => $('loading').hidden = !on;
+      const toast = (message, error = false) => {
+        const el = $('toast');
+        el.textContent = message;
+        el.className = `toast show${error ? ' error-toast' : ''}`;
+        clearTimeout(el._t); el._t = setTimeout(() => el.className = 'toast', 3500);
+      };
+      const lines = value => String(value || '').split('\n').map(x => x.trim()).filter(Boolean);
+      const asLines = arr => (arr || []).join('\n');
+      const num = id => Number($(id).value);
+
+      function showLogin(message = '') {
+        $('loginView').hidden = false; $('appView').hidden = true;
+        $('loginError').hidden = !message; $('loginError').textContent = message;
+      }
+      function showApp(email) {
+        $('loginView').hidden = true; $('appView').hidden = false;
+        $('adminEmail').textContent = email || 'Administrador';
+      }
+
+      function collectConfig() {
+        return {
+          pricing: {
+            min_participants: Math.trunc(num('minParticipants')),
+            tier1_max: Math.trunc(num('tier1Max')),
+            tier2_max: Math.trunc(num('tier2Max')),
+            tier3_max: Math.trunc(num('tier3Max')),
+            rate1: num('rate1'), rate2: num('rate2'), rate3: num('rate3'), rate4: num('rate4'),
+            list_price: num('listPrice'),
+            tier1_name: $('tier1Name').value.trim(), tier2_name: $('tier2Name').value.trim(), tier3_name: $('tier3Name').value.trim(), tier4_name: $('tier4Name').value.trim()
+          },
+          course: {
+            hours: num('courseHours'), enrollment_days: Math.trunc(num('enrollmentDays')), approval_percent: Math.trunc(num('approvalPercent')),
+            demo_days: Math.trunc(num('demoDays')), substitution_days: Math.trunc(num('substitutionDays'))
+          },
+          benefits: {
+            base: lines($('benefitsBase').value), standard: lines($('benefitsStandard').value), scale: lines($('benefitsScale').value), mass: lines($('benefitsMass').value)
+          },
+          commercial: {
+            payment_methods: lines($('paymentMethods').value), chile_billing: $('chileBilling').value.trim(), venezuela_billing: $('venezuelaBilling').value.trim(),
+            preliminary_note: $('preliminaryNote').value.trim(), technical_note: $('technicalNote').value.trim()
+          }
+        };
+      }
+
+      function validate(cfg) {
+        const p = cfg.pricing, c = cfg.course;
+        if (![p.min_participants,p.tier1_max,p.tier2_max,p.tier3_max,p.rate1,p.rate2,p.rate3,p.rate4,p.list_price,c.hours,c.enrollment_days,c.approval_percent,c.demo_days,c.substitution_days].every(Number.isFinite)) return 'Hay valores numéricos incompletos.';
+        if (p.min_participants < 1) return 'El mínimo de participantes debe ser mayor que cero.';
+        if (!(p.tier1_max >= p.min_participants && p.tier2_max > p.tier1_max && p.tier3_max > p.tier2_max)) return 'Los límites de los tramos deben ser crecientes y no pueden solaparse.';
+        if (!(p.rate1 > 0 && p.rate2 > 0 && p.rate3 > 0 && p.rate4 > 0)) return 'Todas las tarifas deben ser mayores que cero.';
+        if (!(p.rate1 >= p.rate2 && p.rate2 >= p.rate3 && p.rate3 >= p.rate4)) return 'La tarifa no puede aumentar en un tramo de mayor volumen.';
+        if (p.list_price < p.rate1) return 'La tarifa lista no puede ser menor que la tarifa del primer tramo.';
+        if (c.hours <= 0 || c.enrollment_days < 1 || c.demo_days < 1 || c.substitution_days < 0) return 'Revisa horas y días configurados.';
+        if (c.approval_percent < 1 || c.approval_percent > 100) return 'La aprobación debe estar entre 1% y 100%.';
+        if (!p.tier1_name || !p.tier2_name || !p.tier3_name || !p.tier4_name) return 'Los cuatro grupos deben tener nombre.';
+        if (!cfg.benefits.base.length) return 'Debe existir al menos un beneficio base.';
+        return '';
+      }
+
+      function fill(cfg) {
+        savedConfig = JSON.parse(JSON.stringify(cfg));
+        const p=cfg.pricing,c=cfg.course,b=cfg.benefits,x=cfg.commercial;
+        $('minParticipants').value=p.min_participants; $('listPrice').value=p.list_price;
+        $('tier1Max').value=p.tier1_max; $('tier2Max').value=p.tier2_max; $('tier3Max').value=p.tier3_max;
+        $('rate1').value=p.rate1; $('rate2').value=p.rate2; $('rate3').value=p.rate3; $('rate4').value=p.rate4;
+        $('tier1Name').value=p.tier1_name; $('tier2Name').value=p.tier2_name; $('tier3Name').value=p.tier3_name; $('tier4Name').value=p.tier4_name;
+        $('courseHours').value=c.hours; $('enrollmentDays').value=c.enrollment_days; $('approvalPercent').value=c.approval_percent; $('demoDays').value=c.demo_days; $('substitutionDays').value=c.substitution_days;
+        $('benefitsBase').value=asLines(b.base); $('benefitsStandard').value=asLines(b.standard); $('benefitsScale').value=asLines(b.scale); $('benefitsMass').value=asLines(b.mass);
+        $('paymentMethods').value=asLines(x.payment_methods); $('chileBilling').value=x.chile_billing; $('venezuelaBilling').value=x.venezuela_billing; $('preliminaryNote').value=x.preliminary_note; $('technicalNote').value=x.technical_note;
+        updatePreview();
+      }
+
+      function priceFor(count,cfg) {
+        const p=cfg.pricing;
+        const q1=Math.min(count,p.tier1_max), q2=Math.max(0,Math.min(count,p.tier2_max)-p.tier1_max), q3=Math.max(0,Math.min(count,p.tier3_max)-p.tier2_max), q4=Math.max(0,count-p.tier3_max);
+        const total=q1*p.rate1+q2*p.rate2+q3*p.rate3+q4*p.rate4;
+        const marginal=count>=p.tier3_max+1?p.rate4:count>=p.tier2_max+1?p.rate3:count>=p.tier1_max+1?p.rate2:p.rate1;
+        const tier=count>=p.tier3_max+1?p.tier4_name:count>=p.tier2_max+1?p.tier3_name:count>=p.tier1_max+1?p.tier2_name:p.tier1_name;
+        return {total,marginal,average:total/count,tier};
+      }
+
+      function money(v,dec=2){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:dec,maximumFractionDigits:dec}).format(v)}
+
+      function updatePreview() {
+        let cfg; try { cfg=collectConfig(); } catch { return; }
+        const p=cfg.pricing;
+        $('tier1RangeLabel').textContent=`${p.min_participants}–${p.tier1_max}`;
+        $('tier2RangeLabel').textContent=`${p.tier1_max+1}–${p.tier2_max}`;
+        $('tier3RangeLabel').textContent=`${p.tier2_max+1}–${p.tier3_max}`;
+        $('tier4RangeLabel').textContent=`${p.tier3_max+1}+`;
+        $('tier4From').value=p.tier3_max+1;
+        const error=validate(cfg);
+        const boundary=$('boundaryCheck');
+        if(error){boundary.className='boundary bad';boundary.textContent=error;return;}
+        const count=Math.max(p.min_participants,Math.trunc(Number($('previewParticipants').value)||p.min_participants));
+        const result=priceFor(count,cfg);
+        $('previewPerCourse').textContent=money(result.total, result.total%1?2:0);
+        $('previewAverage').textContent=money(result.average,2);
+        $('previewMarginal').textContent=money(result.marginal,result.marginal%1?2:0);
+        $('previewTier').textContent=result.tier;
+        const before=priceFor(p.tier3_max,cfg).total, after=priceFor(p.tier3_max+1,cfg).total;
+        const monotonic=after>=before && after-before===p.rate4;
+        boundary.className=`boundary${monotonic?'':' bad'}`;
+        boundary.textContent=monotonic
+          ? `✓ Frontera principal correcta: ${p.tier3_max} personas = ${money(before,before%1?2:0)} · ${p.tier3_max+1} personas = ${money(after,after%1?2:0)}. Agregar una plaza aumenta exactamente ${money(p.rate4,p.rate4%1?2:0)}.`
+          : 'La frontera del último tramo no conserva progresividad. Revisa los valores.';
+      }
+
+      async function loadAdminConfig() {
+        showLoading(true);
+        try {
+          const {data,error}=await sb.rpc('admin_presupuesto_config');
+          if(error) throw error;
+          fill(data.config);
+          if(data.updated_at){$('lastSaved').innerHTML=`<i class="fa-solid fa-clock-rotate-left"></i> Última publicación: ${new Intl.DateTimeFormat('es-CL',{dateStyle:'medium',timeStyle:'short'}).format(new Date(data.updated_at))}`;}
+        } catch(e){toast(e.message||'No fue posible cargar la configuración.',true)} finally{showLoading(false)}
+      }
+
+      async function ensureAdmin() {
+        const {data:{session}}=await sb.auth.getSession();
+        if(!session){showLogin();return false;}
+        try{
+          const {error}=await sb.rpc('admin_gestion_resumen');
+          if(error) throw error;
+          showApp(session.user.email);
+          await loadAdminConfig();
+          return true;
+        }catch(e){await sb.auth.signOut();showLogin('La cuenta existe, pero no tiene permiso administrativo.');return false;}
+      }
+
+      $('loginForm').addEventListener('submit',async e=>{
+        e.preventDefault(); showLoading(true); $('loginError').hidden=true;
+        try{const {error}=await sb.auth.signInWithPassword({email:$('loginEmail').value.trim(),password:$('loginPassword').value});if(error)throw error;await ensureAdmin();}
+        catch(err){showLogin(err.message||'No fue posible iniciar sesión.')} finally{showLoading(false)}
+      });
+      $('logoutBtn').addEventListener('click',async()=>{await sb.auth.signOut();showLogin();});
+      $('reloadBtn').addEventListener('click',()=>{if(savedConfig){fill(savedConfig);toast('Cambios locales descartados.');}});
+      $('saveBtn').addEventListener('click',async()=>{
+        const cfg=collectConfig(); const error=validate(cfg); if(error)return toast(error,true);
+        showLoading(true);
+        try{
+          const {data,error:rpcError}=await sb.rpc('admin_presupuesto_config_guardar',{p_config:cfg});
+          if(rpcError)throw rpcError;
+          fill(cfg);
+          $('lastSaved').innerHTML=`<i class="fa-solid fa-circle-check"></i> Publicado correctamente · ${new Intl.DateTimeFormat('es-CL',{dateStyle:'medium',timeStyle:'short'}).format(new Date(data.updated_at))}`;
+          toast('Configuración guardada y publicada.');
+        }catch(e){toast(e.message||'No fue posible guardar.',true)}finally{showLoading(false)}
+      });
+
+      document.querySelectorAll('#appView input,#appView textarea').forEach(el=>el.addEventListener('input',updatePreview));
+      $('previewParticipants').addEventListener('input',updatePreview);
+      sb.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT')showLogin();});
+      (async()=>{showLoading(true);try{await ensureAdmin();}finally{showLoading(false)}})();
+    })();
+  </script>
+</body>
+</html>
