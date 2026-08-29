@@ -61,7 +61,8 @@
           "lowPrice": "3",
           "highPrice": "7",
           "priceCurrency": "USD",
-          "offerCount": "4"
+          "offerCount": "4",
+          "description": "Tarifas progresivas por tramos entre 3 y 7 USD por plaza y curso, según el volumen de la cohorte."
         }
       },
       {
@@ -536,6 +537,7 @@
     .budget-print { color: #e7eef5; border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.06); }
     .budget-print:hover { background: rgba(255,255,255,.1); }
     .budget-disclaimer { margin: 12px 0 0; color: #8fa4b8; font-size: .66rem; line-height: 1.45; }
+    .budget-progressive-note { margin: 12px 0 0; padding: 10px 12px; border-radius: 12px; background: rgba(118,213,219,.10); border: 1px solid rgba(118,213,219,.16); color: #cfe5ed; font-size: .7rem; line-height: 1.45; }
     .budget-benefits { margin-top: 14px; display: grid; gap: 8px; }
     .budget-benefits__title { color: #ffffff; font-size: .74rem; font-weight: 800; }
     .budget-benefits__list { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -1249,9 +1251,9 @@
     <section class="section section--white" id="planes" aria-labelledby="pricing-title">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow"><i class="fa-solid fa-tags" aria-hidden="true"></i> Inversión por volumen</span>
-          <h2 id="pricing-title">Tarifas claras por participante</h2>
-          <p>Valores netos por participante y por curso de 4 horas académicas, con 45 días de matrícula. Mínimo de contratación: 3 participantes.</p>
+          <span class="eyebrow"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Tarifas progresivas por volumen</span>
+          <h2 id="pricing-title">Mientras crece la cohorte, baja el costo de las plazas adicionales</h2>
+          <p>El precio se calcula por tramos: cada tarifa se aplica únicamente a las plazas que caen dentro de ese tramo. Al pasar a una escala superior, las plazas anteriores conservan su tarifa. Mínimo de contratación: 3 participantes.</p>
         </div>
 
         <div class="pricing-layout">
@@ -1276,7 +1278,7 @@
                     <li>Gamificación con puntos y ranking</li>
                   </ul>
                 </div>
-                <div class="price-card__right"><span class="price-card__list">Lista $15</span><span class="price-card__price">$7</span><span class="price-card__unit">USD / persona</span></div>
+                <div class="price-card__right"><span class="price-card__list">Tramo 3–11</span><span class="price-card__price">$7</span><span class="price-card__unit">USD / plaza / curso</span></div>
               </article>
               <article class="price-card is-featured">
                 <div>
@@ -1288,7 +1290,7 @@
                     <li>Diseño del plan de capacitación</li>
                   </ul>
                 </div>
-                <div class="price-card__right"><span class="price-card__list">Lista $15</span><span class="price-card__price">$5</span><span class="price-card__unit">USD / persona</span></div>
+                <div class="price-card__right"><span class="price-card__list">Plazas 12–49</span><span class="price-card__price">$5</span><span class="price-card__unit">USD / plaza adicional / curso</span></div>
               </article>
               <article class="price-card">
                 <div>
@@ -1300,7 +1302,7 @@
                     <li>Reporte analítico de la cohorte</li>
                   </ul>
                 </div>
-                <div class="price-card__right"><span class="price-card__list">Lista $15</span><span class="price-card__price">$4</span><span class="price-card__unit">USD / persona</span></div>
+                <div class="price-card__right"><span class="price-card__list">Plazas 50–99</span><span class="price-card__price">$4</span><span class="price-card__unit">USD / plaza adicional / curso</span></div>
               </article>
               <article class="price-card">
                 <div>
@@ -1312,10 +1314,11 @@
                     <li>Consolidado ejecutivo de resultados</li>
                   </ul>
                 </div>
-                <div class="price-card__right"><span class="price-card__list">Lista $15</span><span class="price-card__price">$3</span><span class="price-card__unit">USD / persona</span></div>
+                <div class="price-card__right"><span class="price-card__list">Plazas 100+</span><span class="price-card__price">$3</span><span class="price-card__unit">USD / plaza adicional / curso</span></div>
               </article>
             </div>
-            <p style="margin:14px 2px 0;color:var(--muted);font-size:.72rem;">* Valores expresados en USD. Impuestos y facturación dependen del país y del documento fiscal requerido.</p>
+            <div style="margin:14px 2px 0;padding:12px 14px;border:1px solid #cfe5e3;border-radius:13px;background:#f0f8f7;color:#355566;font-size:.74rem;line-height:1.5;"><strong style="color:#0f5f59;">Cómo funciona el precio progresivo:</strong> las primeras plazas se calculan en su tramo y solo las plazas adicionales reciben la tarifa menor del siguiente tramo. Por eso, agregar participantes nunca reduce el valor total de la contratación.</div>
+            <p style="margin:10px 2px 0;color:var(--muted);font-size:.72rem;">* Valores expresados en USD por curso. Impuestos y facturación dependen del país y del documento fiscal requerido.</p>
           </div>
 
           <aside class="calculator pricing-cta" aria-labelledby="pricing-cta-title">
@@ -1329,10 +1332,10 @@
               <i class="fa-solid fa-xmark"></i>
               <div><span>Cursos</span><strong>4</strong></div>
               <i class="fa-solid fa-equals"></i>
-              <div class="pricing-cta__total"><span>Presupuesto</span><strong>$600</strong></div>
+              <div class="pricing-cta__total"><span>Presupuesto</span><strong>$688</strong></div>
             </div>
             <a class="btn btn--primary btn--block" style="margin-top:18px" href="#presupuesto"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Armar mi presupuesto</a>
-            <p class="calc-note">La tarifa se aplica automáticamente según el tamaño de la cohorte.</p>
+            <p class="calc-note">El cálculo aplica automáticamente cada tramo progresivo según el tamaño de la cohorte.</p>
           </aside>
         </div>
       </div>
@@ -1345,7 +1348,7 @@
         <div class="section-head budget-head">
           <span class="eyebrow"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Cotizador corporativo</span>
           <h2 id="budget-title">Arma tu presupuesto preliminar</h2>
-          <p>Indica cuántas personas participarán y cuántos cursos necesitas. El sistema aplica automáticamente la tarifa por volumen y calcula la inversión total estimada.</p>
+          <p>Indica cuántas personas participarán y cuántos cursos necesitas. El sistema calcula cada tramo progresivo, muestra la tarifa marginal alcanzada y el costo promedio efectivo por persona.</p>
         </div>
 
         <div class="budget-builder">
@@ -1387,8 +1390,9 @@
             </div>
 
             <div class="budget-metrics">
-              <div class="budget-metric"><span>Escala aplicada</span><strong id="budgetTier">Grupo estándar</strong></div>
-              <div class="budget-metric"><span>Tarifa por persona / curso</span><strong id="budgetUnitPrice">$5 USD</strong></div>
+              <div class="budget-metric"><span>Escala alcanzada</span><strong id="budgetTier">Grupo estándar</strong></div>
+              <div class="budget-metric"><span>Tarifa marginal del tramo</span><strong id="budgetUnitPrice">$5 USD</strong></div>
+              <div class="budget-metric"><span>Promedio efectivo persona / curso</span><strong id="budgetAveragePrice">$6.47 USD</strong></div>
               <div class="budget-metric"><span>Participantes</span><strong id="budgetParticipantDisplay">15</strong></div>
               <div class="budget-metric"><span>Cursos</span><strong id="budgetCourseDisplay">1</strong></div>
               <div class="budget-metric"><span>Plazas-curso</span><strong id="budgetSeats">15</strong></div>
@@ -1396,10 +1400,11 @@
             </div>
 
             <div class="budget-breakdown">
-              <div><span>Subtotal por curso</span><strong id="budgetPerCourse">$75 USD</strong></div>
-              <div><span>Diferencia vs. tarifa lista</span><strong id="budgetSavings">$150 USD</strong></div>
+              <div><span>Costo progresivo por curso</span><strong id="budgetPerCourse">$97 USD</strong></div>
+              <div><span>Ahorro vs. tarifa lista</span><strong id="budgetSavings">$128 USD</strong></div>
               <div class="budget-total"><span>Inversión total estimada</span><strong id="budgetTotal">$75 USD</strong></div>
             </div>
+            <p class="budget-progressive-note" id="budgetProgressiveNote">Cálculo por curso: 11×$7 + 4×$5 = $97.</p>
 
             <div class="budget-benefits">
               <div class="budget-benefits__title">Incluye según escala</div>
@@ -1525,6 +1530,7 @@
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Personalización:</b> certificados con identificación corporativa según alcance acordado.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Registro de asistencia:</b> cada participante debe marcar su asistencia dentro del curso; esta información forma parte de la trazabilidad y puede incorporarse al listado o reporte entregado a la empresa.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Apoyo con IA:</b> todos los cursos incorporan herramientas para resumir contenidos y solicitar explicaciones complementarias.</span></li>
+              <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Tarificación progresiva:</b> cada tarifa se aplica únicamente a las plazas ubicadas en su tramo; al alcanzar un tramo superior no se recalculan hacia atrás las plazas anteriores.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Servicios complementarios por escala:</b> el diseño del plan de capacitación y el cronograma de ejecución aplican según el volumen contratado.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Soporte por curso:</b> cada curso incluye un grupo de WhatsApp para acompañamiento y soporte a los participantes durante su ejecución.</span></li>
             </ul>
@@ -1552,6 +1558,10 @@
           <details>
             <summary>¿La capacitación funciona en teléfonos celulares?</summary>
             <p>Sí. Esta propuesta está planteada bajo un enfoque mobile-first y también se adapta a tablet y escritorio.</p>
+          </details>
+          <details>
+            <summary>¿Cómo se calculan las tarifas progresivas?</summary>
+            <p>Cada tarifa se aplica solo a las plazas incluidas dentro de su tramo. Por ejemplo, al llegar a 100 participantes no se recalculan las primeras 99 plazas a $3; únicamente la plaza 100 y las siguientes usan la tarifa de $3 por curso.</p>
           </details>
           <details>
             <summary>¿Puedo pedir una cotización para más de 200 participantes?</summary>
@@ -1613,7 +1623,7 @@
       </header>
 
       <h2 class="print-title">Presupuesto preliminar de capacitación SST</h2>
-      <p class="print-intro">Estimación generada a partir del número de participantes y cursos seleccionados en el cotizador corporativo. El cálculo aplica automáticamente la escala de precios por volumen vigente en esta propuesta.</p>
+      <p class="print-intro">Estimación generada a partir del número de participantes y cursos seleccionados en el cotizador corporativo. El cálculo utiliza tarifas progresivas por tramos: cada tarifa se aplica únicamente a las plazas correspondientes a ese tramo.</p>
 
       <div class="print-budget-hero">
         <div class="print-budget-main">
@@ -1623,7 +1633,7 @@
         </div>
         <div class="print-budget-side">
           <div class="print-stat"><span>Escala aplicada</span><strong id="printTier">—</strong></div>
-          <div class="print-stat"><span>Tarifa persona / curso</span><strong id="printUnitPrice">—</strong></div>
+          <div class="print-stat"><span>Promedio efectivo / persona / curso</span><strong id="printUnitPrice">—</strong></div>
         </div>
       </div>
 
@@ -1632,10 +1642,11 @@
         <div class="print-calc-grid">
           <div class="print-calc-row"><span>Participantes por curso</span><strong id="printParticipants2">—</strong></div>
           <div class="print-calc-row"><span>Número de cursos</span><strong id="printCourses2">—</strong></div>
-          <div class="print-calc-row"><span>Subtotal por curso</span><strong id="printPerCourse">—</strong></div>
+          <div class="print-calc-row"><span>Costo progresivo por curso</span><strong id="printPerCourse">—</strong></div>
+          <div class="print-calc-row"><span>Tarifa marginal alcanzada</span><strong id="printMarginalPrice">—</strong></div>
           <div class="print-calc-row"><span>DNF</span><strong id="printDnf">—</strong></div>
           <div class="print-calc-row"><span>Valor a tarifa lista ($15)</span><strong id="printListTotal">—</strong></div>
-          <div class="print-calc-row"><span>Diferencia vs. tarifa lista</span><strong id="printSavings">—</strong></div>
+          <div class="print-calc-row"><span>Ahorro vs. tarifa lista</span><strong id="printSavings">—</strong></div>
           <div class="print-calc-row print-calc-total"><span>INVERSIÓN TOTAL ESTIMADA</span><strong id="printTotal2">—</strong></div>
         </div>
       </section>
@@ -1671,17 +1682,17 @@
       </header>
 
       <section class="print-section">
-        <h3 class="print-section-title">Escala de tarifas por volumen</h3>
+        <h3 class="print-section-title">Tarifas progresivas por volumen</h3>
         <table class="print-table">
-          <thead><tr><th>Grupo</th><th>Participantes</th><th>Tarifa convenio</th><th>Beneficio</th></tr></thead>
+          <thead><tr><th>Grupo</th><th>Participantes</th><th>Tarifa del tramo</th><th>Beneficio</th></tr></thead>
           <tbody>
-            <tr id="printTierSmall"><td>Grupo menor</td><td>3 a 11</td><td>$7 USD / persona / curso</td><td>Acceso + evaluación + certificados + asistencia + informe básico + WhatsApp de soporte por curso</td></tr>
-            <tr id="printTierStandard"><td>Grupo estándar</td><td>12 a 49</td><td>$5 USD / persona / curso</td><td>Todo lo anterior + DNF + diseño del plan de capacitación</td></tr>
-            <tr id="printTierScale"><td>Grupo escala</td><td>50 a 99</td><td>$4 USD / persona / curso</td><td>Todo lo anterior + cronograma + reporte analítico</td></tr>
-            <tr id="printTierMass"><td>Grupo masivo</td><td>100+</td><td>$3 USD / persona / curso</td><td>Todo lo anterior + seguimiento ampliado + consolidado ejecutivo</td></tr>
+            <tr id="printTierSmall"><td>Grupo menor</td><td>3 a 11</td><td>$7 USD / plaza / curso</td><td>Acceso + evaluación + certificados + asistencia + informe básico + WhatsApp de soporte por curso</td></tr>
+            <tr id="printTierStandard"><td>Grupo estándar</td><td>12 a 49</td><td>$5 USD / plaza adicional / curso</td><td>Todo lo anterior + DNF + diseño del plan de capacitación</td></tr>
+            <tr id="printTierScale"><td>Grupo escala</td><td>50 a 99</td><td>$4 USD / plaza adicional / curso</td><td>Todo lo anterior + cronograma + reporte analítico</td></tr>
+            <tr id="printTierMass"><td>Grupo masivo</td><td>100+</td><td>$3 USD / plaza adicional / curso</td><td>Todo lo anterior + seguimiento ampliado + consolidado ejecutivo</td></tr>
           </tbody>
         </table>
-        <p class="print-muted" style="font-size:7.3pt;margin:2.5mm 0 0">Mínimo de contratación: 3 participantes por cohorte. Precios netos expresados en USD y aplicados por persona, por curso.</p>
+        <p class="print-muted" style="font-size:7.3pt;margin:2.5mm 0 0">Mínimo de contratación: 3 participantes por cohorte. Modelo progresivo: cada tarifa se aplica solo a las plazas de su tramo; las plazas anteriores mantienen su tarifa al pasar de escala.</p>
       </section>
 
       <div class="print-two-col print-section">
@@ -1716,6 +1727,7 @@
           <li><b>Personalización:</b> certificados con identificación corporativa según alcance acordado.</li>
           <li><b>Registro de asistencia:</b> cada participante debe marcar su asistencia dentro del curso; la información puede incorporarse al listado o reporte de asistencia de la cohorte.</li>
           <li><b>Apoyo con IA:</b> todos los cursos incorporan herramientas para resumir contenidos y solicitar explicaciones complementarias.</li>
+          <li><b>Tarificación progresiva:</b> cada tarifa se aplica únicamente a las plazas de su tramo; al alcanzar un tramo superior no se recalculan las plazas anteriores.</li>
           <li><b>Servicios complementarios por escala:</b> el diseño del plan de capacitación y el cronograma de ejecución aplican según el volumen contratado.</li>
           <li><b>Soporte por curso:</b> cada curso incluye un grupo de WhatsApp para acompañamiento y soporte a los participantes durante su ejecución.</li>
           <li><b>Reportabilidad:</b> informe con participación, avance, calificaciones y estado de cumplimiento de la cohorte.</li>
@@ -1988,6 +2000,7 @@
       const coursesInput = document.getElementById('budgetCourses');
       const tierDisplay = document.getElementById('budgetTier');
       const unitDisplay = document.getElementById('budgetUnitPrice');
+      const averageDisplay = document.getElementById('budgetAveragePrice');
       const participantDisplay = document.getElementById('budgetParticipantDisplay');
       const courseDisplay = document.getElementById('budgetCourseDisplay');
       const seatsDisplay = document.getElementById('budgetSeats');
@@ -1996,8 +2009,10 @@
       const perCourseDisplay = document.getElementById('budgetPerCourse');
       const savingsDisplay = document.getElementById('budgetSavings');
       const totalDisplay = document.getElementById('budgetTotal');
+      const progressiveNote = document.getElementById('budgetProgressiveNote');
       const whatsappBtn = document.getElementById('budgetWhatsappBtn');
       const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+      const rateMoney = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
       const headerPrintBtn = document.getElementById('headerPrintBtn');
       const budgetPrintBtn = document.getElementById('budgetPrintBtn');
       const mobilePrintBtn = document.getElementById('mobilePrintBtn');
@@ -2017,6 +2032,7 @@
         seats: document.getElementById('printSeats'),
         tier: document.getElementById('printTier'),
         unit: document.getElementById('printUnitPrice'),
+        marginal: document.getElementById('printMarginalPrice'),
         perCourse: document.getElementById('printPerCourse'),
         dnf: document.getElementById('printDnf'),
         dnfScope: document.getElementById('printDnfScope'),
@@ -2033,7 +2049,7 @@
         return `AMSST-${y}${m}${d}-${participants}P-${courses}C`;
       }
 
-      function syncPrintProposal({ participants, courses, tier, seats, perCourse, total, listTotal, difference }) {
+      function syncPrintProposal({ participants, courses, tier, seats, perCourse, total, listTotal, difference, averageRate, marginalRate }) {
         const formattedDate = new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'long', year: 'numeric' }).format(new Date());
         const reference = makeReference(participants, courses);
         if (printEls.date) printEls.date.textContent = formattedDate;
@@ -2047,7 +2063,8 @@
         if (printEls.courses2) printEls.courses2.textContent = courses.toLocaleString('es-ES');
         if (printEls.seats) printEls.seats.textContent = seats.toLocaleString('es-ES');
         if (printEls.tier) printEls.tier.textContent = tier.name;
-        if (printEls.unit) printEls.unit.textContent = `${money.format(tier.price)} USD`;
+        if (printEls.unit) printEls.unit.textContent = `${rateMoney.format(averageRate)} USD`;
+        if (printEls.marginal) printEls.marginal.textContent = `${money.format(marginalRate)} USD`;
         if (printEls.perCourse) printEls.perCourse.textContent = `${money.format(perCourse)} USD`;
         if (printEls.dnf) printEls.dnf.textContent = tier.dnf ? 'Incluida sin costo adicional' : 'No incluida (disponible desde 12 participantes)';
         if (printEls.dnfScope) printEls.dnfScope.textContent = tier.dnf
@@ -2122,6 +2139,24 @@
         };
       }
 
+      function calculateProgressivePricing(count) {
+        const tranche1 = Math.min(count, 11);
+        const tranche2 = Math.max(0, Math.min(count, 49) - 11);
+        const tranche3 = Math.max(0, Math.min(count, 99) - 49);
+        const tranche4 = Math.max(0, count - 99);
+        const tranches = [
+          { quantity: tranche1, rate: 7 },
+          { quantity: tranche2, rate: 5 },
+          { quantity: tranche3, rate: 4 },
+          { quantity: tranche4, rate: 3 }
+        ].filter(item => item.quantity > 0);
+        const perCourse = tranches.reduce((sum, item) => sum + (item.quantity * item.rate), 0);
+        const marginalRate = count >= 100 ? 3 : count >= 50 ? 4 : count >= 12 ? 5 : 7;
+        const averageRate = perCourse / count;
+        const breakdown = tranches.map(item => `${item.quantity}×${money.format(item.rate)}`).join(' + ');
+        return { perCourse, marginalRate, averageRate, breakdown };
+      }
+
       function inputBounds(input) {
         return {
           min: Number(input.min || 0),
@@ -2174,14 +2209,16 @@
         if (participants === null || courses === null) return;
 
         const tier = getTier(participants);
+        const pricing = calculateProgressivePricing(participants);
         const seats = participants * courses;
-        const perCourse = participants * tier.price;
+        const perCourse = pricing.perCourse;
         const total = perCourse * courses;
         const listTotal = participants * courses * 15;
         const difference = listTotal - total;
 
         tierDisplay.textContent = tier.name;
-        unitDisplay.textContent = `${money.format(tier.price)} USD`;
+        unitDisplay.textContent = `${money.format(pricing.marginalRate)} USD`;
+        if (averageDisplay) averageDisplay.textContent = `${rateMoney.format(pricing.averageRate)} USD`;
         participantDisplay.textContent = String(participants);
         courseDisplay.textContent = String(courses);
         seatsDisplay.textContent = seats.toLocaleString('es-ES');
@@ -2190,15 +2227,16 @@
         perCourseDisplay.textContent = `${money.format(perCourse)} USD`;
         savingsDisplay.textContent = `${money.format(difference)} USD`;
         totalDisplay.textContent = `${money.format(total)} USD`;
+        if (progressiveNote) progressiveNote.textContent = `Cálculo por curso: ${pricing.breakdown} = ${money.format(perCourse)}. Promedio efectivo: ${rateMoney.format(pricing.averageRate)} por persona.`;
         if (budgetBenefits) {
           budgetBenefits.innerHTML = tier.benefits.map(item => `<span class="budget-benefit"><i class="fa-solid fa-check" aria-hidden="true"></i>${item}</span>`).join('');
         }
 
-        syncPrintProposal({ participants, courses, tier, seats, perCourse, total, listTotal, difference });
+        syncPrintProposal({ participants, courses, tier, seats, perCourse, total, listTotal, difference, averageRate: pricing.averageRate, marginalRate: pricing.marginalRate });
 
         const courseWord = courses === 1 ? 'curso' : 'cursos';
         const participantWord = participants === 1 ? 'participante' : 'participantes';
-        const message = `Hola David, armé un presupuesto preliminar para ${participants} ${participantWord} y ${courses} ${courseWord}. La tarifa aplicada es ${money.format(tier.price)} USD por persona por curso y la inversión total estimada es ${money.format(total)} USD. Quisiera solicitar una cotización formal para mi empresa.`;
+        const message = `Hola David, armé un presupuesto preliminar para ${participants} ${participantWord} y ${courses} ${courseWord} con tarifas progresivas por tramo. La tarifa marginal alcanzada es ${money.format(pricing.marginalRate)} USD por plaza/curso, el promedio efectivo es ${rateMoney.format(pricing.averageRate)} USD por persona/curso y la inversión total estimada es ${money.format(total)} USD. Quisiera solicitar una cotización formal para mi empresa.`;
         whatsappBtn.href = `https://wa.me/56968615650?text=${encodeURIComponent(message)}`;
       }
 
