@@ -225,7 +225,7 @@
     if (index === 0) {
       const pillars = [
         '<b>Metodología propia MOVIDA 4A:</b> aprendizaje activo inspirado en neuroeducación, ciencias del aprendizaje, microlearning, gamificación y escenarios prácticos.',
-        '<b>Evaluación y certificación:</b> evaluación final, certificados y encuesta.',
+        '<b>Evaluación y entrega de certificado:</b> evaluación final, certificado para quienes aprueben y encuesta.',
         '<b>Trazabilidad:</b> asistencia, avance, resultados e informe básico.',
         '<b>Acompañamiento:</b> WhatsApp de soporte + ayuda con IA.',
         '<b>Gamificación:</b> progreso, puntos, retos y ranking de cohorte configurable.'
