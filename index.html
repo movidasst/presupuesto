@@ -642,6 +642,80 @@
       footer { padding-bottom: 92px; }
     }
 
+    /* Phone SPA: distinct screens instead of one long landing page */
+    .mobile-screen-label, .mobile-more-hub, .mobile-subview-back { display: none; }
+
+    @media (max-width: 639px) {
+      html { scroll-padding-top: 72px; }
+      body.mobile-spa-active { background: #f5f7fb; }
+      body.mobile-spa-active .notice { display: none !important; }
+      body.mobile-spa-active .site-header { top: 0; }
+      body.mobile-spa-active .nav { min-height: 64px; }
+      body.mobile-spa-active .nav-actions { display: none !important; }
+      body.mobile-spa-active .brand { max-width: 68%; }
+      body.mobile-spa-active .brand__tagline { display: none; }
+      body.mobile-spa-active .mobile-screen-label {
+        margin-left: auto; display: inline-flex; align-items: center; gap: 7px; max-width: 31%;
+        padding: 7px 10px; border-radius: 999px; background: var(--soft-brand); color: var(--brand-700);
+        font-size: .66rem; font-weight: 850; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .mobile-screen-label span { overflow: hidden; text-overflow: ellipsis; }
+
+      body.mobile-spa-active #contenido { min-height: calc(100dvh - 136px); overflow-x: clip; }
+      body.mobile-spa-active footer { display: none !important; }
+      body.mobile-spa-active .mobile-menu { display: none !important; }
+      body.mobile-spa-active .mobile-view-item.mobile-view-hidden { display: none !important; }
+      body.mobile-spa-active .mobile-view-item.mobile-view-visible { display: block; }
+      body.mobile-spa-active .mobile-view-item.mobile-view-enter-right { animation: mobileViewRight .22s cubic-bezier(.2,.8,.2,1); }
+      body.mobile-spa-active .mobile-view-item.mobile-view-enter-left { animation: mobileViewLeft .22s cubic-bezier(.2,.8,.2,1); }
+
+      body.mobile-spa-active .section { padding: 42px 0 92px; }
+      body.mobile-spa-active .hero { padding: 42px 0 92px; min-height: calc(100dvh - 132px); }
+      body.mobile-spa-active .trust { padding-bottom: 82px; }
+      body.mobile-spa-active .section-head { margin-bottom: 24px; }
+      body.mobile-spa-active .section-head h2 { font-size: clamp(1.65rem, 8vw, 2.25rem); }
+
+      .mobile-more-hub { padding: 34px 0 94px; min-height: calc(100dvh - 132px); background: linear-gradient(180deg,#f8fafc,#f2f6f8); }
+      body.mobile-spa-active .mobile-more-hub.mobile-view-visible { display: block; }
+      .mobile-screen-heading { margin-bottom: 22px; }
+      .mobile-screen-heading h2 { margin: 12px 0 7px; color: var(--navy); font-size: 1.65rem; line-height: 1.05; }
+      .mobile-screen-heading p { margin: 0; color: var(--muted); font-size: .83rem; }
+      .mobile-more-grid { display: grid; gap: 10px; }
+      .mobile-more-card {
+        width: 100%; min-height: 74px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 17px;
+        background: #fff; color: var(--ink); display: grid; grid-template-columns: 44px minmax(0,1fr) auto;
+        align-items: center; gap: 12px; text-align: left; box-shadow: 0 8px 24px rgba(10,29,52,.05); cursor: pointer;
+      }
+      .mobile-more-card__icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 13px; background: var(--soft-brand); color: var(--brand); font-size: 1.05rem; }
+      .mobile-more-card strong { display: block; color: var(--navy); font-size: .86rem; }
+      .mobile-more-card small { display: block; margin-top: 2px; color: var(--muted); font-size: .68rem; }
+      .mobile-more-card > i { color: #9aa8b7; font-size: .72rem; }
+      .mobile-more-actions { display: grid; gap: 9px; margin-top: 18px; }
+
+      .mobile-subview-back {
+        position: sticky; top: 64px; z-index: 30; margin: -18px 0 20px; padding: 8px 0;
+        background: linear-gradient(180deg, rgba(245,247,251,.98) 70%, rgba(245,247,251,0));
+      }
+      body.mobile-spa-active .mobile-subview-back { display: block; }
+      .mobile-subview-back button {
+        min-height: 40px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff;
+        color: var(--navy); display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: .74rem;
+      }
+
+      .mobile-app-nav__item { touch-action: manipulation; }
+      .mobile-app-nav__item.is-active { color: var(--brand); background: var(--soft-brand); }
+      .mobile-app-nav__item--primary.is-active .mobile-app-nav__icon { transform: translateY(-2px) scale(1.04); }
+    }
+
+    @keyframes mobileViewRight {
+      from { opacity: 0; transform: translateX(16px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes mobileViewLeft {
+      from { opacity: 0; transform: translateX(-16px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
     /* Print / PDF commercial proposal */
     @page { size: A4; margin: 0; }
     @media print {
@@ -798,6 +872,10 @@
           <span class="brand__tagline">De la reacción a la prevención.</span>
         </span>
       </a>
+
+      <div class="mobile-screen-label no-print" id="mobileScreenLabel" aria-live="polite">
+        <i class="fa-solid fa-house" aria-hidden="true"></i><span>Inicio</span>
+      </div>
 
       <nav class="desktop-nav" aria-label="Navegación principal">
         <a href="#demo">Demo</a>
@@ -1167,6 +1245,43 @@
       </div>
     </section>
 
+
+    <section class="mobile-more-hub no-print" id="mobileMoreHub" aria-labelledby="mobile-more-title">
+      <div class="container">
+        <div class="mobile-screen-heading">
+          <span class="eyebrow"><i class="fa-solid fa-grid-2" aria-hidden="true"></i> Más opciones</span>
+          <h2 id="mobile-more-title">Información y soporte</h2>
+          <p>Consulta los detalles de la propuesta sin salir de la experiencia móvil.</p>
+        </div>
+        <div class="mobile-more-grid">
+          <button class="mobile-more-card" type="button" data-mobile-more-target="dnf">
+            <span class="mobile-more-card__icon"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i></span>
+            <span><strong>DNF</strong><small>Necesidades de formación</small></span><i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="mobile-more-card" type="button" data-mobile-more-target="reportes">
+            <span class="mobile-more-card__icon"><i class="fa-solid fa-chart-column" aria-hidden="true"></i></span>
+            <span><strong>Reportes</strong><small>Asistencia, avance y resultados</small></span><i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="mobile-more-card" type="button" data-mobile-more-target="condiciones">
+            <span class="mobile-more-card__icon"><i class="fa-solid fa-file-signature" aria-hidden="true"></i></span>
+            <span><strong>Condiciones</strong><small>Pago y operación</small></span><i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="mobile-more-card" type="button" data-mobile-more-target="faq">
+            <span class="mobile-more-card__icon"><i class="fa-solid fa-circle-question" aria-hidden="true"></i></span>
+            <span><strong>Preguntas</strong><small>Respuestas frecuentes</small></span><i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="mobile-more-card" type="button" data-mobile-more-target="contacto">
+            <span class="mobile-more-card__icon"><i class="fa-solid fa-headset" aria-hidden="true"></i></span>
+            <span><strong>Contacto</strong><small>Atención corporativa</small></span><i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="mobile-more-actions">
+          <button class="btn btn--outline btn--block" id="mobileHubPrintBtn" type="button"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Generar propuesta PDF</button>
+          <a class="btn btn--whatsapp btn--block" href="https://wa.me/56968615650?text=Hola%20David,%20quiero%20informaci%C3%B3n%20sobre%20la%20capacitaci%C3%B3n%20corporativa%20en%20SST." target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Hablar por WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="dnf" aria-labelledby="dnf-title">
       <div class="container">
         <div class="dnf-card">
@@ -1193,7 +1308,7 @@
       </div>
     </section>
 
-    <section class="section section--white" aria-labelledby="report-title">
+    <section class="section section--white" id="reportes" aria-labelledby="report-title">
       <div class="container">
         <div class="section-head">
           <span class="eyebrow"><i class="fa-solid fa-chart-column" aria-hidden="true"></i> Reportabilidad</span>
@@ -1248,7 +1363,7 @@
       </div>
     </section>
 
-    <section class="section section--white" aria-labelledby="faq-title">
+    <section class="section section--white" id="faq" aria-labelledby="faq-title">
       <div class="container">
         <div class="section-head">
           <span class="eyebrow"><i class="fa-solid fa-circle-question" aria-hidden="true"></i> Preguntas frecuentes</span>
@@ -1275,7 +1390,7 @@
       </div>
     </section>
 
-    <section class="section contact-section" aria-labelledby="contact-title">
+    <section class="section contact-section" id="contacto" aria-labelledby="contact-title">
       <div class="container">
         <div class="contact-card">
           <div class="contact-person">
@@ -1452,20 +1567,20 @@
     </article>
   </section>
 
-  <nav class="mobile-app-nav no-print" aria-label="Navegación rápida móvil">
-    <a class="mobile-app-nav__item is-active" data-mobile-section href="#top" aria-label="Ir al inicio">
+  <nav class="mobile-app-nav no-print" aria-label="Navegación principal móvil">
+    <button class="mobile-app-nav__item is-active" type="button" data-mobile-view-target="home" aria-label="Abrir Inicio">
       <i class="fa-solid fa-house" aria-hidden="true"></i><span>Inicio</span>
-    </a>
-    <a class="mobile-app-nav__item" data-mobile-section href="#demo" aria-label="Ir al Demo corporativo">
+    </button>
+    <button class="mobile-app-nav__item" type="button" data-mobile-view-target="demo" aria-label="Abrir Demo">
       <i class="fa-solid fa-flask" aria-hidden="true"></i><span>Demo</span>
-    </a>
-    <a class="mobile-app-nav__item" data-mobile-section href="#planes" aria-label="Ir a planes y tarifas">
+    </button>
+    <button class="mobile-app-nav__item" type="button" data-mobile-view-target="plans" aria-label="Abrir Planes">
       <i class="fa-solid fa-tags" aria-hidden="true"></i><span>Planes</span>
-    </a>
-    <a class="mobile-app-nav__item mobile-app-nav__item--primary" data-mobile-section href="#presupuesto" aria-label="Armar presupuesto">
+    </button>
+    <button class="mobile-app-nav__item mobile-app-nav__item--primary" type="button" data-mobile-view-target="quote" aria-label="Abrir Cotizador">
       <span class="mobile-app-nav__icon"><i class="fa-solid fa-calculator" aria-hidden="true"></i></span><span>Cotizar</span>
-    </a>
-    <button class="mobile-app-nav__item" id="mobileMoreBtn" type="button" aria-label="Ver más opciones" aria-expanded="false" aria-controls="mobileMenu">
+    </button>
+    <button class="mobile-app-nav__item" id="mobileMoreBtn" type="button" data-mobile-view-target="more" aria-label="Abrir Más opciones">
       <i class="fa-solid fa-grip" aria-hidden="true"></i><span>Más</span>
     </button>
   </nav>
@@ -1483,8 +1598,6 @@
         mobileMenu.setAttribute('aria-hidden', String(!open));
         menuToggle.setAttribute('aria-expanded', String(open));
         menuToggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-        mobileMoreBtn?.setAttribute('aria-expanded', String(open));
-        mobileMoreBtn?.classList.toggle('is-active', open);
         document.body.classList.toggle('menu-open', open);
         if (menuIcon) {
           menuIcon.classList.toggle('fa-bars', !open);
@@ -1493,7 +1606,6 @@
       }
 
       menuToggle?.addEventListener('click', () => setMenu(!mobileMenu.classList.contains('is-open')));
-      mobileMoreBtn?.addEventListener('click', () => setMenu(!mobileMenu.classList.contains('is-open')));
       mobileMenu?.addEventListener('click', (event) => {
         if (event.target === mobileMenu || event.target.closest('a')) setMenu(false);
       });
@@ -1501,45 +1613,204 @@
         if (event.key === 'Escape') setMenu(false);
       });
 
-      const mobileSectionLinks = [...document.querySelectorAll('.mobile-app-nav__item[data-mobile-section]')];
-      const mobileSmoothLinks = [...document.querySelectorAll('.mobile-app-nav a[href^="#"], .mobile-menu a[href^="#"]')];
+      const phoneMq = window.matchMedia('(max-width: 639px)');
+      const mobileScreenLabel = document.getElementById('mobileScreenLabel');
+      const mobileTabButtons = [...document.querySelectorAll('[data-mobile-view-target]')];
+      const mobileMoreHub = document.getElementById('mobileMoreHub');
+      const mobileMoreCards = [...document.querySelectorAll('[data-mobile-more-target]')];
+      const mobileManagedSections = [
+        document.querySelector('.hero'),
+        document.querySelector('.trust'),
+        document.getElementById('demo'),
+        document.getElementById('como-funciona'),
+        document.getElementById('planes'),
+        document.getElementById('presupuesto'),
+        mobileMoreHub,
+        document.getElementById('dnf'),
+        document.getElementById('reportes'),
+        document.getElementById('condiciones'),
+        document.getElementById('faq'),
+        document.getElementById('contacto')
+      ].filter(Boolean);
 
-      mobileSmoothLinks.forEach((link) => {
-        link.addEventListener('click', (event) => {
-          if (!window.matchMedia('(max-width: 639px)').matches) return;
-          const selector = link.getAttribute('href');
-          if (!selector || selector === '#') return;
-          const target = document.querySelector(selector);
-          if (!target) return;
+      const mobileViewOrder = { home: 0, demo: 1, plans: 2, quote: 3, more: 4 };
+      const mobileViewMeta = {
+        home:  { label: 'Inicio', icon: 'fa-house' },
+        demo:  { label: 'Demo', icon: 'fa-flask' },
+        plans: { label: 'Planes', icon: 'fa-tags' },
+        quote: { label: 'Cotizar', icon: 'fa-calculator' },
+        more:  { label: 'Más', icon: 'fa-grip' }
+      };
+      const mobileMoreLabels = {
+        dnf: 'DNF', reportes: 'Reportes', condiciones: 'Condiciones', faq: 'Preguntas', contacto: 'Contacto'
+      };
+      const mobileScrollMemory = new Map();
+      let currentMobileView = 'home';
+      let currentMobileDetail = null;
+      let mobileAppReady = false;
+
+      function mobileRoute(view, detail = null) {
+        const base = { home: 'inicio', demo: 'demo', plans: 'planes', quote: 'cotizar', more: 'mas' }[view] || 'inicio';
+        return detail ? `#/${base}/${detail}` : `#/${base}`;
+      }
+
+      function parseMobileRoute() {
+        const hash = location.hash || '';
+        if (!hash.startsWith('#/')) return { view: 'home', detail: null };
+        const parts = hash.slice(2).split('/').filter(Boolean);
+        const view = { inicio: 'home', demo: 'demo', planes: 'plans', cotizar: 'quote', mas: 'more' }[parts[0]] || 'home';
+        const detail = view === 'more' && mobileMoreLabels[parts[1]] ? parts[1] : null;
+        return { view, detail };
+      }
+
+      function mobileKey(view, detail) { return `${view}:${detail || 'root'}`; }
+
+      function ensureMobileSubviewBack(section, detail) {
+        if (!section || section.querySelector(':scope > .container > .mobile-subview-back')) return;
+        const container = section.querySelector(':scope > .container');
+        if (!container) return;
+        const wrap = document.createElement('div');
+        wrap.className = 'mobile-subview-back no-print';
+        wrap.innerHTML = `<button type="button" data-mobile-back-more><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver a Más</button>`;
+        container.prepend(wrap);
+      }
+
+      function setupMobileSections() {
+        mobileManagedSections.forEach((section) => section.classList.add('mobile-view-item'));
+        ['dnf','reportes','condiciones','faq','contacto'].forEach((detail) => ensureMobileSubviewBack(document.getElementById(detail), detail));
+      }
+
+      function visibleSectionsFor(view, detail) {
+        if (view === 'home') return [document.querySelector('.hero'), document.querySelector('.trust')].filter(Boolean);
+        if (view === 'demo') return [document.getElementById('demo'), document.getElementById('como-funciona')].filter(Boolean);
+        if (view === 'plans') return [document.getElementById('planes')].filter(Boolean);
+        if (view === 'quote') return [document.getElementById('presupuesto')].filter(Boolean);
+        if (view === 'more') return [detail ? document.getElementById(detail) : mobileMoreHub].filter(Boolean);
+        return [document.querySelector('.hero')].filter(Boolean);
+      }
+
+      function updateMobileHeader(view, detail) {
+        if (!mobileScreenLabel) return;
+        const meta = mobileViewMeta[view] || mobileViewMeta.home;
+        const label = detail ? (mobileMoreLabels[detail] || meta.label) : meta.label;
+        mobileScreenLabel.innerHTML = `<i class="fa-solid ${meta.icon}" aria-hidden="true"></i><span>${label}</span>`;
+      }
+
+      function setMobileTabActive(view) {
+        mobileTabButtons.forEach((button) => button.classList.toggle('is-active', button.dataset.mobileViewTarget === view));
+      }
+
+      function applyMobileView(view, detail = null, options = {}) {
+        if (!phoneMq.matches) return;
+        const { historyMode = 'push', restoreScroll = true } = options;
+        const oldView = currentMobileView;
+        const oldDetail = currentMobileDetail;
+        mobileScrollMemory.set(mobileKey(oldView, oldDetail), window.scrollY);
+
+        const direction = (mobileViewOrder[view] ?? 0) >= (mobileViewOrder[oldView] ?? 0) ? 'right' : 'left';
+        const visible = new Set(visibleSectionsFor(view, detail));
+        mobileManagedSections.forEach((section) => {
+          section.classList.remove('mobile-view-visible', 'mobile-view-enter-right', 'mobile-view-enter-left');
+          section.classList.toggle('mobile-view-hidden', !visible.has(section));
+        });
+        visible.forEach((section) => {
+          section.classList.remove('mobile-view-hidden');
+          section.classList.add('mobile-view-visible', direction === 'right' ? 'mobile-view-enter-right' : 'mobile-view-enter-left');
+        });
+
+        currentMobileView = view;
+        currentMobileDetail = detail;
+        setMobileTabActive(view);
+        updateMobileHeader(view, detail);
+        setMenu(false);
+
+        const route = mobileRoute(view, detail);
+        if (historyMode === 'replace') history.replaceState({ mobileView: view, mobileDetail: detail }, '', route);
+        if (historyMode === 'push' && location.hash !== route) history.pushState({ mobileView: view, mobileDetail: detail }, '', route);
+
+        const saved = restoreScroll ? (mobileScrollMemory.get(mobileKey(view, detail)) || 0) : 0;
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: saved, left: 0, behavior: 'auto' });
+          window.setTimeout(() => visible.forEach((section) => section.classList.remove('mobile-view-enter-right', 'mobile-view-enter-left')), 260);
+        });
+      }
+
+      function navigateMobile(view, detail = null, options = {}) {
+        if (!phoneMq.matches) return false;
+        applyMobileView(view, detail, { historyMode: options.replace ? 'replace' : 'push', restoreScroll: options.restoreScroll !== false });
+        return true;
+      }
+
+      function routeAnchorOnPhone(hash) {
+        const routeMap = {
+          '#top': ['home', null], '#contenido': ['home', null], '#demo': ['demo', null], '#como-funciona': ['demo', null],
+          '#planes': ['plans', null], '#presupuesto': ['quote', null], '#dnf': ['more', 'dnf'], '#reportes': ['more', 'reportes'],
+          '#condiciones': ['more', 'condiciones'], '#faq': ['more', 'faq'], '#contacto': ['more', 'contacto']
+        };
+        return routeMap[hash] || null;
+      }
+
+      document.addEventListener('click', (event) => {
+        if (!phoneMq.matches) return;
+        const tab = event.target.closest('[data-mobile-view-target]');
+        if (tab) {
           event.preventDefault();
-          setMenu(false);
-          requestAnimationFrame(() => {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            history.replaceState(null, '', selector);
-          });
+          navigateMobile(tab.dataset.mobileViewTarget, null, { restoreScroll: true });
+          return;
+        }
+        const moreCard = event.target.closest('[data-mobile-more-target]');
+        if (moreCard) {
+          event.preventDefault();
+          navigateMobile('more', moreCard.dataset.mobileMoreTarget, { restoreScroll: true });
+          return;
+        }
+        const back = event.target.closest('[data-mobile-back-more]');
+        if (back) {
+          event.preventDefault();
+          navigateMobile('more', null, { restoreScroll: true });
+          return;
+        }
+        const anchor = event.target.closest('a[href^="#"]');
+        if (!anchor) return;
+        const hash = anchor.getAttribute('href');
+        const route = routeAnchorOnPhone(hash);
+        if (!route) return;
+        event.preventDefault();
+        const [view, detail] = route;
+        const sameView = view === currentMobileView && detail === currentMobileDetail;
+        if (!sameView) navigateMobile(view, detail, { restoreScroll: false });
+        requestAnimationFrame(() => {
+          const target = document.querySelector(hash);
+          if (target && sameView) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
 
-      let mobileNavTicking = false;
-      function syncMobileNav() {
-        mobileNavTicking = false;
-        if (!window.matchMedia('(max-width: 639px)').matches || !mobileSectionLinks.length) return;
-        const marker = window.scrollY + Math.min(window.innerHeight * .28, 190);
-        let activeLink = mobileSectionLinks[0];
-        for (const link of mobileSectionLinks) {
-          const target = document.querySelector(link.getAttribute('href'));
-          if (target && target.offsetTop <= marker) activeLink = link;
-        }
-        mobileSectionLinks.forEach((link) => link.classList.toggle('is-active', link === activeLink));
+      function enableMobileApp() {
+        if (!phoneMq.matches) return;
+        setupMobileSections();
+        document.body.classList.add('mobile-spa-active');
+        const route = parseMobileRoute();
+        currentMobileView = route.view;
+        currentMobileDetail = route.detail;
+        mobileAppReady = true;
+        applyMobileView(route.view, route.detail, { historyMode: location.hash.startsWith('#/') ? 'none' : 'replace', restoreScroll: false });
       }
-      function requestMobileNavSync() {
-        if (mobileNavTicking) return;
-        mobileNavTicking = true;
-        requestAnimationFrame(syncMobileNav);
+
+      function disableMobileApp() {
+        document.body.classList.remove('mobile-spa-active');
+        mobileManagedSections.forEach((section) => section.classList.remove('mobile-view-hidden', 'mobile-view-visible', 'mobile-view-enter-right', 'mobile-view-enter-left'));
+        if (location.hash.startsWith('#/')) history.replaceState(null, '', location.pathname + location.search);
+        mobileAppReady = false;
       }
-      window.addEventListener('scroll', requestMobileNavSync, { passive: true });
-      window.addEventListener('resize', requestMobileNavSync);
-      syncMobileNav();
+
+      window.addEventListener('popstate', () => {
+        if (!phoneMq.matches) return;
+        const route = parseMobileRoute();
+        applyMobileView(route.view, route.detail, { historyMode: 'none', restoreScroll: true });
+      });
+
+      phoneMq.addEventListener?.('change', (event) => event.matches ? enableMobileApp() : disableMobileApp());
+      if (phoneMq.matches) enableMobileApp();
 
       const participantsInput = document.getElementById('budgetParticipants');
       const coursesInput = document.getElementById('budgetCourses');
@@ -1558,6 +1829,7 @@
       const headerPrintBtn = document.getElementById('headerPrintBtn');
       const budgetPrintBtn = document.getElementById('budgetPrintBtn');
       const mobilePrintBtn = document.getElementById('mobilePrintBtn');
+      const mobileHubPrintBtn = document.getElementById('mobileHubPrintBtn');
       const originalTitle = document.title;
 
       const printEls = {
@@ -1735,6 +2007,7 @@
       headerPrintBtn?.addEventListener('click', printBudgetProposal);
       budgetPrintBtn?.addEventListener('click', printBudgetProposal);
       mobilePrintBtn?.addEventListener('click', () => { setMenu(false); printBudgetProposal(); });
+      mobileHubPrintBtn?.addEventListener('click', printBudgetProposal);
       updateBudget();
     })();
   </script>
