@@ -158,7 +158,19 @@ benefit_new = '''          'Ayuda con IA para resumir y explicar contenidos',
 if "'Gamificación con puntos y ranking'" not in text:
     text = text.replace(benefit_anchor, benefit_new, 1)
 
-# 6) Enrich existing PDF methodology description, without adding another print box.
+# 6) Make the base plan card explicit, so every higher tier visibly inherits the methodology.
+small_old = '''                    <li>Ayuda con IA para resumir y explicar contenidos</li>
+                  </ul>'''
+small_new = '''                    <li>Ayuda con IA para resumir y explicar contenidos</li>
+                    <li>Metodología práctica con estudios de caso, quizzes y retos</li>
+                    <li>Guías PDF y recursos de apoyo</li>
+                    <li>Encuesta de satisfacción al cierre</li>
+                    <li>Gamificación con puntos y ranking</li>
+                  </ul>'''
+if '<li>Gamificación con puntos y ranking</li>' not in text:
+    text = text.replace(small_old, small_new, 1)
+
+# 7) Enrich existing PDF methodology description, without adding another print box.
 print_old = '''<div class="print-include"><b>4 horas académicas por curso</b><span>Contenido asincrónico en formato microlearning con 45 días de matrícula por curso.</span></div>'''
 print_new = '''<div class="print-include"><b>4 horas académicas por curso</b><span>Casos prácticos, guías PDF, quizzes, retos y gamificación; evaluación final y encuesta de satisfacción. 45 días de matrícula.</span></div>'''
 text = text.replace(print_old, print_new, 1)
