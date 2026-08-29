@@ -377,6 +377,9 @@
     .price-card__list { display: block; text-decoration: line-through; color: #94a0ad; font-size: .68rem; }
     .price-card__price { display: block; color: var(--brand-700); font-size: 1.35rem; line-height: 1.1; font-weight: 900; }
     .price-card__unit { font-size: .61rem; color: var(--muted); }
+    .price-card__features { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 5px; }
+    .price-card__features li { position: relative; padding-left: 17px; color: #53677e; font-size: .7rem; line-height: 1.35; }
+    .price-card__features li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--brand); font-weight: 900; }
 
     .calculator {
       border-radius: 22px; padding: 20px; color: #fff;
@@ -447,6 +450,11 @@
     .budget-print { color: #e7eef5; border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.06); }
     .budget-print:hover { background: rgba(255,255,255,.1); }
     .budget-disclaimer { margin: 12px 0 0; color: #8fa4b8; font-size: .66rem; line-height: 1.45; }
+    .budget-benefits { margin-top: 14px; display: grid; gap: 8px; }
+    .budget-benefits__title { color: #ffffff; font-size: .74rem; font-weight: 800; }
+    .budget-benefits__list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .budget-benefit { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1); color: #dfe9f3; font-size: .68rem; font-weight: 700; }
+    .budget-benefit i { color: #9be483; }
 
     /* Printable commercial proposal */
     .print-proposal { display: none; }
@@ -881,19 +889,53 @@
           <div>
             <div class="price-list" aria-label="Escalas de precio">
               <article class="price-card">
-                <div><span class="price-card__name">Grupo menor</span><span class="price-card__range">3 a 11 participantes</span><span class="price-card__benefit"><i class="fa-solid fa-check" aria-hidden="true"></i> Acceso + certificados</span></div>
+                <div>
+                  <span class="price-card__name">Grupo menor</span>
+                  <span class="price-card__range">3 a 11 participantes</span>
+                  <span class="price-card__benefit"><i class="fa-solid fa-check" aria-hidden="true"></i> Incluye:</span>
+                  <ul class="price-card__features">
+                    <li>Acceso multiplataforma</li>
+                    <li>Evaluación automatizada</li>
+                    <li>Certificados para aprobados</li>
+                    <li>Informe básico de participación y resultados</li>
+                  </ul>
+                </div>
                 <div class="price-card__right"><span class="price-card__list">Lista $15</span><span class="price-card__price">$7</span><span class="price-card__unit">USD / persona</span></div>
               </article>
               <article class="price-card is-featured">
-                <div><span class="price-card__name">Grupo estándar</span><span class="price-card__range">12 a 49 participantes</span><span class="price-card__benefit"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> DNF incluida sin costo adicional</span></div>
+                <div>
+                  <span class="price-card__name">Grupo estándar</span>
+                  <span class="price-card__range">12 a 49 participantes</span>
+                  <span class="price-card__benefit"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Incluye todo lo del Grupo menor, más:</span>
+                  <ul class="price-card__features">
+                    <li>DNF incluida</li>
+                    <li>Diseño del plan de capacitación</li>
+                  </ul>
+                </div>
                 <div class="price-card__right"><span class="price-card__list">Lista $15</span><span class="price-card__price">$5</span><span class="price-card__unit">USD / persona</span></div>
               </article>
               <article class="price-card">
-                <div><span class="price-card__name">Grupo escala</span><span class="price-card__range">50 a 99 participantes</span><span class="price-card__benefit"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> DNF + reporte analítico</span></div>
+                <div>
+                  <span class="price-card__name">Grupo escala</span>
+                  <span class="price-card__range">50 a 99 participantes</span>
+                  <span class="price-card__benefit"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Incluye todo lo del Grupo estándar, más:</span>
+                  <ul class="price-card__features">
+                    <li>Cronograma de ejecución</li>
+                    <li>Reporte analítico de la cohorte</li>
+                  </ul>
+                </div>
                 <div class="price-card__right"><span class="price-card__list">Lista $15</span><span class="price-card__price">$4</span><span class="price-card__unit">USD / persona</span></div>
               </article>
               <article class="price-card">
-                <div><span class="price-card__name">Grupo masivo</span><span class="price-card__range">100+ participantes</span><span class="price-card__benefit"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> DNF + seguimiento de cohorte</span></div>
+                <div>
+                  <span class="price-card__name">Grupo masivo</span>
+                  <span class="price-card__range">100+ participantes</span>
+                  <span class="price-card__benefit"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Incluye todo lo del Grupo escala, más:</span>
+                  <ul class="price-card__features">
+                    <li>Seguimiento ampliado de la cohorte</li>
+                    <li>Consolidado ejecutivo de resultados</li>
+                  </ul>
+                </div>
                 <div class="price-card__right"><span class="price-card__list">Lista $15</span><span class="price-card__price">$3</span><span class="price-card__unit">USD / persona</span></div>
               </article>
             </div>
@@ -983,6 +1025,11 @@
               <div class="budget-total"><span>Inversión total estimada</span><strong id="budgetTotal">$75 USD</strong></div>
             </div>
 
+            <div class="budget-benefits">
+              <div class="budget-benefits__title">Incluye según escala</div>
+              <div class="budget-benefits__list" id="budgetBenefits"></div>
+            </div>
+
             <div class="budget-summary__actions no-print">
               <a class="btn btn--whatsapp btn--block" id="budgetWhatsappBtn" href="https://wa.me/56968615650" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Solicitar cotización formal</a>
               <button class="btn btn--outline btn--block budget-print" id="budgetPrintBtn" type="button"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Generar propuesta en PDF</button>
@@ -1063,6 +1110,7 @@
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Sustitución:</b> cambios de participantes sin costo durante los primeros 7 días continuos de la cohorte.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Aprobación:</b> evaluación automatizada con nota mínima del 80% para emisión del certificado.</span></li>
               <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Personalización:</b> certificados con identificación corporativa según alcance acordado.</span></li>
+              <li><i class="fa-solid fa-check" aria-hidden="true"></i><span><b>Servicios complementarios por escala:</b> el diseño del plan de capacitación y el cronograma de ejecución aplican según el volumen contratado.</span></li>
             </ul>
             <div class="legal-note"><b>Nota técnica:</b> la formación asincrónica complementa la gestión de capacitación y no sustituye entrenamientos prácticos, inducciones específicas, demostraciones de competencia ni otras exigencias presenciales que correspondan al riesgo, tarea o normativa aplicable.</div>
           </article>
@@ -1185,6 +1233,7 @@
           <div class="print-include"><b>Certificados</b><span>Emisión para participantes aprobados, con identificación corporativa según el alcance acordado.</span></div>
           <div class="print-include"><b>Seguimiento e informe</b><span>Participación, avance, resultados y resumen final para RRHH o SSST.</span></div>
           <div class="print-include"><b>DNF</b><span id="printDnfScope">Detección de Necesidades de Formación según la escala contratada.</span></div>
+          <div class="print-include"><b>Planificación complementaria</b><span id="printPlanningScope">Beneficios adicionales según la escala de participantes seleccionada.</span></div>
         </div>
       </section>
 
@@ -1208,10 +1257,10 @@
         <table class="print-table">
           <thead><tr><th>Grupo</th><th>Participantes</th><th>Tarifa convenio</th><th>Beneficio</th></tr></thead>
           <tbody>
-            <tr id="printTierSmall"><td>Grupo menor</td><td>3 a 11</td><td>$7 USD / persona / curso</td><td>Acceso + certificados</td></tr>
-            <tr id="printTierStandard"><td>Grupo estándar</td><td>12 a 49</td><td>$5 USD / persona / curso</td><td>DNF sin costo adicional</td></tr>
-            <tr id="printTierScale"><td>Grupo escala</td><td>50 a 99</td><td>$4 USD / persona / curso</td><td>DNF + reporte analítico</td></tr>
-            <tr id="printTierMass"><td>Grupo masivo</td><td>100+</td><td>$3 USD / persona / curso</td><td>DNF + panel dedicado</td></tr>
+            <tr id="printTierSmall"><td>Grupo menor</td><td>3 a 11</td><td>$7 USD / persona / curso</td><td>Acceso + evaluación + certificados + informe básico</td></tr>
+            <tr id="printTierStandard"><td>Grupo estándar</td><td>12 a 49</td><td>$5 USD / persona / curso</td><td>Todo lo anterior + DNF + diseño del plan de capacitación</td></tr>
+            <tr id="printTierScale"><td>Grupo escala</td><td>50 a 99</td><td>$4 USD / persona / curso</td><td>Todo lo anterior + cronograma + reporte analítico</td></tr>
+            <tr id="printTierMass"><td>Grupo masivo</td><td>100+</td><td>$3 USD / persona / curso</td><td>Todo lo anterior + seguimiento ampliado + consolidado ejecutivo</td></tr>
           </tbody>
         </table>
         <p class="print-muted" style="font-size:7.3pt;margin:2.5mm 0 0">Mínimo de contratación: 3 participantes por cohorte. Precios netos expresados en USD y aplicados por persona, por curso.</p>
@@ -1247,6 +1296,7 @@
           <li><b>Período de matrícula:</b> 45 días por curso, salvo un alcance distinto acordado expresamente.</li>
           <li><b>Aprobación:</b> evaluación automatizada final con nota mínima del 80% para la emisión del certificado.</li>
           <li><b>Personalización:</b> certificados con identificación corporativa según alcance acordado.</li>
+          <li><b>Servicios complementarios por escala:</b> el diseño del plan de capacitación y el cronograma de ejecución aplican según el volumen contratado.</li>
           <li><b>Reportabilidad:</b> informe con participación, avance, calificaciones y estado de cumplimiento de la cohorte.</li>
         </ul>
       </section>
@@ -1307,6 +1357,7 @@
       const courseDisplay = document.getElementById('budgetCourseDisplay');
       const seatsDisplay = document.getElementById('budgetSeats');
       const dnfDisplay = document.getElementById('budgetDnf');
+      const budgetBenefits = document.getElementById('budgetBenefits');
       const perCourseDisplay = document.getElementById('budgetPerCourse');
       const savingsDisplay = document.getElementById('budgetSavings');
       const totalDisplay = document.getElementById('budgetTotal');
@@ -1333,7 +1384,8 @@
         dnf: document.getElementById('printDnf'),
         dnfScope: document.getElementById('printDnfScope'),
         listTotal: document.getElementById('printListTotal'),
-        savings: document.getElementById('printSavings')
+        savings: document.getElementById('printSavings'),
+        planningScope: document.getElementById('printPlanningScope')
       };
 
       function makeReference(participants, courses) {
@@ -1364,6 +1416,7 @@
         if (printEls.dnfScope) printEls.dnfScope.textContent = tier.dnf
           ? 'Incluida sin costo adicional: revisión de información, priorización de necesidades y malla recomendada.'
           : 'No incluida en esta escala. Se incorpora sin costo adicional a partir de 12 participantes.';
+        if (printEls.planningScope) printEls.planningScope.textContent = tier.planningScope;
         if (printEls.listTotal) printEls.listTotal.textContent = `${money.format(listTotal)} USD`;
         if (printEls.savings) printEls.savings.textContent = `${money.format(difference)} USD`;
 
@@ -1383,10 +1436,46 @@
       window.addEventListener('afterprint', () => { document.title = originalTitle; });
 
       function getTier(count) {
-        if (count >= 100) return { name: 'Grupo masivo', price: 3, dnf: true };
-        if (count >= 50) return { name: 'Grupo escala', price: 4, dnf: true };
-        if (count >= 12) return { name: 'Grupo estándar', price: 5, dnf: true };
-        return { name: 'Grupo menor', price: 7, dnf: false };
+        const baseBenefits = [
+          'Acceso multiplataforma',
+          'Evaluación automatizada',
+          'Certificados para aprobados',
+          'Informe básico de participación y resultados'
+        ];
+        if (count >= 100) {
+          return {
+            name: 'Grupo masivo',
+            price: 3,
+            dnf: true,
+            benefits: [...baseBenefits, 'DNF incluida', 'Diseño del plan de capacitación', 'Cronograma de ejecución', 'Reporte analítico de la cohorte', 'Seguimiento ampliado', 'Consolidado ejecutivo de resultados'],
+            planningScope: 'Incluye todos los beneficios de las escalas anteriores, además de seguimiento ampliado y consolidado ejecutivo de resultados.'
+          };
+        }
+        if (count >= 50) {
+          return {
+            name: 'Grupo escala',
+            price: 4,
+            dnf: true,
+            benefits: [...baseBenefits, 'DNF incluida', 'Diseño del plan de capacitación', 'Cronograma de ejecución', 'Reporte analítico de la cohorte'],
+            planningScope: 'Incluye todos los beneficios del Grupo estándar, además de cronograma de ejecución y reporte analítico de la cohorte.'
+          };
+        }
+        if (count >= 12) {
+          return {
+            name: 'Grupo estándar',
+            price: 5,
+            dnf: true,
+            benefits: [...baseBenefits, 'DNF incluida', 'Diseño del plan de capacitación'],
+            planningScope: 'Incluye todos los beneficios del Grupo menor, además de DNF y diseño del plan de capacitación.'
+          };
+        }
+        return {
+          name: 'Grupo menor',
+          price: 7,
+          dnf: false,
+          benefits: baseBenefits,
+          planningScope: 'Incluye acceso, evaluación, certificados e informe básico de participación y resultados.'
+        };
       }
 
       function clampNumber(input) {
@@ -1420,6 +1509,9 @@
         perCourseDisplay.textContent = `${money.format(perCourse)} USD`;
         savingsDisplay.textContent = `${money.format(difference)} USD`;
         totalDisplay.textContent = `${money.format(total)} USD`;
+        if (budgetBenefits) {
+          budgetBenefits.innerHTML = tier.benefits.map(item => `<span class="budget-benefit"><i class="fa-solid fa-check" aria-hidden="true"></i>${item}</span>`).join('');
+        }
 
         syncPrintProposal({ participants, courses, tier, seats, perCourse, total, listTotal, difference });
 
