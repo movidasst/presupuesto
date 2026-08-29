@@ -9,10 +9,10 @@
   <meta name="author" content="Academia Movida de Seguridad y Salud en el Trabajo">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <meta name="theme-color" content="#00205b">
-  <link rel="canonical" href="https://movidasst.org/propuesta-corporativa">
+  <link rel="canonical" href="https://presupuesto.movidasst.com/">
 
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://movidasst.org/propuesta-corporativa">
+  <meta property="og:url" content="https://presupuesto.movidasst.com/">
   <meta property="og:title" content="Capacitación Corporativa en SST | Demo 30 días">
   <meta property="og:description" content="Forma a tu equipo en SST desde móvil, tablet o PC. Seguimiento, evaluación, certificados e informes de gestión.">
   <meta property="og:image" content="https://lh3.googleusercontent.com/d/1F1EETURi32f_QWBJSnrU7DOYJ_NeNLK7=s1200">
@@ -27,6 +27,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="presupuesto-config.js"></script>
 
   <script type="application/ld+json">
   {
@@ -51,7 +53,7 @@
       },
       {
         "@type": "Service",
-        "@id": "https://movidasst.org/propuesta-corporativa#service",
+        "@id": "https://presupuesto.movidasst.com/#service",
         "name": "Capacitación Corporativa en Seguridad y Salud en el Trabajo",
         "provider": {"@id": "https://movidasst.org/#organization"},
         "serviceType": "Capacitación corporativa en SST",
@@ -1599,7 +1601,7 @@
   <footer>
     <div class="container footer__inner">
       <div>© 2026 Academia Movida de Seguridad y Salud en el Trabajo · De la reacción a la prevención.</div>
-      <div class="footer__links no-print"><a href="https://movidasst.org/" target="_blank" rel="noopener">Academia</a><a href="https://www.movidasst.com/" target="_blank" rel="noopener">La Movida SST</a><a href="#top">Volver arriba ↑</a></div>
+      <div class="footer__links no-print"><a href="https://movidasst.org/" target="_blank" rel="noopener">Academia</a><a href="https://www.movidasst.com/" target="_blank" rel="noopener">La Movida SST</a><a href="#top">Volver arriba ↑</a><a href="admin.html" rel="nofollow"><i class="fa-solid fa-lock" aria-hidden="true"></i> Administración</a></div>
     </div>
   </footer>
 
@@ -2011,7 +2013,7 @@
       const totalDisplay = document.getElementById('budgetTotal');
       const progressiveNote = document.getElementById('budgetProgressiveNote');
       const whatsappBtn = document.getElementById('budgetWhatsappBtn');
-      const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+      const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 });
       const rateMoney = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
       const headerPrintBtn = document.getElementById('headerPrintBtn');
       const budgetPrintBtn = document.getElementById('budgetPrintBtn');
@@ -2052,6 +2054,8 @@
       function syncPrintProposal({ participants, courses, tier, seats, perCourse, total, listTotal, difference, averageRate, marginalRate }) {
         const formattedDate = new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'long', year: 'numeric' }).format(new Date());
         const reference = makeReference(participants, courses);
+        const liveConfig = window.PresupuestoConfig.get();
+        const dnfStart = Number(liveConfig.pricing.tier1_max) + 1;
         if (printEls.date) printEls.date.textContent = formattedDate;
         if (printEls.reference) printEls.reference.textContent = reference;
         if (printEls.reference2) printEls.reference2.textContent = reference;
@@ -2066,16 +2070,16 @@
         if (printEls.unit) printEls.unit.textContent = `${rateMoney.format(averageRate)} USD`;
         if (printEls.marginal) printEls.marginal.textContent = `${money.format(marginalRate)} USD`;
         if (printEls.perCourse) printEls.perCourse.textContent = `${money.format(perCourse)} USD`;
-        if (printEls.dnf) printEls.dnf.textContent = tier.dnf ? 'Incluida sin costo adicional' : 'No incluida (disponible desde 12 participantes)';
+        if (printEls.dnf) printEls.dnf.textContent = tier.dnf ? 'Incluida sin costo adicional' : `No incluida (disponible desde ${dnfStart} participantes)`;
         if (printEls.dnfScope) printEls.dnfScope.textContent = tier.dnf
           ? 'Incluida sin costo adicional: revisión de información, priorización de necesidades y malla recomendada.'
-          : 'No incluida en esta escala. Se incorpora sin costo adicional a partir de 12 participantes.';
+          : `No incluida en esta escala. Se incorpora sin costo adicional a partir de ${dnfStart} participantes.`;
         if (printEls.planningScope) printEls.planningScope.textContent = tier.planningScope;
         if (printEls.listTotal) printEls.listTotal.textContent = `${money.format(listTotal)} USD`;
         if (printEls.savings) printEls.savings.textContent = `${money.format(difference)} USD`;
 
         ['printTierSmall','printTierStandard','printTierScale','printTierMass'].forEach(id => document.getElementById(id)?.classList.remove('is-active'));
-        const activeId = participants >= 100 ? 'printTierMass' : participants >= 50 ? 'printTierScale' : participants >= 12 ? 'printTierStandard' : 'printTierSmall';
+        const activeId = participants >= Number(liveConfig.pricing.tier3_max) + 1 ? 'printTierMass' : participants >= Number(liveConfig.pricing.tier2_max) + 1 ? 'printTierScale' : participants >= Number(liveConfig.pricing.tier1_max) + 1 ? 'printTierStandard' : 'printTierSmall';
         document.getElementById(activeId)?.classList.add('is-active');
       }
 
@@ -2090,71 +2094,11 @@
       window.addEventListener('afterprint', () => { document.title = originalTitle; });
 
       function getTier(count) {
-        const baseBenefits = [
-          'Acceso multiplataforma',
-          'Evaluación automatizada',
-          'Certificados para aprobados',
-          'Informe básico de participación y resultados',
-          'Registro de asistencia y trazabilidad de participación',
-          'Grupo de WhatsApp de soporte por curso',
-          'Ayuda con IA para resumir y explicar contenidos',
-          'Metodología práctica con estudios de caso, quizzes y retos',
-          'Guías PDF y recursos de apoyo',
-          'Encuesta de satisfacción al cierre',
-          'Gamificación con puntos y ranking'
-        ];
-        if (count >= 100) {
-          return {
-            name: 'Grupo masivo',
-            price: 3,
-            dnf: true,
-            benefits: [...baseBenefits, 'DNF incluida', 'Diseño del plan de capacitación', 'Cronograma de ejecución', 'Reporte analítico de la cohorte', 'Seguimiento ampliado', 'Consolidado ejecutivo de resultados'],
-            planningScope: 'Incluye todos los beneficios de las escalas anteriores, además de seguimiento ampliado y consolidado ejecutivo de resultados.'
-          };
-        }
-        if (count >= 50) {
-          return {
-            name: 'Grupo escala',
-            price: 4,
-            dnf: true,
-            benefits: [...baseBenefits, 'DNF incluida', 'Diseño del plan de capacitación', 'Cronograma de ejecución', 'Reporte analítico de la cohorte'],
-            planningScope: 'Incluye todos los beneficios del Grupo estándar, además de cronograma de ejecución y reporte analítico de la cohorte.'
-          };
-        }
-        if (count >= 12) {
-          return {
-            name: 'Grupo estándar',
-            price: 5,
-            dnf: true,
-            benefits: [...baseBenefits, 'DNF incluida', 'Diseño del plan de capacitación'],
-            planningScope: 'Incluye todos los beneficios del Grupo menor, además de DNF y diseño del plan de capacitación.'
-          };
-        }
-        return {
-          name: 'Grupo menor',
-          price: 7,
-          dnf: false,
-          benefits: baseBenefits,
-          planningScope: 'Incluye acceso, evaluación, certificados, registro de asistencia, informe básico de participación y resultados, grupo de WhatsApp de soporte por curso y ayuda con IA para resumir y explicar contenidos.'
-        };
+        return window.PresupuestoConfig.getTier(count);
       }
 
       function calculateProgressivePricing(count) {
-        const tranche1 = Math.min(count, 11);
-        const tranche2 = Math.max(0, Math.min(count, 49) - 11);
-        const tranche3 = Math.max(0, Math.min(count, 99) - 49);
-        const tranche4 = Math.max(0, count - 99);
-        const tranches = [
-          { quantity: tranche1, rate: 7 },
-          { quantity: tranche2, rate: 5 },
-          { quantity: tranche3, rate: 4 },
-          { quantity: tranche4, rate: 3 }
-        ].filter(item => item.quantity > 0);
-        const perCourse = tranches.reduce((sum, item) => sum + (item.quantity * item.rate), 0);
-        const marginalRate = count >= 100 ? 3 : count >= 50 ? 4 : count >= 12 ? 5 : 7;
-        const averageRate = perCourse / count;
-        const breakdown = tranches.map(item => `${item.quantity}×${money.format(item.rate)}`).join(' + ');
-        return { perCourse, marginalRate, averageRate, breakdown };
+        return window.PresupuestoConfig.calculate(count);
       }
 
       function inputBounds(input) {
@@ -2213,7 +2157,7 @@
         const seats = participants * courses;
         const perCourse = pricing.perCourse;
         const total = perCourse * courses;
-        const listTotal = participants * courses * 15;
+        const listTotal = participants * courses * Number(window.PresupuestoConfig.get().pricing.list_price || 15);
         const difference = listTotal - total;
 
         tierDisplay.textContent = tier.name;
@@ -2222,7 +2166,7 @@
         participantDisplay.textContent = String(participants);
         courseDisplay.textContent = String(courses);
         seatsDisplay.textContent = seats.toLocaleString('es-ES');
-        dnfDisplay.textContent = tier.dnf ? 'Incluida' : 'Desde 12 participantes';
+        dnfDisplay.textContent = tier.dnf ? 'Incluida' : `Desde ${window.PresupuestoConfig.get().pricing.tier1_max + 1} participantes`;
         dnfDisplay.style.color = tier.dnf ? '#9be483' : '#c1cfdd';
         perCourseDisplay.textContent = `${money.format(perCourse)} USD`;
         savingsDisplay.textContent = `${money.format(difference)} USD`;
@@ -2269,6 +2213,10 @@
       mobilePrintBtn?.addEventListener('click', () => { setMenu(false); printBudgetProposal(); });
       mobileHubPrintBtn?.addEventListener('click', printBudgetProposal);
       updateBudget({ normalize: true });
+      window.PresupuestoConfig.load().then(() => {
+        window.PresupuestoConfig.applyToDom();
+        updateBudget({ normalize: true });
+      }).catch((error) => console.warn('Configuración remota no disponible', error));
     })();
   </script>
 </body>
