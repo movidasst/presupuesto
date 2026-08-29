@@ -1,0 +1,53 @@
+name: Apply progressive pricing
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-progressive-pricing.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply progressive pricing patch
+        run: python .github/scripts/apply_progressive_pricing.py
+      - name: Validate JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text = Path('index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', text, flags=re.S)
+          Path('/tmp/app.js').write_text(scripts[-1], encoding='utf-8')
+          PY
+          node --check /tmp/app.js
+      - name: Verify progressive pricing boundaries
+        run: |
+          python - <<'PY'
+          def per_course(n):
+              return min(n,11)*7 + max(0,min(n,49)-11)*5 + max(0,min(n,99)-49)*4 + max(0,n-99)*3
+          expected = {3:21, 11:77, 12:82, 49:267, 50:271, 99:467, 100:470, 101:473}
+          for n, value in expected.items():
+              actual = per_course(n)
+              assert actual == value, (n, actual, value)
+          vals = [per_course(n) for n in range(3, 501)]
+          assert all(b > a for a, b in zip(vals, vals[1:])), 'Total must strictly increase with participants'
+          print('Progressive pricing verified:', expected)
+          PY
+      - name: Commit progressive pricing
+        run: |
+          git config user.name "movidasst"
+          git config user.email "gdochile@gmail.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Use progressive pricing by participant tranche"
+            git push origin main
+          fi
