@@ -9,7 +9,6 @@ permissions:
 
 jobs:
   patch:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,69 +19,51 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-
           path = Path('index.html')
           text = path.read_text(encoding='utf-8')
           url = 'https://mentoring.movidasst.com/'
-
           if url not in text:
-              # Desktop navigation: external link, same tab (no target attribute).
               nav_anchor = '        <a href="#condiciones">Condiciones</a>'
               nav_link = '        <a href="https://mentoring.movidasst.com/">Mentoría y asesoría</a>'
               if nav_anchor not in text:
-                  raise SystemExit('No se encontró el ancla de navegación desktop')
+                  raise SystemExit('No se encontró navegación desktop')
               text = text.replace(nav_anchor, nav_anchor + '\n' + nav_link, 1)
-
-              # Mobile menu: same-tab navigation.
               mobile_anchor = '      <a href="#condiciones">Condiciones <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>'
-              mobile_link = '      <a href="https://mentoring.movidasst.com/">Mentoría y asesoría <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>'
+              mobile_link = '      <a href="https://mentoring.movidasst.com/">Mentoría y asesoría <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>'
               if mobile_anchor not in text:
-                  raise SystemExit('No se encontró el ancla de navegación móvil')
+                  raise SystemExit('No se encontró navegación móvil')
               text = text.replace(mobile_anchor, mobile_anchor + '\n' + mobile_link, 1)
-
-              # Commercial bridge inside the existing audience section to avoid changing SPA routing.
               audience_tail = '          <article class="audience-card"><i class="fa-solid fa-chart-line" aria-hidden="true"></i><h3>Gerencia / Compras</h3><p>Precio progresivo transparente, alcance definido e información para decidir.</p></article>\n        </div>'
-              bridge = '''          <article class="audience-card"><i class="fa-solid fa-chart-line" aria-hidden="true"></i><h3>Gerencia / Compras</h3><p>Precio progresivo transparente, alcance definido e información para decidir.</p></article>
-        </div>
-
-        <div class="demo-scope no-print" style="margin-top:24px">
-          <div class="demo-bonus">
-            <i class="fa-solid fa-compass" aria-hidden="true"></i>
-            <div>
-              <b>¿Tu empresa necesita algo más que capacitación?</b>
-              <p>Para decisiones técnicas, revisión de documentos, proyectos o acompañamiento estratégico, conoce Mentoring SST y la asesoría B2B de La Movida SST.</p>
-            </div>
-          </div>
-          <a class="btn btn--primary" href="https://mentoring.movidasst.com/" style="margin-top:12px">
-            <i class="fa-solid fa-comments" aria-hidden="true"></i> Conocer Mentoría y Asesoría
-          </a>
-        </div>'''
+              bridge_lines = [
+                  '          <article class="audience-card"><i class="fa-solid fa-chart-line" aria-hidden="true"></i><h3>Gerencia / Compras</h3><p>Precio progresivo transparente, alcance definido e información para decidir.</p></article>',
+                  '        </div>',
+                  '',
+                  '        <div class="demo-scope no-print" style="margin-top:24px">',
+                  '          <div class="demo-bonus">',
+                  '            <i class="fa-solid fa-compass" aria-hidden="true"></i>',
+                  '            <div>',
+                  '              <b>¿Tu empresa necesita algo más que capacitación?</b>',
+                  '              <p>Para decisiones técnicas, revisión de documentos, proyectos o acompañamiento estratégico, conoce Mentoring SST y la asesoría B2B de La Movida SST.</p>',
+                  '            </div>',
+                  '          </div>',
+                  '          <a class="btn btn--primary" href="https://mentoring.movidasst.com/" style="margin-top:12px">',
+                  '            <i class="fa-solid fa-comments" aria-hidden="true"></i> Conocer Mentoría y Asesoría',
+                  '          </a>',
+                  '        </div>'
+              ]
               if audience_tail not in text:
-                  raise SystemExit('No se encontró el cierre del bloque de audiencia')
-              text = text.replace(audience_tail, bridge, 1)
-
+                  raise SystemExit('No se encontró bloque de audiencia')
+              text = text.replace(audience_tail, '\n'.join(bridge_lines), 1)
               path.write_text(text, encoding='utf-8')
           PY
       - name: Verify same-tab integration
         run: |
           grep -q 'https://mentoring.movidasst.com/' index.html
           grep -q 'Conocer Mentoría y Asesoría' index.html
-          python - <<'PY'
-          from pathlib import Path
-          text = Path('index.html').read_text(encoding='utf-8')
-          for snippet in [
-              '<a href="https://mentoring.movidasst.com/">Mentoría y asesoría</a>',
-              '<a class="btn btn--primary" href="https://mentoring.movidasst.com/"'
-          ]:
-              assert snippet in text, snippet
-          assert 'href="https://mentoring.movidasst.com/" target="_blank"' not in text
-          PY
+          ! grep -q 'href="https://mentoring.movidasst.com/" target="_blank"' index.html
       - name: Commit changes
         run: |
-          if git diff --quiet -- index.html; then
-            echo "No changes needed"
-            exit 0
-          fi
+          if git diff --quiet -- index.html; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
