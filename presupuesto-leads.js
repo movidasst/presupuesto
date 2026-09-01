@@ -558,7 +558,7 @@
   function loadTabNavigation() {
     if (document.querySelector('script[data-presupuesto-tabs]')) return;
     const script = document.createElement('script');
-    script.src = 'presupuesto-tabs.js?v=20260901-3';
+    script.src = 'presupuesto-tabs.js?v=20260901-4';
     script.dataset.presupuestoTabs = '1';
     script.async = false;
     document.head.appendChild(script);
