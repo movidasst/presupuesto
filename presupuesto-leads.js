@@ -14,7 +14,7 @@
 
   const escapeHtml = value => window.PresupuestoConfig?.escapeHtml
     ? window.PresupuestoConfig.escapeHtml(value)
-    : String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[c]));
+    : String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#039;' }[c]));
 
   function isDemoMode() { return requestMode === 'demo'; }
 
@@ -558,7 +558,7 @@
   function loadTabNavigation() {
     if (document.querySelector('script[data-presupuesto-tabs]')) return;
     const script = document.createElement('script');
-    script.src = 'presupuesto-tabs.js?v=20260901-1';
+    script.src = 'presupuesto-tabs.js?v=20260901-2';
     script.dataset.presupuestoTabs = '1';
     script.async = false;
     document.head.appendChild(script);
