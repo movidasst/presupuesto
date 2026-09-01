@@ -78,12 +78,19 @@
     if (window.__PRESUPUESTO_DEMO_FETCH_HOOK__) return;
     window.__PRESUPUESTO_DEMO_FETCH_HOOK__ = true;
     const nativeFetch = window.fetch.bind(window);
+    const safeQuoteUrl = 'https://lfdmbkzghnwvsapxypvt.supabase.co/functions/v1/presupuesto-propuesta-corporativa-segura';
+    const originalQuotePattern = /\/functions\/v1\/presupuesto-propuesta-corporativa(?:\?|$)/;
     window.fetch = async function(input, init) {
-      const response = await nativeFetch(input, init);
+      const url = typeof input === 'string' ? input : (input?.url || '');
+      let routedInput = input;
+      if (originalQuotePattern.test(url)) {
+        const queryIndex = url.indexOf('?');
+        routedInput = queryIndex >= 0 ? `${safeQuoteUrl}${url.slice(queryIndex)}` : safeQuoteUrl;
+      }
+      const response = await nativeFetch(routedInput, init);
       try {
-        const url = typeof input === 'string' ? input : (input?.url || '');
         const method = String(init?.method || (typeof input !== 'string' ? input?.method : '') || 'GET').toUpperCase();
-        if (method === 'POST' && /\/functions\/v1\/presupuesto-propuesta-corporativa(?:\?|$)/.test(url)) {
+        if (method === 'POST' && originalQuotePattern.test(url)) {
           const copy = response.clone();
           Promise.resolve().then(async () => {
             try {
@@ -95,7 +102,10 @@
               }
               const detail = { reference: data.reference || '', demo_onboarding: data.demo_onboarding, prospect };
               if (window.PresupuestoDemoOnboarding?.start) window.PresupuestoDemoOnboarding.start(detail);
-              else window.dispatchEvent(new CustomEvent('presupuesto:demo-created', { detail }));
+              else {
+                window.__PRESUPUESTO_PENDING_DEMO__ = detail;
+                window.dispatchEvent(new CustomEvent('presupuesto:demo-created', { detail }));
+              }
             } catch (_) {}
           });
         }
