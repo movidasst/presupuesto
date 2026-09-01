@@ -74,6 +74,36 @@
     document.head.appendChild(script);
   }
 
+  function installDemoResponseInterceptor() {
+    if (window.__PRESUPUESTO_DEMO_FETCH_HOOK__) return;
+    window.__PRESUPUESTO_DEMO_FETCH_HOOK__ = true;
+    const nativeFetch = window.fetch.bind(window);
+    window.fetch = async function(input, init) {
+      const response = await nativeFetch(input, init);
+      try {
+        const url = typeof input === 'string' ? input : (input?.url || '');
+        const method = String(init?.method || (typeof input !== 'string' ? input?.method : '') || 'GET').toUpperCase();
+        if (method === 'POST' && /\/functions\/v1\/presupuesto-propuesta-corporativa(?:\?|$)/.test(url)) {
+          const copy = response.clone();
+          Promise.resolve().then(async () => {
+            try {
+              const data = await copy.json();
+              if (!data || data.ok !== true || data.request_type !== 'demo' || !data.demo_onboarding) return;
+              let prospect = null;
+              if (typeof init?.body === 'string') {
+                try { prospect = JSON.parse(init.body); } catch (_) {}
+              }
+              const detail = { reference: data.reference || '', demo_onboarding: data.demo_onboarding, prospect };
+              if (window.PresupuestoDemoOnboarding?.start) window.PresupuestoDemoOnboarding.start(detail);
+              else window.dispatchEvent(new CustomEvent('presupuesto:demo-created', { detail }));
+            } catch (_) {}
+          });
+        }
+      } catch (_) {}
+      return response;
+    };
+  }
+
   function normalizeLegacyHash(rawHash) {
     const hash = String(rawHash || '');
     if (!hash.startsWith('#/')) return null;
@@ -455,6 +485,7 @@
   }
 
   function setup() {
+    installDemoResponseInterceptor();
     loadDemoOnboardingModule();
     injectStyles();
     injectMainTabs();
