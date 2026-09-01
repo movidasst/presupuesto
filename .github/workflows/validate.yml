@@ -24,6 +24,7 @@ jobs:
         run: |
           node --check presupuesto-config.js
           node --check presupuesto-leads.js
+          node --check presupuesto-tabs.js
       - name: Extract and validate inline scripts
         run: |
           python - <<'PY'
