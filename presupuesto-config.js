@@ -1,3 +1,5 @@
+window.__PRESUPUESTO_INITIAL_HASH__ = window.__PRESUPUESTO_INITIAL_HASH__ || window.location.hash;
+
 (() => {
   const SUPABASE_URL = 'https://lfdmbkzghnwvsapxypvt.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_bRnkA6PA8-v073nrw9zxiQ_8rVGiOn1';
