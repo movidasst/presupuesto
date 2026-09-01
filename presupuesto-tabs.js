@@ -104,7 +104,6 @@
         body.global-tabs-ready .mobile-screen-label { display:none !important; }
         body.global-tabs-ready .mobile-view-hidden.global-tab-active,
         body.global-tabs-ready .mobile-view-visible:not(.global-tab-active) { display:none !important; }
-        body.global-tabs-ready .mobileMoreHub { display:none !important; }
         body.global-tabs-ready #mobileMoreHub.global-tab-active { display:block !important; }
       }
 
@@ -342,10 +341,14 @@
   }
 
   function applyLocationRoute(options = {}) {
-    const legacy = normalizeLegacyHash(location.hash);
-    const routeKey = legacy || routeFromHash(location.hash);
-    if (legacy) {
-      history.replaceState({ appRoute: routeKey }, '', `${location.pathname}${location.search}${hashForRoute(routeKey)}`);
+    const sourceHash = options.useInitialHash
+      ? (window.__PRESUPUESTO_INITIAL_HASH__ || location.hash)
+      : location.hash;
+    const legacy = normalizeLegacyHash(sourceHash);
+    const routeKey = legacy || routeFromHash(sourceHash);
+    const canonicalHash = hashForRoute(routeKey);
+    if (legacy || sourceHash !== location.hash || location.hash !== canonicalHash) {
+      history.replaceState({ appRoute: routeKey }, '', `${location.pathname}${location.search}${canonicalHash}`);
     }
     showOnlyRoute(routeKey);
     if (options.scroll !== false) requestAnimationFrame(() => scrollRouteIntoView(routeKey));
@@ -440,7 +443,8 @@
       requestAnimationFrame(() => applyLocationRoute({ scroll: true }));
     });
 
-    applyLocationRoute({ scroll: location.hash.length > 1 });
+    const initialHash = window.__PRESUPUESTO_INITIAL_HASH__ || location.hash;
+    applyLocationRoute({ scroll: initialHash.length > 1, useInitialHash: true });
 
     window.PresupuestoTabs = {
       navigate,
