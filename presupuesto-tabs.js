@@ -303,6 +303,25 @@
     currentRoute = routeKey;
   }
 
+  function closeLegacyMenu() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuToggle = document.getElementById('menuToggle');
+    const icon = menuToggle?.querySelector('i');
+    if (mobileMenu) {
+      mobileMenu.classList.remove('is-open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    }
+    if (menuToggle) {
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'Abrir menú');
+    }
+    if (icon) {
+      icon.classList.remove('fa-xmark');
+      icon.classList.add('fa-bars');
+    }
+    document.body.classList.remove('menu-open');
+  }
+
   function topOffset() {
     const header = document.querySelector('.site-header');
     const mainTabs = window.matchMedia('(min-width:640px)').matches && tabsShell ? tabsShell.offsetHeight : 0;
@@ -329,6 +348,7 @@
     const validKey = ROUTES[routeKey] ? routeKey : 'inicio';
     const { replace = false, scroll = true, targetId = '' } = options;
     const nextHash = hashForRoute(validKey);
+    closeLegacyMenu();
     applyingHistory = true;
     try {
       if (replace) history.replaceState({ appRoute: validKey }, '', `${location.pathname}${location.search}${nextHash}`);
