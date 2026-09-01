@@ -102,7 +102,7 @@
         body.global-tabs-ready .global-tab-section.global-tab-active { display:block !important; }
         body.global-tabs-ready .desktop-nav { display:none !important; }
         body.global-tabs-ready .mobile-screen-label { display:none !important; }
-        body.global-tabs-ready .mobile-view-hidden.global-tab-active,
+        body.global-tabs-ready .mobile-view-hidden.global-tab-active { display:block !important; }
         body.global-tabs-ready .mobile-view-visible:not(.global-tab-active) { display:none !important; }
         body.global-tabs-ready #mobileMoreHub.global-tab-active { display:block !important; }
       }
