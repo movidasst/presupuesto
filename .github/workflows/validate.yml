@@ -25,6 +25,7 @@ jobs:
           node --check presupuesto-config.js
           node --check presupuesto-leads.js
           node --check presupuesto-tabs.js
+          node --check presupuesto-demo-onboarding.js
       - name: Extract and validate inline scripts
         run: |
           python - <<'PY'
