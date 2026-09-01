@@ -275,8 +275,11 @@
   }
 
   function openLeadForm() {
-    const quoteTab = document.querySelector('[data-mobile-view-target="quote"]');
-    if (window.matchMedia('(max-width: 639px)').matches && quoteTab) quoteTab.click();
+    if (window.PresupuestoTabs?.navigate) window.PresupuestoTabs.navigate('presupuesto', { scroll: false });
+    else {
+      const quoteTab = document.querySelector('[data-mobile-view-target="quote"]');
+      if (window.matchMedia('(max-width: 639px)').matches && quoteTab) quoteTab.click();
+    }
     const target = $('leadCapture');
     window.setTimeout(() => {
       target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -508,18 +511,12 @@
       demoButton.removeAttribute('target');
       demoButton.removeAttribute('rel');
       demoButton.href = '#presupuesto';
+      demoButton.dataset.demoRequestEntry = '1';
       demoButton.innerHTML = '<i class="fa-solid fa-flask" aria-hidden="true"></i> Solicitar Demo';
-      demoButton.addEventListener('click', event => {
-        event.preventDefault();
-        setRequestMode('demo', { openForm: true });
-      });
     }
 
     const heroDemo = [...document.querySelectorAll('.hero__actions a')].find(a => /solicitar demo/i.test(a.textContent || ''));
-    heroDemo?.addEventListener('click', event => {
-      event.preventDefault();
-      setRequestMode('demo', { openForm: true });
-    });
+    if (heroDemo) heroDemo.dataset.demoRequestEntry = '1';
 
     const budgetWhatsapp = $('budgetWhatsappBtn');
     budgetWhatsapp?.addEventListener('click', event => {
@@ -558,9 +555,19 @@
     window.PresupuestoApp?.printBudgetProposal?.();
   }
 
+  function loadTabNavigation() {
+    if (document.querySelector('script[data-presupuesto-tabs]')) return;
+    const script = document.createElement('script');
+    script.src = 'presupuesto-tabs.js?v=20260901-1';
+    script.dataset.presupuestoTabs = '1';
+    script.async = false;
+    document.head.appendChild(script);
+  }
+
   function setup() {
     injectModeSwitch();
     wireDemoEntryPoints();
+    loadTabNavigation();
     const form = $('leadForm');
     form?.addEventListener('submit', submitLead);
     $('leadCustomTopic')?.addEventListener('input', () => { updateCourseSelectionState(); syncPersonalizedPrint(); });
