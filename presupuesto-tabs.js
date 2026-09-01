@@ -65,6 +65,15 @@
     try { return document.querySelector(selector); } catch (_) { return null; }
   }
 
+  function loadDemoOnboardingModule() {
+    if (window.PresupuestoDemoOnboarding || document.querySelector('script[data-demo-onboarding-module]')) return;
+    const script = document.createElement('script');
+    script.src = 'presupuesto-demo-onboarding.js?v=20260901-1';
+    script.dataset.demoOnboardingModule = '1';
+    script.async = false;
+    document.head.appendChild(script);
+  }
+
   function normalizeLegacyHash(rawHash) {
     const hash = String(rawHash || '');
     if (!hash.startsWith('#/')) return null;
@@ -446,6 +455,7 @@
   }
 
   function setup() {
+    loadDemoOnboardingModule();
     injectStyles();
     injectMainTabs();
     injectSubTabs();
