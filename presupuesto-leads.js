@@ -14,7 +14,7 @@
 
   const escapeHtml = value => window.PresupuestoConfig?.escapeHtml
     ? window.PresupuestoConfig.escapeHtml(value)
-    : String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[c]));
+    : String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#039;' }[c]));
 
   function isDemoMode() { return requestMode === 'demo'; }
 
@@ -26,11 +26,18 @@
     el.textContent = message;
   }
 
+  function normalizeDemoParticipants(value, fallback = 1) {
+    let participants = Math.trunc(Number(value));
+    if (!Number.isFinite(participants)) participants = fallback;
+    return Math.max(1, Math.min(DEMO_MAX_PARTICIPANTS, participants));
+  }
+
   function getBudgetNumbers() {
     const participantsInput = $('budgetParticipants');
     const coursesInput = $('budgetCourses');
     if (isDemoMode()) {
-      const participants = Math.max(1, Math.min(DEMO_MAX_PARTICIPANTS, Math.trunc(Number(participantsInput?.value) || DEMO_MAX_PARTICIPANTS)));
+      const visibleDemoInput = $('demoParticipantsInline');
+      const participants = normalizeDemoParticipants(visibleDemoInput?.value || participantsInput?.value, DEMO_MAX_PARTICIPANTS);
       return { participants, courses: 1 };
     }
     const cfg = window.PresupuestoConfig.get();
@@ -283,7 +290,8 @@
     const target = $('leadCapture');
     window.setTimeout(() => {
       target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      $('leadCompany')?.focus({ preventScroll: true });
+      const focusTarget = isDemoMode() ? $('demoParticipantsInline') : $('leadCompany');
+      focusTarget?.focus({ preventScroll: true });
     }, 80);
   }
 
@@ -329,8 +337,12 @@
       body.demo-request-mode .budget-section{background:linear-gradient(180deg,#f7fbfa,#f3f7fa)}
       body.demo-request-mode .budget-primary-total{background:linear-gradient(135deg,#083c3b,#0f766e 72%,#3f8c63)}
       body.demo-request-mode #leadCustomTopic,body.demo-request-mode #leadCustomTopic+*{display:none}
-      .demo-mode-note{margin:0 0 14px;padding:13px 14px;border-radius:14px;background:#eaf8ef;border:1px solid #c8e6d2;color:#286640;font-size:.75rem;line-height:1.5}.demo-mode-note strong{color:#164f31}
-      @media(min-width:760px){.request-mode-switch{grid-template-columns:1fr auto;align-items:center}.request-mode-switch__buttons{min-width:370px}}
+      .demo-mode-note{margin:0 0 12px;padding:13px 14px;border-radius:14px;background:#eaf8ef;border:1px solid #c8e6d2;color:#286640;font-size:.75rem;line-height:1.5}.demo-mode-note strong{color:#164f31}
+      .demo-participant-picker{margin:0 0 16px;padding:15px;border:1px solid #b9dbd7;border-radius:17px;background:linear-gradient(145deg,#f4fbfa,#fff);box-shadow:0 8px 22px rgba(8,24,47,.05)}
+      .demo-participant-picker__top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.demo-participant-picker__top label{display:block;color:var(--navy);font-size:.83rem;font-weight:900;line-height:1.25}.demo-participant-picker__top p{margin:4px 0 0;color:var(--muted);font-size:.69rem;line-height:1.4}.demo-participant-picker__badge{flex:0 0 auto;padding:4px 8px;border-radius:999px;background:#fff2cf;color:#7d5700;font-size:.58rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+      .demo-participant-picker__control{display:grid;grid-template-columns:48px minmax(86px,1fr) 48px;gap:8px;align-items:center;margin-top:12px}.demo-participant-picker__control button{min-height:48px;border:1px solid #bfd8d6;border-radius:12px;background:#fff;color:var(--brand);font-size:1.15rem;font-weight:900;cursor:pointer}.demo-participant-picker__control button:active{transform:scale(.97)}.demo-participant-picker__control input{width:100%;min-height:48px;border:2px solid var(--brand);border-radius:12px;background:#fff;color:var(--navy);text-align:center;font-size:1.15rem;font-weight:900;outline:0}.demo-participant-picker__control input:focus{box-shadow:0 0 0 4px rgba(15,118,110,.12)}
+      .demo-participant-picker__status{margin-top:9px;padding:8px 10px;border-radius:10px;background:#edf7f6;color:#315e62;font-size:.68rem;font-weight:750;line-height:1.4}.demo-participant-picker__status strong{color:var(--navy)}
+      @media(min-width:760px){.request-mode-switch{grid-template-columns:1fr auto;align-items:center}.request-mode-switch__buttons{min-width:370px}.demo-participant-picker{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:18px;align-items:center}.demo-participant-picker__control{margin-top:0}.demo-participant-picker__status{grid-column:1/-1;margin-top:-7px}}
     `;
     document.head.appendChild(style);
 
@@ -384,6 +396,73 @@
     window.PresupuestoApp?.updateBudget?.({ normalize: true });
   }
 
+  function syncDemoParticipantPicker(value) {
+    const picker = $('demoParticipantPicker');
+    const inline = $('demoParticipantsInline');
+    if (!picker || !inline) return;
+    const sourceValue = value ?? $('budgetParticipants')?.value ?? inline.value;
+    const participants = normalizeDemoParticipants(sourceValue, DEMO_MAX_PARTICIPANTS);
+    inline.value = String(participants);
+    const status = $('demoParticipantsStatus');
+    if (status) status.innerHTML = `<strong>${participants} persona${participants === 1 ? '' : 's'}</strong> participará${participants === 1 ? '' : 'n'} en el Demo. Puedes cambiar esta cantidad antes de enviar.`;
+  }
+
+  function setDemoParticipantsFromVisible(value) {
+    const participants = normalizeDemoParticipants(value, 1);
+    const budgetInput = $('budgetParticipants');
+    if (budgetInput) budgetInput.value = String(participants);
+    syncDemoParticipantPicker(participants);
+    window.PresupuestoApp?.updateBudget?.({ normalize: true });
+    window.setTimeout(applyDemoPresentation, 0);
+    updateCourseSelectionState();
+    syncPersonalizedPrint();
+  }
+
+  function injectDemoParticipantPicker() {
+    const form = $('leadForm');
+    if (!form) return null;
+    let picker = $('demoParticipantPicker');
+    if (!picker) {
+      picker = document.createElement('section');
+      picker.id = 'demoParticipantPicker';
+      picker.className = 'demo-participant-picker no-print';
+      picker.setAttribute('aria-labelledby', 'demoParticipantsLabel');
+      picker.innerHTML = `
+        <div class="demo-participant-picker__top">
+          <div>
+            <label id="demoParticipantsLabel" for="demoParticipantsInline">¿Cuántas personas participarán en el Demo?</label>
+            <p>Elige entre 1 y ${DEMO_MAX_PARTICIPANTS}. Esta será la cantidad de cupos que prepararemos si apruebas la solicitud.</p>
+          </div>
+          <span class="demo-participant-picker__badge">Obligatorio</span>
+        </div>
+        <div class="demo-participant-picker__control">
+          <button type="button" data-demo-participant-step="-1" aria-label="Quitar una persona"><i class="fa-solid fa-minus" aria-hidden="true"></i></button>
+          <input id="demoParticipantsInline" name="demo_participants_visible" type="number" inputmode="numeric" min="1" max="${DEMO_MAX_PARTICIPANTS}" step="1" required aria-describedby="demoParticipantsStatus">
+          <button type="button" data-demo-participant-step="1" aria-label="Agregar una persona"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+        </div>
+        <div id="demoParticipantsStatus" class="demo-participant-picker__status" aria-live="polite"></div>`;
+      const note = $('demoModeNote');
+      if (note?.parentElement === form) note.insertAdjacentElement('afterend', picker);
+      else form.prepend(picker);
+
+      picker.querySelectorAll('[data-demo-participant-step]').forEach(button => button.addEventListener('click', () => {
+        const input = $('demoParticipantsInline');
+        const delta = Number(button.dataset.demoParticipantStep || 0);
+        setDemoParticipantsFromVisible(normalizeDemoParticipants(Number(input?.value || 1) + delta, 1));
+      }));
+      const input = $('demoParticipantsInline');
+      input?.addEventListener('input', () => {
+        if (input.value === '') return;
+        setDemoParticipantsFromVisible(input.value);
+      });
+      input?.addEventListener('change', () => setDemoParticipantsFromVisible(input.value));
+      input?.addEventListener('blur', () => setDemoParticipantsFromVisible(input.value));
+    }
+    picker.hidden = !isDemoMode();
+    if (isDemoMode()) syncDemoParticipantPicker();
+    return picker;
+  }
+
   function updateLeadCopy() {
     const title = $('lead-title');
     const intro = document.querySelector('.lead-capture__intro p');
@@ -403,7 +482,7 @@
     if (isDemoMode()) {
       if (eyebrow) eyebrow.innerHTML = '<i class="fa-solid fa-flask" aria-hidden="true"></i> Solicitud de Demo Corporativo';
       if (title) title.textContent = 'Solicita tu Demo Corporativo gratuito';
-      if (intro) intro.textContent = `Completa los datos de la empresa, indica cuántas personas participarán y selecciona 1 curso. El Demo tiene costo USD 0 y admite un máximo de ${DEMO_MAX_PARTICIPANTS} participantes.`;
+      if (intro) intro.textContent = `Primero confirma cuántas personas participarán. Luego completa los datos de la empresa y selecciona 1 curso. El Demo tiene costo USD 0 y admite un máximo de ${DEMO_MAX_PARTICIPANTS} participantes.`;
       if (legend) legend.innerHTML = 'Curso para el Demo <span style="color:#b42318">*</span>';
       if (help) help.textContent = 'Selecciona exactamente un curso del catálogo corporativo para el piloto.';
       if (customWrap) customWrap.hidden = true;
@@ -427,7 +506,8 @@
         $('leadForm')?.prepend(note);
       }
       note.hidden = false;
-      note.innerHTML = `<strong>Demo Corporativo · USD 0</strong><br>1 curso · máximo ${DEMO_MAX_PARTICIPANTS} participantes · 30 días. La solicitud quedará registrada en el CRM para seguimiento.`;
+      note.innerHTML = `<strong>Demo Corporativo · USD 0</strong><br>1 curso · máximo ${DEMO_MAX_PARTICIPANTS} participantes · 30 días. Confirma abajo cuántas personas participarán antes de enviar.`;
+      injectDemoParticipantPicker();
     } else {
       if (eyebrow) eyebrow.innerHTML = '<i class="fa-solid fa-file-signature" aria-hidden="true"></i> Tu propuesta personalizada';
       if (title) title.textContent = 'Recibe el presupuesto con los datos de tu empresa';
@@ -448,6 +528,8 @@
         budgetContact.innerHTML = '<i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Solicitar cotización formal';
       }
       if (note) note.hidden = true;
+      const picker = $('demoParticipantPicker');
+      if (picker) picker.hidden = true;
     }
   }
 
@@ -500,6 +582,7 @@
     }
 
     updateLeadCopy();
+    if (isDemoMode()) syncDemoParticipantPicker(participantsInput?.value);
     updateCourseSelectionState();
     setStatus('', 'info');
     if (options.openForm) openLeadForm();
@@ -531,10 +614,9 @@
     const participants = $('budgetParticipants');
     const courses = $('budgetCourses');
     if (participants) {
-      let value = Math.trunc(Number(participants.value));
-      if (!Number.isFinite(value)) value = 1;
-      value = Math.max(1, Math.min(DEMO_MAX_PARTICIPANTS, value));
+      const value = normalizeDemoParticipants(participants.value, 1);
       participants.value = String(value);
+      syncDemoParticipantPicker(value);
     }
     if (courses) courses.value = '1';
     window.setTimeout(applyDemoPresentation, 0);
@@ -558,7 +640,7 @@
   function loadTabNavigation() {
     if (document.querySelector('script[data-presupuesto-tabs]')) return;
     const script = document.createElement('script');
-    script.src = 'presupuesto-tabs.js?v=20260901-4';
+    script.src = 'presupuesto-tabs.js?v=20260902-1';
     script.dataset.presupuestoTabs = '1';
     script.async = false;
     document.head.appendChild(script);
