@@ -130,7 +130,7 @@
     if (isVenezuelanId) {
       const normalized = normalizeVenezuelanDocument(raw);
       if (!/^[VE]?[0-9]{5,9}$/.test(normalized)) {
-        errors.push(`Fila ${line}: la cédula venezolana “${raw}” no parece válida. Puede usar solo números o prefijo V/E; los puntos son aceptados.`);
+        errors.push(`Fila ${line}: la cédula venezolana “${raw}” no parece válida. Usa solo números o prefijo V/E, sin puntos ni espacios.`);
         return;
       }
       if (normalized !== raw.toUpperCase()) warnings.push(`Fila ${line}: cédula “${raw}” se guardará normalizada como “${normalized}”.`);
@@ -353,7 +353,7 @@
         <div class="demo-field"><label for="demoManualApellidos">Apellidos *</label><input id="demoManualApellidos" autocomplete="family-name" maxlength="120"></div>
         <div class="demo-field"><label for="demoManualCorreo">Correo *</label><input id="demoManualCorreo" type="email" autocomplete="email" maxlength="254"></div>
         <div class="demo-field"><label for="demoManualTipoDocumento">Tipo de documento</label><select id="demoManualTipoDocumento"><option value="">Seleccionar</option><option>Cédula</option><option>RUT</option><option>DNI</option><option>Pasaporte</option><option>Otro</option></select></div>
-        <div class="demo-field"><label for="demoManualDocumento">Documento / Cédula</label><input id="demoManualDocumento" maxlength="80" placeholder="Ej. 12.345.678"></div>
+        <div class="demo-field"><label for="demoManualDocumento">Documento / Cédula</label><input id="demoManualDocumento" maxlength="80" placeholder="Ej. 12345678"></div>
         <div class="demo-field"><label for="demoManualPais">País ISO2</label><input id="demoManualPais" maxlength="2" placeholder="VE, CL, CO…" autocapitalize="characters"></div>
         <div class="demo-field"><label for="demoManualTelefono">Teléfono</label><input id="demoManualTelefono" maxlength="40" inputmode="tel"></div>
         <div class="demo-field"><label for="demoManualCargo">Cargo</label><input id="demoManualCargo" maxlength="120"></div>
@@ -481,7 +481,7 @@
     const info = $('demoFileState');
     try {
       const XLSX = await loadXlsx();
-      const rows = [HEADERS, ['María','González','Cédula','12.345.678','maria@empresa.com','+56 9 0000 0000','CL','Supervisora','Operaciones']];
+      const rows = [HEADERS, ['María','González','Cédula','12345678','maria@empresa.com','+58 412 000 0000','VE','Supervisora','Operaciones']];
       const sheet = XLSX.utils.aoa_to_sheet(rows);
       sheet['!cols'] = [{wch:18},{wch:18},{wch:18},{wch:18},{wch:28},{wch:18},{wch:12},{wch:20},{wch:20}];
       const book = XLSX.utils.book_new();
